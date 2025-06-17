@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Turned in person List</title>
+<title>Turned in Student List</title>
 <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js"></script>
 <style>
@@ -18,47 +18,51 @@
 </head>
 <body>
 
-<h1>Persons</h1>
-<ul id="person-list">
-  <!-- person items will appear here -->
+<h1>Class List</h1>
+<ul id="student-list">
+  <!-- Student items will appear here -->
 </ul>
 
 <script>
   // Your firebase config
   const firebaseConfig = {
-    apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
-    authDomain: "virac-tsv.firebaseapp.com",
-    projectId: "virac-tsv",
-    storageBucket: "virac-tsv.firebasestorage.app",
-    messagingSenderId: "455316064834",
-    appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+  apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+  authDomain: "virac-tsv.firebaseapp.com",
+  projectId: "virac-tsv",
+  storageBucket: "virac-tsv.firebasestorage.app",
+  messagingSenderId: "455316064834",
+  appId: "1:455316064834:web:1dc1033265b58a6c82bbdb",
+  measurementId: "G-S7LVGRXCCZ"
   };
+  // Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
   
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  const personList = document.getElementById('person-list');
+  const studentList = document.getElementById('student-list');
 
   // Real-time update from Firestore
-  db.collection('person').orderBy('name').onSnapshot((snapshot) => {
-    personList.innerHTML = '';
+  db.collection('students').orderBy('name').onSnapshot((snapshot) => {
+    studentList.innerHTML = '';
     snapshot.forEach((doc) => {
-      const person = doc.data();
+      const student = doc.data();
 
       const li = document.createElement('li');
       const span = document.createElement('span');
-      span.textContent = person.name;
-      if (person.turnedIn) {
+      span.textContent = student.name;
+      if (student.turnedIn) {
         span.classList.add('highlight'); 
       }
       const button = document.createElement('button');
-      button.textContent = person.turnedIn ? "Remove Highlight" : "Mark as Turned In";
+      button.textContent = student.turnedIn ? "Remove Highlight" : "Mark as Turned In";
       button.onclick = () => {
-        db.collection('person').doc(doc.id).update({ turnedIn: !person.turnedIn });
+        db.collection('students').doc(doc.id).update({ turnedIn: !student.turnedIn });
       };
       li.prepend(button);
       li.prepend(span);
-      personList.prepend(li);
+      studentList.prepend(li);
     });
   });
 </script>
