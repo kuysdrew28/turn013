@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Turned in Student List</title>
+<title>Turned in person List</title>
 <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js"></script>
 <style>
@@ -19,8 +19,8 @@
 <body>
 
 <h1>Persons</h1>
-<ul id="student-list">
-  <!-- Student items will appear here -->
+<ul id="person-list">
+  <!-- person items will appear here -->
 </ul>
 
 <script>
@@ -41,14 +41,14 @@
 
   // Real-time update from Firestore
   db.collection('person').orderBy('name').onSnapshot((snapshot) => {
-    studentList.innerHTML = '';
+    personList.innerHTML = '';
     snapshot.forEach((doc) => {
-      const student = doc.data();
+      const person = doc.data();
 
       const li = document.createElement('li');
       const span = document.createElement('span');
       span.textContent = person.name;
-      if (student.turnedIn) {
+      if (person.turnedIn) {
         span.classList.add('highlight'); 
       }
       const button = document.createElement('button');
@@ -58,7 +58,7 @@
       };
       li.prepend(button);
       li.prepend(span);
-      studentList.prepend(li);
+      personList.prepend(li);
     });
   });
 </script>
