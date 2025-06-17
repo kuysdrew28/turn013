@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Turned in Students</title>
+<title>Turned in Student List</title>
+<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js"></script>
 <style>
   .highlight {
     background-color: yellow;
@@ -17,34 +19,46 @@
 <body>
 
 <h1>Class List</h1>
-
 <ul id="student-list">
-  <li>
-    <span>Juan Dela Cruz</span>
-    <button>Mark as Turned In</button>
-  </li>
-  <li>
-    <span>Maria Santos</span>
-    <button>Mark as Turned In</button>
-  </li>
-  <li>
-    <span>Pedro Reyes</span>
-    <button>Mark as Turned In</button>
-  </li>
-  <li>
-    <span>Ana Lopez</span>
-    <button>Mark as Turned In</button>
-  </li>
+  <!-- Student items will appear here -->
 </ul>
 
 <script>
-  document.querySelectorAll("#student-list button").forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const student = btn.previousElementSibling;
-      student.classList.toggle('highlight');
-      btn.innerText = student.classList.contains('highlight') 
-        ? 'TURNED IN'
-        : 'Mark as Turned In';
+  // Your firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+    authDomain: "virac-tsv.firebaseapp.com",
+    projectId: "virac-tsv",
+    storageBucket: "virac-tsv.firebasestorage.app",
+    messagingSenderId: "455316064834",
+    appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+  };
+  
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const studentList = document.getElementById('person-list');
+
+  // Real-time update from Firestore
+  db.collection('person').orderBy('name').onSnapshot((snapshot) => {
+    studentList.innerHTML = '';
+    snapshot.forEach((doc) => {
+      const student = doc.data();
+
+      const li = document.createElement('li');
+      const span = document.createElement('span');
+      span.textContent = student.name;
+      if (student.turnedIn) {
+        span.classList.add('highlight'); 
+      }
+      const button = document.createElement('button');
+      button.textContent = student.turnedIn ? "Remove Highlight" : "Mark as Turned In";
+      button.onclick = () => {
+        db.collection('students').doc(doc.id).update({ turnedIn: !student.turnedIn });
+      };
+      li.prepend(button);
+      li.prepend(span);
+      studentList.prepend(li);
     });
   });
 </script>
