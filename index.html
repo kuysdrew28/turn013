@@ -37,7 +37,7 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  const studentList = document.getElementById('person-list');
+  const personList = document.getElementById('person-list');
 
   // Real-time update from Firestore
   db.collection('person').orderBy('name').onSnapshot((snapshot) => {
@@ -47,14 +47,14 @@
 
       const li = document.createElement('li');
       const span = document.createElement('span');
-      span.textContent = student.name;
+      span.textContent = person.name;
       if (student.turnedIn) {
         span.classList.add('highlight'); 
       }
       const button = document.createElement('button');
-      button.textContent = student.turnedIn ? "Remove Highlight" : "Mark as Turned In";
+      button.textContent = person.turnedIn ? "Remove Highlight" : "Mark as Turned In";
       button.onclick = () => {
-        db.collection('students').doc(doc.id).update({ turnedIn: !student.turnedIn });
+        db.collection('person').doc(doc.id).update({ turnedIn: !person.turnedIn });
       };
       li.prepend(button);
       li.prepend(span);
