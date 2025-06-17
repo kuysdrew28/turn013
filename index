@@ -1,16 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Personnel Logbook</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<meta charset="UTF-8">
+<title>Turned in Students</title>
+<style>
+  .highlight {
+    background-color: yellow;
+    transition: background-color 0.5s ease;
+    padding: 5px;
+    display: inline-block;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Personnel Logbook</h2>
-    <div id="personnel-list"></div>
-  </div>
-  <script src="app.js"></script>
+
+<h1>Class List</h1>
+
+<ul id="student-list">
+  <li>
+    <span>Juan Dela Cruz</span>
+    <button>Mark as Turned In</button>
+  </li>
+  <li>
+    <span>Maria Santos</span>
+    <button>Mark as Turned In</button>
+  </li>
+  <li>
+    <span>Pedro Reyes</span>
+    <button>Mark as Turned In</button>
+  </li>
+  <li>
+    <span>Ana Lopez</span>
+    <button>Mark as Turned In</button>
+  </li>
+</ul>
+
+<script>
+  document.querySelectorAll("#student-list button").forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const student = btn.previousElementSibling;
+      student.classList.toggle('highlight');
+      btn.innerText = student.classList.contains('highlight') 
+        ? 'TURNED IN'
+        : 'Mark as Turned In';
+    });
+  });
+</script>
+
 </body>
 </html>
