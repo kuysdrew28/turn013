@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel - Attendance Summary</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      color: #f6a000;
+    }
+
+    select {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f6a000;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .action-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #f6a000;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #d98c00;
+}
+
+      footer {
+      background: url('footer.jpg') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 50px;
+      position: relative;
+    }
+
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+
+    footer * { position: relative; z-index: 1; }
+    footer img { width: 160px; margin-bottom: 10px; }
+
+       .header-top {
+      display: flex;
+      height: 10px;
+    }
+    .header-top div { flex: 1; }
+    .green { background-color: #28a745; }
+    .white { background-color: #ffffff; }
+    .red { background-color: #dc3545; }
+
+    header {
+      background-color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #f6a000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .logo img { width: 160px; max-width: 100%; }
+    .nav { display: flex; gap: 15px; }
+    .nav a {
+      font-weight: bold;
+      font-size: 16px;
+      padding: 10px 16px;
+      text-decoration: none;
+      color: #333;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .nav a.active,
+    .nav a:hover {
+      background-color: #f6a000;
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+      <header>
+    <div class="header-container">
+      <div class="logo">
+        <img src="tsv_logo.png" alt="TSV Logo">
+      </div>
+      <nav class="nav">
+        <a href="home.html">Home</a>
+        <a href="index.html">Suguan</a>
+        <a href="announcement.html">Annoucement</a>
+        <a href="activities.html">Activties</a>
+         <a href="user.html">My Schedule</a>
+        <a href="login.html"class="active">Admin</a>
+      </nav>
+    </div>
+  </header>
+        <div class="button-container" style="text-align: center; margin: 20px 0;">
+    <a href="assign.html" class="action-button">Manage Users</a>
+    <a href="status.html" class="action-button">TSV Status</a>
+  </div>
+  <h1>Attendance Summary - Admin Panel</h1>
+
+  <label for="weekSelect" style="text-align: center; display: block;">Select Week:</label>
+  <select id="weekSelect">
+    <option value="wk25">Week 25</option>
+    <option value="wk26">Week 26</option>
+    <option value="wk27">Week 27</option>
+  </select>
+
+  <table id="attendanceTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Pagtanggap</th>
+        <th>Pagtupad</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Records will be shown here -->
+    </tbody>
+  </table>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const weekSelect = document.getElementById("weekSelect");
+    const tableBody = document.getElementById("attendanceTable").getElementsByTagName("tbody")[0];
+
+    function loadAttendanceData(collectionName) {
+      tableBody.innerHTML = "<tr><td colspan='5'>Loading...</td></tr>";
+
+      db.collection(collectionName).get()
+        .then((querySnapshot) => {
+          tableBody.innerHTML = "";
+
+          if (querySnapshot.empty) {
+            tableBody.innerHTML = "<tr><td colspan='5'>No records found for " + collectionName + ".</td></tr>";
+            return;
+          }
+
+ querySnapshot.forEach((doc) => {
+  const name = doc.id;
+  const data = doc.data();
+
+  const row = tableBody.insertRow();
+  row.insertCell(0).textContent = name;
+  row.insertCell(1).textContent = data.date || "N/A";
+
+  // Show checkmark if time exists
+  row.insertCell(2).textContent = data.timeIn ? "✔️" : "";
+  row.insertCell(3).textContent = data.timeOut ? "✔️" : "";
+
+  // Determine status
+  let statusSymbol = "";
+  const hasIn = !!data.timeIn;
+  const hasOut = !!data.timeOut;
+
+  if (hasIn && hasOut) {
+    statusSymbol = "✔️";
+  } else if (hasIn || hasOut) {
+    statusSymbol = "⚠️";
+  } else {
+    // If no timeIn and timeOut, check if week is over
+    const today = new Date();
+    const entryDate = new Date(data.date);
+    if (entryDate < today) {
+      statusSymbol = "❌"; // Missed attendance
+    } else {
+      statusSymbol = ""; // Future schedule or pending
+    }
+  }
+
+  row.insertCell(4).textContent = statusSymbol;
+});
+
+        })
+        .catch((error) => {
+          console.error("Error retrieving attendance:", error);
+          tableBody.innerHTML = "<tr><td colspan='5'>Error loading data.</td></tr>";
+        });
+    }
+
+    loadAttendanceData(weekSelect.value);
+    weekSelect.addEventListener("change", () => {
+      loadAttendanceData(weekSelect.value);
+    });
+  </script>
+</body>
+</html>
