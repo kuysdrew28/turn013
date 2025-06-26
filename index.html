@@ -597,6 +597,25 @@
     input.addEventListener('keydown', handleKeyDown);
   });
 }
+// Disable "Pagtupad" if 2-hour grace period after scheduled time has passed
+document.querySelectorAll('ul.student-session').forEach(session => {
+  const sessionTimeStr = session.getAttribute('data-time');
+  if (!sessionTimeStr) return;
+
+  const sessionTime = new Date(sessionTimeStr);
+  const now = new Date();
+
+  // Add 2 hours (in milliseconds)
+  const gracePeriodEnd = new Date(sessionTime.getTime() + 2 * 60 * 60 * 1000);
+
+  if (now > gracePeriodEnd) {
+    session.querySelectorAll('.time-out-btn').forEach(btn => {
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btn.title = "Pagtupad disabled: grace period ended";
+    });
+  }
+});
 
      function showWarning() {
       alert("⚠️ Warning: Hindi ka nakapagtanggap!");
