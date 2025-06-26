@@ -14,13 +14,14 @@
       text-align: center;
       color: #f6a000;
     }
-        h2 {
+
+    h2 {
       text-align: center;
       color: #000000;
     }
 
     p {
-        text-align: center;
+      text-align: center;
     }
 
     #panel {
@@ -85,7 +86,6 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
-    /* Modal Styling */
     .modal {
       display: none;
       position: fixed;
@@ -124,11 +124,83 @@
       background-color: #d98f00;
     }
 
+        footer {
+      background: url('footer.jpg') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 50px;
+      position: relative;
+    }
 
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+
+    footer * { position: relative; z-index: 1; }
+    footer img { width: 160px; margin-bottom: 10px; }
+
+        .header-top {
+      display: flex;
+      height: 10px;
+    }
+    .header-top div { flex: 1; }
+    .green { background-color: #28a745; }
+    .white { background-color: #ffffff; }
+    .red { background-color: #dc3545; }
+
+    header {
+      background-color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #f6a000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .logo img { width: 160px; max-width: 100%; }
+    .nav { display: flex; gap: 15px; }
+    .nav a {
+      font-weight: bold;
+      font-size: 16px;
+      padding: 10px 16px;
+      text-decoration: none;
+      color: #333;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .nav a.active,
+    .nav a:hover {
+      background-color: #f6a000;
+      color: white;
+    }
   </style>
 </head>
 <body>
-
+    <div class="header-container">
+      <div class="logo">
+        <img src="tsv_logo.png" alt="TSV Logo">
+      </div>
+      <nav class="nav">
+        <a href="home1.html">Home</a>
+        <a href="announcement1.html">Annoucement</a>
+        <a href="activities1.html">Activties</a>
+        <a href="user.html" class="active">My Schedule</a>
+        <a href="login.html">Admin</a>
+      </nav>
+    </div>
   <h1>My Schedule</h1>
   <h2>Technical Support for VideoStreaming</h2>
   <p>Locale of Virac</p>
@@ -136,6 +208,7 @@
     <label for="user">Select Your Name:</label>
     <select id="user">
       <option value="">-- Choose Name --</option>
+      <!-- names here (same as before) -->
       <option value="MARK ANDREW ERISARE">MARK ANDREW ERISARE</option>
       <option value="MIKEE GIANAN">MIKEE GIANAN</option>
       <option value="NHADYIE ROSE OLINO">NHADYIE ROSE OLINO</option>
@@ -158,7 +231,7 @@
       <option value="ROGER TUGAY">ROGER TUGAY</option>
       <option value="SHIRRA MAE FERNANDEZ">SHIRRA MAE FERNANDEZ</option>
       <option value="EFREN EVANGELISTA">EFREN EVANGELISTA</option>
-       <option value="VENDRED EVANGELISTA">VENDRED EVANGELISTA</option>
+      <option value="VENDRED EVANGELISTA">VENDRED EVANGELISTA</option>
     </select>
 
     <label for="pin">Enter PIN:</label>
@@ -171,10 +244,10 @@
       <span><strong>Pagtanggap:</strong> <span id="inStatus">---</span></span>
       <span><strong>Pagtupad:</strong> <span id="outStatus">---</span></span>
       <div id="message"></div>
+      <button id="timeInBtn">Pagtanggap</button>
     </div>
   </div>
 
-  <!-- Modal -->
   <div id="popupModal" class="modal">
     <div class="modal-content">
       <p id="popupMessage">This is a message</p>
@@ -182,12 +255,11 @@
     </div>
   </div>
 
-  <!-- Alert Sound -->
   <audio id="alertSound" src="alert.mp3" preload="auto"></audio>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
@@ -202,33 +274,34 @@
     const db = getFirestore(app);
 
     const studentPasswords = {
-    "ALLAN HARLEM KRYSLER CADABA" : "01021013",
-"ANDREA ESTRELLADO":"0124",
-"ANJENETTE MANALO":"0214",
-"AVEENA MARIE BAUSIN":"0901",
-"DARLENE TURADO":"0128",
-"EDGAR PANTI II":"0507",
-"FIONA MAGDARAOG" : "0903",
-"FRANCIS MAGDAONG" : "0211",
-"JHESTER OGALESCO" : "1113" ,
-"KATHLYN TATING" : "01021013",
-"KEITH MANUEL ESPARAS" : "0607",
-"MARK ANDREW ERISARE" : "0328",
-"MICAH FERNANDEZ" : "01021013",
-"MIKEE GIANAN" : "0416",
-"NHADYIE ROSE OLINO" : "0704",
-"RENZO MANUEL ESPARAS" : "0712",
-"ROI VINCENT TUGAY" : "0714",
-"RONNIE BERINO" : "0719",
-"ROGER TUGAY" : "0323",
-"SHIRRA MAE FERNANDEZ" : "0903",
-"VENDRED EVANGELISTA" : "01021013",
-"EFREN EVANGELISTA" : "01021013", 
+      "ALLAN HARLEM KRYSLER CADABA" : "1234",
+      "ANDREA ESTRELLADO":"0124",
+      "ANJENETTE MANALO":"0214",
+      "AVEENA MARIE BAUSIN":"0901",
+      "DARLENE TURADO":"0128",
+      "EDGAR PANTI II":"0507",
+      "FIONA MAGDARAOG" : "0903",
+      "FRANCIS MAGDAONG" : "0211",
+      "JHESTER OGALESCO" : "1113",
+      "KATHLYN TATING" : "01021013",
+      "KEITH MANUEL ESPARAS" : "0607",
+      "MARK ANDREW ERISARE" : "0328",
+      "MICAH FERNANDEZ" : "01021013",
+      "MIKEE GIANAN" : "0416",
+      "NHADYIE ROSE OLINO" : "0704",
+      "RENZO MANUEL ESPARAS" : "0712",
+      "ROI VINCENT TUGAY" : "0714",
+      "RONNIE BERINO" : "0719",
+      "ROGER TUGAY" : "0323",
+      "SHIRRA MAE FERNANDEZ" : "0903",
+      "VENDRED EVANGELISTA" : "01021013",
+      "EFREN EVANGELISTA" : "01021013"
     };
 
     const userSelect = document.getElementById("user");
     const pinInput = document.getElementById("pin");
     const loadBtn = document.getElementById("loadBtn");
+    const timeInBtn = document.getElementById("timeInBtn");
     const userInfo = document.getElementById("userInfo");
 
     const scheduleTime = document.getElementById("scheduleTime");
@@ -236,7 +309,6 @@
     const outStatus = document.getElementById("outStatus");
     const message = document.getElementById("message");
 
-    // Modal and Sound
     const modal = document.getElementById("popupModal");
     const popupMessage = document.getElementById("popupMessage");
     const closeModalBtn = document.getElementById("closeModalBtn");
@@ -291,6 +363,40 @@
 
         inStatus.textContent = data.timeIn ? "✔️" : "❌";
         outStatus.textContent = data.timeOut ? "✔️" : "❌";
+      } else {
+        showModal("No schedule found for this name.");
+      }
+    });
+
+    timeInBtn.addEventListener("click", async () => {
+      const name = userSelect.value.trim();
+      const enteredPin = pinInput.value.trim();
+
+      if (!name || !enteredPin) {
+        showModal("Please select name and enter PIN.");
+        return;
+      }
+
+      if (studentPasswords[name] !== enteredPin) {
+        showModal("Incorrect PIN!");
+        return;
+      }
+
+      const docRef = doc(db, "wk26", name);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const now = new Date();
+        const updateData = { timeIn: now };
+
+        try {
+          await setDoc(docRef, updateData, { merge: true });
+          showModal("Recorded successfully.");
+          inStatus.textContent = "✔️";
+        } catch (error) {
+          showModal("Failed to");
+          console.error("Error:", error);
+        }
       } else {
         showModal("No schedule found for this name.");
       }
