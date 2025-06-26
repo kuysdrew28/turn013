@@ -148,7 +148,7 @@
     <a href="assign.html" class="action-button">Manage Users</a>
     <a href="status.html" class="action-button">TSV Status</a>
   </div>
-  <h1>Attendance Summary - Admin Panel</h1>
+  <h1>Attendance Summary</h1>
 <!-- Controls on Top -->
 <div style="display: flex; justify-content: center; gap: 40px; align-items: center; padding: 20px 0;">
   <div>
@@ -236,24 +236,30 @@
   row.insertCell(3).textContent = data.timeOut ? "✔️" : "";
 
   // Determine status
-  let statusSymbol = "";
-  const hasIn = !!data.timeIn;
-  const hasOut = !!data.timeOut;
+let statusSymbol = "";
+const hasOut = !!data.timeOut;
+const now = new Date();
 
-  if (hasIn && hasOut) {
-    statusSymbol = "✔️";
-  } else if (hasIn || hasOut) {
-    statusSymbol = "⚠️";
+// Parse the assigned date and time (assuming format: "YYYY-MM-DD HH:mm" or similar)
+let scheduleDateTime;
+if (data.assignedTime) {
+  // Expected format: "2024-06-30 06:00" or similar
+  scheduleDateTime = new Date(data.assignedTime.replace(" ", "T"));
+} else if (data.date) {
+  scheduleDateTime = new Date(data.date); // fallback if only date is given
+}
+
+if (hasOut) {
+  statusSymbol = "✔️";
+} else {
+  if (scheduleDateTime && now > scheduleDateTime) {
+    statusSymbol = "❌"; // Missed time out after schedule
   } else {
-    // If no timeIn and timeOut, check if week is over
-    const today = new Date();
-    const entryDate = new Date(data.date);
-    if (entryDate < today) {
-      statusSymbol = "❌"; // Missed attendance
-    } else {
-      statusSymbol = ""; // Future schedule or pending
-    }
+    statusSymbol = "⚠️"; // Schedule not yet passed
   }
+}
+
+
 
   row.insertCell(4).textContent = statusSymbol;
 });
