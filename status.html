@@ -149,29 +149,33 @@
     <a href="status.html" class="action-button">TSV Status</a>
   </div>
   <h1>Attendance Summary - Admin Panel</h1>
-
-<div style="display: flex; justify-content: center; gap: 30px; align-items: center; margin: 30px 0;">
+<!-- Controls on Top -->
+<div style="display: flex; justify-content: center; gap: 40px; align-items: center; padding: 20px 0;">
   <div>
     <label for="weekSelect" style="display: block; text-align: left;">Select Week:</label>
     <select id="weekSelect" style="padding: 10px; font-size: 16px; width: 200px;">
-      <option value="">-- Select a week --</option>
       <option value="wk25">Week 25</option>
       <option value="wk26">Week 26</option>
       <option value="wk27">Week 27</option>
-        <option value="wk28">Week 28</option>
-          <option value="wk29">Week 29</option>
+      <option value="wk28">Week 28</option>
+      <option value="wk29">Week 29</option>
     </select>
   </div>
 
   <div>
     <label for="pageSelect" style="display: block; text-align: left;">Go to Suguan:</label>
-    <select id="pageSelect" style="padding: 10px; font-size: 16px; width: 200px;">
-      <option value="">-- Select a week --</option>
-      <option value=suguan/wk26.html">wk26</option>
-      <option value="suguan/wk27.html">wk27</option>
-      <option value="suguan/wk28.html">wk28</option>
-      <option value="suguan/wk29.html">wk29</option>
-    </select>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <select id="pageSelect" style="padding: 10px; font-size: 16px; width: 200px;">
+        <option value="">-- Select a week --</option>
+        <option value="wk26">wk26</option>
+        <option value="wk27">wk27</option>
+        <option value="wk28">wk28</option>
+        <option value="wk29">wk29</option>
+      </select>
+      <button id="goButton" style="padding: 10px 20px; font-size: 16px; background-color: #f6a000; color: white; border: none; border-radius: 6px; cursor: pointer;">
+        Go
+      </button>
+    </div>
   </div>
 </div>
 
@@ -266,12 +270,16 @@
       loadAttendanceData(weekSelect.value);
     });
 
-      document.getElementById("pageSelect").addEventListener("change", function() {
-    const selectedPage = this.value;
-    if (selectedPage) {
-      window.location.href = selectedPage;
-    }
-  });
+document.getElementById("goButton").addEventListener("click", function() {
+  const selectedWeek = document.getElementById("pageSelect").value;
+  if (selectedWeek) {
+    window.location.href = `suguan/${selectedWeek}.html`;
+  } else {
+    alert("Please select a week to go.");
+  }
+});
+
+
   </script>
 </body>
 </html>
