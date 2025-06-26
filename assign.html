@@ -153,7 +153,7 @@
     <a href="status.html" class="action-button">TSV Status</a>
   </div>
 
-  <h1>Admin Panel - Assign Schedule</h1>
+  <h1>Assign Schedule</h1>
 
   <form id="assignForm">
     <label for="name">Select Name:</label>
@@ -189,13 +189,13 @@
     <select id="slot" required>
       <option value="">-- Choose a Schedule --</option>
       <!-- Use upcoming fixed future dates to generate valid ISO strings -->
-      <option value="2025-06-25T06:00:00">Wednesday 6:00 AM</option>
-      <option value="2025-06-26T06:00:00">Thursday 6:00 AM</option>
-      <option value="2025-06-26T19:00:00">Thursday 7:00 PM</option>
-      <option value="2025-06-28T06:00:00">Saturday 6:00 AM</option>
-      <option value="2025-06-29T06:00:00">Sunday 6:00 AM</option>
-      <option value="2025-06-29T08:00:00">PNK Sunday 8:00 AM</option>
-      <option value="2025-06-29T10:00:00">Sunday 10:00 AM</option>
+      <option value="2025-07-02T06:00:00">Wednesday 6:00 AM</option>
+      <option value="2025-07-03T06:00:00">Thursday 6:00 AM</option>
+      <option value="2025-07-03T19:00:00">Thursday 7:00 PM</option>
+      <option value="2025-07-05T06:00:00">Saturday 6:00 AM</option>
+      <option value="2025-07-06T06:00:00">Sunday 6:00 AM</option>
+      <option value="2025-07-06T08:00:00">PNK Sunday 8:00 AM</option>
+      <option value="2025-07-06T10:00:00">Sunday 10:00 AM</option>
     </select>
 
     <button type="submit">Assign</button>
@@ -230,7 +230,7 @@
       if (!name || !datetime) return;
 
       try {
-        await setDoc(doc(db, 'wk26', name), {
+        await setDoc(doc(db, 'wk27', name), {
           assignedTime: datetime
         }, { merge: true });
 
