@@ -206,7 +206,8 @@
 
   const row = tableBody.insertRow();
   row.insertCell(0).textContent = name;
-  row.insertCell(1).textContent = data.date || "N/A";
+ row.insertCell(1).textContent = data.assignedTime || data.date || "N/A";
+
 
   // Show checkmark if time exists
   row.insertCell(2).textContent = data.timeIn ? "✔️" : "";
