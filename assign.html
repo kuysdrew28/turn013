@@ -112,6 +112,24 @@
       background-color: #f6a000;
       color: white;
     }
+
+    .action-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #f6a000;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #d98c00;
+}
+
   </style>
 </head>
 <body>
@@ -130,6 +148,11 @@
       </nav>
     </div>
   </header>
+    <div class="button-container" style="text-align: center; margin: 20px 0;">
+    <a href="assign.html" class="action-button">Manage Users</a>
+    <a href="status.html" class="action-button">TSV Status</a>
+  </div>
+
   <h1>Admin Panel - Assign Schedule</h1>
 
   <form id="assignForm">
