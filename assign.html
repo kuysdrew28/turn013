@@ -74,6 +74,19 @@
       display: flex;
       height: 10px;
     }
+
+        .action-button-active {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #ff7301;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
     .header-top div { flex: 1; }
     .green { background-color: #28a745; }
     .white { background-color: #ffffff; }
@@ -149,7 +162,7 @@
     </div>
   </header>
     <div class="button-container" style="text-align: center; margin: 20px 0;">
-    <a href="assign.html" class="action-button">Manage Users</a>
+    <a href="assign.html" class="action-button-active">Manage Users</a>
     <a href="status.html" class="action-button">TSV Status</a>
   </div>
 
@@ -171,7 +184,7 @@
       <option value="EDGAR PANTI II">EDGAR PANTI II</option>
       <option value="FIONA MAGDARAOG">FIONA MAGDARAOG</option>
       <option value="FRANCIS MAGDAONG">FRANCIS MAGDAONG</option>
-      <option value="FRANCIS MAGDAONG">FRANCIS MAGDAONG</option>
+      <option value="EFREN EVANGELISTA">EFREN EVANGELISTA</option>
       <option value="KATHLYN TATING">KATHLYN TATING</option>
       <option value="KEITH MANUEL ESPARAS">KEITH MANUEL ESPARAS</option>
       <option value="RENZO MANUEL ESPARAS">RENZO MANUEL ESPARAS</option>
@@ -190,7 +203,7 @@
       <option value="">-- Choose a Schedule --</option>
       <!-- Use upcoming fixed future dates to generate valid ISO strings -->
       <option value="2025-07-02T06:00:00">Wednesday 6:00 AM</option>
-      <option value="2025-06-03T06:00:00">Thursday 6:00 AM</option>
+      <option value="2025-07-03T06:00:00">Thursday 6:00 AM</option>
       <option value="2025-07-03T19:00:00">Thursday 7:00 PM</option>
       <option value="2025-07-05T06:00:00">Saturday 6:00 AM</option>
       <option value="2025-07-06T06:00:00">Sunday 6:00 AM</option>
@@ -230,7 +243,7 @@
       if (!name || !datetime) return;
 
       try {
-        await setDoc(doc(db, 'wk26', name), {
+        await setDoc(doc(db, 'wk27', name), {
           assignedTime: datetime
         }, { merge: true });
 
