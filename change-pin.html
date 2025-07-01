@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Change Password - Virac TSV</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f5;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Change Your Password</h2>
+  <form id="changePasswordForm">
+    <label for="currentPassword">Current Password:</label>
+    <input type="password" id="currentPassword" required />
+
+    <label for="newPassword">New Password:</label>
+    <input type="password" id="newPassword" required minlength="6" />
+
+    <label for="confirmPassword">Confirm New Password:</label>
+    <input type="password" id="confirmPassword" required />
+
+    <button type="submit">Update Password</button>
+    <div class="message" id="message"></div>
+  </form>
+</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+    authDomain: "virac-tsv.firebaseapp.com",
+    projectId: "virac-tsv",
+    storageBucket: "virac-tsv.appspot.com",
+    messagingSenderId: "455316064834",
+    appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      alert("You must be logged in to update your password.");
+      window.location.href = "login.html"; // redirect if not logged in
+    }
+  });
+
+  document.getElementById("changePasswordForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const currentPassword = document.getElementById("currentPassword").value.trim();
+    const newPassword = document.getElementById("newPassword").value.trim();
+    const confirmPassword = document.getElementById("confirmPassword").value.trim();
+    const message = document.getElementById("message");
+
+    message.textContent = "Processing...";
+
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error("You must be logged in to update your password.");
+
+      const docRef = db.collection("users").doc(user.uid);
+      const docSnap = await docRef.get();
+
+      if (!docSnap.exists) {
+        throw new Error("User record not found.");
+      }
+
+      const storedPassword = docSnap.data().password || "";
+
+      if (storedPassword !== currentPassword) {
+        message.textContent = "Current password is incorrect.";
+        message.style.color = "red";
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        message.textContent = "New passwords do not match.";
+        message.style.color = "red";
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        message.textContent = "New password must be at least 6 characters.";
+        message.style.color = "red";
+        return;
+      }
+
+      await docRef.update({ password: newPassword });
+
+      message.textContent = "Password updated successfully!";
+      message.style.color = "green";
+    } catch (err) {
+      message.textContent = "Error: " + err.message;
+      message.style.color = "red";
+      console.error(err);
+    }
+  });
+</script>
+</body>
+</html>
