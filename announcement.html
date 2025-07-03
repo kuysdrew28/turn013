@@ -2,26 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>TSV Virac - Home</title>
+  <title>TSV Virac - Announcement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background-color: #f4f4f4;
+    * {
+      box-sizing: border-box;
     }
 
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    /* Header Strip */
     .header-top {
       display: flex;
       height: 10px;
     }
 
-    .header-top div {
-      flex: 1;
-    }
-
-    .green { background-color: #28a745; }
-    .white { background-color: #ffffff; }
-    .red { background-color: #dc3545; }
+    .green { background-color: #28a745; flex: 1; }
+    .white { background-color: #ffffff; flex: 1; }
+    .red { background-color: #dc3545; flex: 1; }
 
     header {
       background-color: #fff;
@@ -29,31 +34,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid #f6a000;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
+      border-bottom: 3px solid #f6a000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
     .logo img {
-      width: 160px;
-      max-width: 100%;
+      height: 40px;
     }
 
     .nav {
       display: flex;
       gap: 15px;
+      align-items: center;
     }
 
     .nav a {
-      font-weight: bold;
-      font-size: 16px;
-      padding: 10px 16px;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 8px 14px;
       text-decoration: none;
       color: #333;
       border-radius: 6px;
@@ -66,123 +64,118 @@
       color: white;
     }
 
+    .nav button {
+      padding: 8px 14px;
+      background-color: #c62828;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
     .banner {
-      width: 100%;
-      height: 300px;
-      background: url('cover.jpg') no-repeat center center/cover;
+      background: url('cover.jpg') center center/cover no-repeat;
+      height: 280px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 36px;
+      font-size: 34px;
       font-weight: bold;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      color: white;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
     }
 
-    .video-container {
-      display: flex;
-      justify-content: center;
-      margin: 40px 0;
-    }
-
-    .video-container iframe {
-      width: 90%;
-      max-width: 800px;
-      height: 450px;
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .main-content {
-      padding: 40px 20px;
+    .container {
       max-width: 900px;
-      margin: auto;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
 
-    .main-content h2 {
+    .container h1, .container h4, .container h6 {
       color: #f6a000;
+    }
+
+    .container ul {
+      padding-left: 20px;
+    }
+
+    .announcement {
+      margin-top: 20px;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .highlight {
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    footer {
+      background: url('footer.jpg') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+    }
+
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+
+    footer * {
+      position: relative;
+      z-index: 1;
+    }
+
+    footer img {
+      width: 150px;
       margin-bottom: 10px;
     }
 
-    .main-content p {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-footer {
-  background: url('footer.jpg') no-repeat center center/cover;
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-  margin-top: 50px;
-  position: relative;
-}
-
-footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
-  z-index: 0;
-}
-
-footer * {
-  position: relative;
-  z-index: 1;
-}
-
-footer img {
-  width: 160px;
-  margin-bottom: 10px;
-}
-
-    
-    .announcement {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-    
     @media (max-width: 768px) {
       .banner {
         font-size: 24px;
-        height: 200px;
+        height: 180px;
         text-align: center;
-        padding: 0 20px;
       }
 
-      .main-content {
+      .container {
         padding: 20px;
       }
 
-      .video-container iframe {
-        height: 250px;
+      .nav {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .nav a, .nav button {
+        font-size: 14px;
+        padding: 6px 10px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Tricolor Header Strip -->
   <div class="header-top">
     <div class="green"></div>
     <div class="white"></div>
     <div class="red"></div>
   </div>
 
-<header>
-  <div class="header-container" style="display: flex; justify-content: space-between; align-items: center;">
-    
-    <!-- Logo -->
+  <header>
     <div class="logo">
-      <img src="tsv_logo.png" alt="TSV Logo" style="height: 40px;">
+      <img src="tsv_logo.png" alt="TSV Logo">
     </div>
-
-    <!-- Navigation Links -->
-    <nav class="nav" style="display: flex; gap: 15px; align-items: center;">
+    <nav class="nav">
       <a href="home.html" >Home</a>
       <a href="index.html">Suguan</a>
        <a href="chatbot.html">Chat Bot</a>
@@ -190,85 +183,46 @@ footer img {
       <a href="activities.html">Activities</a>
       <a href="user.html">My Schedule</a>
       <a href="login1.html">Admin</a>
-      <!-- 🔒 Logout Button -->
-      <button onclick="logout()" style="padding: 6px 14px; background-color: #c62828; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Logout
-      </button>
+      <button onclick="logout()">Logout</button>
     </nav>
+  </header>
 
+  <div class="banner">
+    ✨ ANNOUNCEMENT ✨
   </div>
-</header>
 
- 
-  <div class="container mt-5">
-    <div class="alert alert-warning border-2 border-start border-warning shadow-sm" role="alert">
-      <h4 class="alert-heading"><i class="bi bi-shield-lock-fill"></i> Website Update: Login Now Required</h4>
-      <p class="mb-2">To strengthen the security of our system, we have implemented a new login requirement. All users must now authenticate before accessing the website. This ensures that only authorized users can view schedules and use attendance features.</p>
-      
-      <hr>
+  <div class="container">
+    <h4><i class="bi bi-shield-lock-fill"></i> Website Update: Login Now Required</h4>
+    <p>To strengthen the security of our system, all users must now log in before accessing the TSV Virac platform.</p>
 
-      <h6>🔐 What's New?</h6>
+    <h6>🔐 What's New?</h6>
+    <ul>
+      <li><strong>Login Required</strong>: Only registered users can access the system.</li>
+      <li><strong>Enhanced Security</strong>: Your data is now safer and protected.</li>
+      <li><strong>PIN Verification</strong>: Your personal PIN remains active for attendance.</li>
+    </ul>
+
+    <h6>📌 What You Need To Do:</h6>
+    <ul>
+      <li>Log in using your registered credentials.</li>
+      <li>Contact the admin if you don’t have an account.</li>
+      <li>Keep your account details secure.</li>
+    </ul>
+
+    <hr>
+
+    <h4>🤖 Introducing the New TSV AI Chatbot</h4>
+    <div class="announcement">
+      We’re thrilled to announce the launch of the new <span class="highlight">AI Chatbot</span> on the TSV Virac platform!<br><br>
+      This intelligent assistant can help you with:
       <ul>
-        <li><strong>Login Required</strong>: Only registered users with valid credentials can access the system.</li>
-        <li><strong>Enhanced Security</strong>: Protects user data and blocks unauthorized access.</li>
-        <li><strong>PIN Verification</strong>: Your personalized PIN code remains active for attendance.</li>
+        <li>Viewing and managing your schedule</li>
+        <li>Understanding PIN setup</li>
+        <li>General platform guidance</li>
       </ul>
-
-      <h6>📌 What You Need To Do:</h6>
-      <ul>
-        <li>Use your registered username and password to log in.</li>
-        <li>If you don’t have an account, please contact the system administrator.</li>
-        <li>Keep your credentials private and secure.</li>
-      </ul>
-
-      <p class="mb-0">We appreciate your cooperation in keeping the platform safe and secure. Thank you!</p>
- 
+      Available 24/7 to serve you better. Experience a smarter way to get help—right from your dashboard!
     </div>
   </div>
-  <div class="announcement">
-      We are excited to announce a new update to the <strong>TSV Virac</strong> system!<br><br>
-      🎉 The system now includes a brand new feature: the <span class="highlight">AI Chatbot</span>!<br><br>
-      This chatbot is designed to assist you with any questions or concerns related to <strong>TSV Virac</strong> — including schedules, attendance, PIN setup, and more. It's available 24/7 to help guide you through our platform and services.<br><br>
-      We hope this new feature improves your experience and helps you stay better connected with TSV.
-    </div>
-
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
-    authDomain: "virac-tsv.firebaseapp.com",
-    projectId: "virac-tsv",
-    storageBucket: "virac-tsv.appspot.com",
-    messagingSenderId: "455316064834",
-    appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  // ✅ Redirect user to login if not logged in
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      alert("You must be logged in to access this page.");
-      window.location.href = "login.html";
-    }
-  });
-
-    function logout() {
-    firebase.auth().signOut()
-      .then(() => {
-        alert("You have been logged out.");
-        window.location.href = "login.html";
-      })
-      .catch((error) => {
-        alert("Logout failed: " + error.message);
-      });
-  }
-</script>
-
 
   <footer>
     <img src="tsv_logo.png" alt="TSV Footer Logo">
@@ -276,5 +230,39 @@ footer img {
     <p>&copy; 2025 SecretDev. All rights reserved.</p>
   </footer>
 
+  <!-- Firebase Auth Check -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        alert("You must be logged in to access this page.");
+        window.location.href = "auth.html";
+      }
+    });
+
+    function logout() {
+      firebase.auth().signOut()
+        .then(() => {
+          alert("You have been logged out.");
+          window.location.href = "auth.html";
+        })
+        .catch((error) => {
+          alert("Logout failed: " + error.message);
+        });
+    }
+  </script>
 </body>
 </html>
