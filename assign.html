@@ -202,13 +202,13 @@
     <select id="slot" required>
       <option value="">-- Choose a Schedule --</option>
       <!-- Use upcoming fixed future dates to generate valid ISO strings -->
-      <option value="2025-07-02T06:00:00">Wednesday 6:00 AM</option>
-      <option value="2025-07-03T06:00:00">Thursday 6:00 AM</option>
-      <option value="2025-07-03T19:00:00">Thursday 7:00 PM</option>
-      <option value="2025-07-05T06:00:00">Saturday 6:00 AM</option>
-      <option value="2025-07-06T06:00:00">Sunday 6:00 AM</option>
-      <option value="2025-07-06T08:00:00">PNK Sunday 8:00 AM</option>
-      <option value="2025-07-06T10:00:00">Sunday 10:00 AM</option>
+      <option value="2025-07-09 T06:00:00">Wednesday 6:00 AM</option>
+      <option value="2025-07-10 T06:00:00">Thursday 6:00 AM</option>
+      <option value="2025-07-10 T19:00:00">Thursday 7:00 PM</option>
+      <option value="2025-07-12 T06:00:00">Saturday 6:00 AM</option>
+      <option value="2025-07-13 T06:00:00">Sunday 6:00 AM</option>
+      <option value="2025-07-13 T08:00:00">PNK Sunday 8:00 AM</option>
+      <option value="2025-07-13 T10:00:00">Sunday 10:00 AM</option>
     </select>
 
     <button type="submit">Assign</button>
@@ -244,7 +244,7 @@
       if (!name || !datetime) return;
 
       try {
-        await setDoc(doc(db, 'wk27', name), {
+        await setDoc(doc(db, 'wk28', name), {
           assignedTime: datetime
         }, { merge: true });
 
