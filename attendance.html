@@ -29,47 +29,52 @@
     margin: 4px 0;
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 12px;
-    margin-top: 20px;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+.name-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 12px 0;
+  margin: 0 auto;
+  max-width: 100%;
+  scroll-snap-type: x mandatory;
+}
 
-  .grid-item {
-    background: white;
-    padding: 12px 15px;
-    border-left: 5px solid #f6a000;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-  }
+.name-card {
+  flex: 0 0 auto;
+  min-width: 160px;
+  background: white;
+  padding: 12px 15px;
+  border-left: 5px solid #f6a000;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  scroll-snap-align: start;
+  text-align: center;
+}
 
-  .grid-item:hover {
-    background: #fff7e6;
-    transform: scale(1.01);
-  }
+.name-card:hover {
+  background: #fff7e6;
+  transform: scale(1.01);
+}
 
-  .grid-item.submitted {
-    background: #e6ffe6;
-    color: #888;
-    cursor: not-allowed;
-    border-left: 5px solid #28a745;
-  }
+.name-card.submitted {
+  background: #e6ffe6;
+  color: #888;
+  cursor: not-allowed;
+  border-left: 5px solid #28a745;
+}
 
-  .grid-item.submitted-confirmed {
-    background: #d4edda !important;
-    border-left: 5px solid #28a745 !important;
-    color: #155724 !important;
-    animation: fadeIn 0.6s ease;
-  }
+.name-card.submitted-confirmed {
+  background: #d4edda !important;
+  border-left: 5px solid #28a745 !important;
+  color: #155724 !important;
+  animation: fadeIn 0.6s ease;
+}
+
 
   @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
@@ -226,7 +231,8 @@
   <p>July 12, 2025</p>
   <p>Click your name and enter your PIN to confirm attendance.</p>
 
-  <div class="grid" id="nameList"></div>
+<div class="name-row" id="nameList"></div>
+
   <p class="status" id="statusMessage"></p>
 
   <footer>
@@ -348,28 +354,17 @@
   db.collection("seminar_participants").orderBy("name").get().then(partSnap => {
     partSnap.forEach(doc => {
       const data = doc.data();
-      const div = document.createElement("div");
-      div.classList.add("grid-item");
-      const alreadySubmitted = submittedNames.has(data.name);
-      div.textContent = alreadySubmitted ? `✅ ${data.name}` : data.name;
+     const div = document.createElement("div");
+div.classList.add("name-card");
+...
+document.querySelectorAll(".name-card").forEach(item => {
+  if (item.textContent === selectedName) {
+    item.textContent = `✅ ${selectedName}`;
+    item.className = "name-card submitted submitted-confirmed";
+    item.onclick = null;
+  }
+});
 
-      if (alreadySubmitted) {
-        div.classList.add("submitted");
-      } else {
-        div.onclick = () => {
-          isWithinAllowedLocation(isAllowed => {
-            if (isAllowed) {
-              selectedName = data.name;
-              selectedPin = data.pin;
-              selectedId = doc.id;
-              modalTitle.textContent = `🔒 Enter PIN for ${selectedName}`;
-              pinInput.value = "";
-              modal.style.display = "block";
-              pinInput.focus();
-            } else {
-              showToast("🚫 You must be within the event location to confirm attendance.");
-            }
-          });
         };
       }
 
