@@ -179,6 +179,18 @@
         align-items: flex-start;
       }
     }
+
+    @keyframes blink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+.msg.bot em {
+  font-style: italic;
+  animation: blink 1s infinite;
+}
+
   </style>
 </head>
 <body>
@@ -260,9 +272,9 @@
   "why is computer running slow": "Your computer may be running slow due to too many background programs, low disk space, or malware. Try closing unnecessary applications, running a disk cleanup, restarting the system, or scanning for viruses.",
 
   "computer won't turn on": "Check if the power cable is properly connected. If using a laptop, ensure the battery is charged. Try pressing and holding the power button for 10 seconds. If there's no response, it may be a hardware issue.",
-"no power": "Check if the power cable is properly connected. If using a laptop, ensure the battery is charged. Try pressing and holding the power button for 10 seconds. If there's no response, it may be a hardware issue.",
-   
+
   "why is screen black after turning on": "This may be caused by a loose display cable, faulty graphics card, or corrupted startup. Try restarting the computer and checking all cables. If using a monitor, ensure it’s turned on and set to the correct input source.",
+  "black screen": "This may be caused by a loose display cable, faulty graphics card, or corrupted startup. Try restarting the computer and checking all cables. If using a monitor, ensure it’s turned on and set to the correct input source.",
 
   "why is computer overheating": "Overheating may be due to dust buildup, blocked air vents, or overuse. Clean the fans, keep the computer in a well-ventilated area, and avoid running heavy programs for long periods without cooling.",
 
@@ -276,51 +288,52 @@
 
   "how to fix blue screen error": "A blue screen (BSOD) often indicates a critical system error. Note the error code shown. Restart your computer and ensure all drivers are up to date. If it repeats, run a system scan or check for faulty hardware.",
 
-  "how to remove virus from my computer": "Install or update your antivirus software and run a full system scan. Quarantine or remove detected threats. Avoid downloading from unknown websites and regularly update your system for security patches.",
+  "how to remove virus from computer": "Install or update your antivirus software and run a full system scan. Quarantine or remove detected threats. Avoid downloading from unknown websites and regularly update your system for security patches.",
 
   "my computer won’t boot to windows": "Try restarting and pressing F8 or Shift+F8 to access Safe Mode. If it works, troubleshoot from there. You may also use a Windows installation USB or recovery disk to repair startup issues.",
 
   "why is my computer making loud noises": "Loud noises usually come from fans or hard drives. Clean dust from the fans and ensure they are not blocked. If the noise persists, it may indicate a failing fan or mechanical hard drive issue.",
   "need more help": "If you're still experiencing issues, feel free to reach out to the TSV Group Chat for direct assistance. A fellow TSV member will guide you through troubleshooting steps or escalate the problem if needed.",
-   "help": "If you're experiencing problem? Feel free to reach out to the TSV Group Chat for direct assistance. A fellow TSV member will guide you through troubleshooting steps or escalate the problem if needed.",
-      "no display" : "Ensure HDMI/VGA/DisplayPort cables are securely connected to both the monitor and PC. Try unplugging and replugging.",
-     "no sound": "Please check if the microphone or audio source is properly connected and not muted. Also, verify the audio input settings in your streaming software. If you are using a mixer, make sure the levels are set correctly and cables are secure.",
-    "TSV leader": "Due to the data privacy act of 2012. Please ask the resident minister regarding this matter.",
-    "TSV district coordinator": "Due to the data privacy act of 2012. Please ask the resident minister regarding this matter.",
-    "TSV assistant leader": "Due to the data privacy act of 2012. Please ask the resident minister regarding this matter.",
-   "schedule": "The Schedule of Worship Services are: <br> During <b>Midweek: </b> <br> Wednesday 6AM, <br> Thursday 6AM (ENGLISH), <br>Thursday 7PM (With Sign Language) <br>During <b> Weekend </b><br>Saturday 6AM, <br>Sunday 6AM (ENGLISH), <br>PNK 8AM and <br>10AM (With Sign Language). <br><br>Check with the bulletin board in Locale of Virac for the updated schedule",
- "responsibilities of tsv": "TSV members are responsible for setting up, monitoring, and maintaining video-streaming equipment during worship services. They ensure smooth transmission of audio and video, troubleshoot technical issues, and support the overall broadcast process of the Church events.",
-   "equipment": "TSV uses various equipment including cameras, video switchers, audio mixers, streaming devices, computers, and monitors to ensure the quality and reliability of video-streamed worship services.",
-   "dress code": "TSV members are expected to wear proper white and black dress for women and polo for men, usually in accordance with the guidelines set by the local congregation or leadership, especially during worship services.",
-  "camera not working": "Make sure the camera is properly connected to the computer. Check if the device is recognized by your streaming software. Try restarting the software or using a different USB port if necessary.",
-"error" : "If you're experiencing problem? Feel free to reach out to the TSV Group Chat for direct assistance. A fellow TSV member will guide you through troubleshooting steps or escalate the problem if needed.",
-
-"turn on" : "   Sound System Operation Guide <br>Turning On <br>Plug the two extension cords into the socket. <br>White extension cord: powers the organ, computer, and mixer. Also powers three UPS units for the computer and organ. <br>Turn on the three UPS units — two small and one large.</li>  <br> Gray wire: powers the sound system.<br>Turn on the sound system: <br>Start with <strong>switch number 1</strong>.</li> <br>Wait for the three green LEDs at the top of the sound system to light up.<br>Then turn on <strong>switch number 2.<br>Turning Off</h2><br>If the computer was used:<br>Shut down the computer unit.<br>Then turn off the three UPS units.<br>For the sound system:<br>Turn off switch number 2 first.<br>Then turn off switch number 1.<br>Unplug both extension cords.<br>Turn off the lights in the TSV room.<br>Ensure nothing is left turned on.</li>",
-"turn off" : "   Sound System Operation Guide <br>Turning On <br>Plug the two extension cords into the socket. <br>White extension cord: powers the organ, computer, and mixer. Also powers three UPS units for the computer and organ. <br>Turn on the three UPS units — two small and one large.</li>  <br> Gray wire: powers the sound system.<br>Turn on the sound system: <br>Start with <strong>switch number 1</strong>.</li> <br>Wait for the three green LEDs at the top of the sound system to light up.<br>Then turn on <strong>switch number 2.<br>Turning Off</h2><br>If the computer was used:<br>Shut down the computer unit.<br>Then turn off the three UPS units.<br>For the sound system:<br>Turn off switch number 2 first.<br>Then turn off switch number 1.<br>Unplug both extension cords.<br>Turn off the lights in the TSV room.<br>Ensure nothing is left turned on.</li>"
-
+   "help": "If you're experiencing problem? Feel free to reach out to the TSV Group Chat for direct assistance. A fellow TSV member will guide you through troubleshooting steps or escalate the problem if needed."
   
 };
 
-  function chat() {
-    const input = document.getElementById("userInput").value.trim().toLowerCase();
-    if (!input) return;
+function chat() {
+  const input = document.getElementById("userInput").value.trim().toLowerCase();
+  if (!input) return;
 
-    appendMessage("You", input, "user");
+  appendMessage("You", input, "user");
+  document.getElementById("userInput").value = "";
 
+  // Show typing indicator
+  const typingDiv = document.createElement("div");
+  typingDiv.className = "msg bot";
+  typingDiv.id = "typingIndicator";
+  typingDiv.innerHTML = `<strong>TSV Bot:</strong> <em>typing...</em>`;
+  document.getElementById("chatbox").appendChild(typingDiv);
+  document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
+
+  // Delay and then show response
+  setTimeout(() => {
     const response = getBotReply(input);
+
+    // Remove typing indicator
+    const typing = document.getElementById("typingIndicator");
+    if (typing) typing.remove();
+
     appendMessage("TSV Bot", response, "bot");
+  }, 1000); // Delay for 1 second
+}
 
-    document.getElementById("userInput").value = "";
-  }
-
-  function getBotReply(input) {
-    for (const key in botResponses) {
-      if (input.includes(key)) {
-        return botResponses[key];
-      }
+function getBotReply(input) {
+  for (const key in botResponses) {
+    if (input.includes(key)) {
+      return botResponses[key];
     }
-    return "I'm sorry, I don't have an answer to that. Please ask about TSV related only.";
   }
+  return "I'm sorry, I don't have an answer to that. Please ask about TSV related only.";
+}
+
 
   function appendMessage(sender, text, cls) {
     const div = document.createElement("div");
