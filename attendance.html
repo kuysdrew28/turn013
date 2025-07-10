@@ -3,195 +3,213 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TSV Virac - Seminar Attendance</title>
+  <title>TSV Virac - Panata Attendance</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9f9f9;
-      padding: 40px 20px;
-      margin: 0;
-      text-align: center;
-    }
+  <!-- ... keep your existing <head> up to style block, then replace with: -->
 
-    h1 {
-      color: #ff7a06;
-      margin-bottom: 10px;
-    }
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9f9f9;
+    padding: 20px 10px;
+    margin: 0;
+    text-align: center;
+  }
 
-    p {
-      color: #555;
-      font-size: 16px;
-    }
+  h1 {
+    color: #ff7a06;
+    margin-bottom: 8px;
+    font-size: 22px;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 16px;
-      margin-top: 30px;
-      max-width: 1000px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+  p {
+    color: #555;
+    font-size: 14px;
+    margin: 4px 0;
+  }
 
-    .grid-item {
-      background: white;
-      padding: 15px 20px;
-      border-left: 6px solid #f6a000;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      font-size: 18px;
-      font-weight: 500;
-      color: #333;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-    }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-    .grid-item:hover {
-      background: #fff7e6;
-      transform: scale(1.02);
-    }
+  .grid-item {
+    background: white;
+    padding: 12px 15px;
+    border-left: 5px solid #f6a000;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
 
-    .grid-item.submitted {
-      background: #e6ffe6;
-      color: #888;
-      cursor: not-allowed;
-      border-left: 6px solid #28a745;
-    }
+  .grid-item:hover {
+    background: #fff7e6;
+    transform: scale(1.01);
+  }
 
-    .grid-item.submitted-confirmed {
-      background: #d4edda !important;
-      border-left: 6px solid #28a745 !important;
-      color: #155724 !important;
-      animation: fadeIn 0.6s ease;
-    }
+  .grid-item.submitted {
+    background: #e6ffe6;
+    color: #888;
+    cursor: not-allowed;
+    border-left: 5px solid #28a745;
+  }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
+  .grid-item.submitted-confirmed {
+    background: #d4edda !important;
+    border-left: 5px solid #28a745 !important;
+    color: #155724 !important;
+    animation: fadeIn 0.6s ease;
+  }
 
-    .status {
-      margin-top: 25px;
-      font-weight: bold;
-      font-size: 16px;
-    }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
 
-    .success { color: #28a745; }
-    .error { color: #d9534f; }
+  .status {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 15px;
+  }
 
-    .header-top {
-      display: flex;
-      height: 10px;
-      width: 100%;
-    }
+  .success { color: #28a745; }
+  .error { color: #d9534f; }
 
-    .header-top div { flex: 1; }
-    .green { background-color: #28a745; }
-    .white { background-color: #ffffff; }
-    .red { background-color: #dc3545; }
+  .header-top {
+    display: flex;
+    height: 8px;
+    width: 100%;
+  }
 
-    .logo img { height: 60px; }
+  .header-top div { flex: 1; }
+  .green { background-color: #28a745; }
+  .white { background-color: #ffffff; }
+  .red { background-color: #dc3545; }
 
-    footer {
-      margin-top: 40px;
-      font-size: 14px;
-      color: #888;
-    }
+  .logo img {
+    height: 50px;
+    margin: 10px auto;
+  }
 
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.4);
-    }
+  footer {
+    margin-top: 30px;
+    font-size: 13px;
+    color: #888;
+  }
 
-    .modal-content {
-      background-color: white;
-      margin: 15% auto;
-      padding: 30px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+  }
 
-    .modal-content input {
-      padding: 10px;
-      width: 80%;
-      margin: 15px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
+  .modal-content {
+    background-color: white;
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  }
 
-    .modal-content button {
-      padding: 10px 20px;
-      margin: 5px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+  .modal-content input {
+    padding: 10px;
+    width: 80%;
+    margin: 12px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    text-align: center;
+  }
 
-    #submitPinBtn {
-      background-color: #28a745;
-      color: white;
-    }
+  .modal-content button {
+    padding: 10px 16px;
+    margin: 8px 4px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 40%;
+  }
 
-    #cancelBtn {
-      background-color: #ccc;
-    }
+  #submitPinBtn {
+    background-color: #28a745;
+    color: white;
+  }
 
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #28a745;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      opacity: 0;
-      transition: opacity 0.4s ease, bottom 0.4s ease;
-      z-index: 1000;
-    }
+  #cancelBtn {
+    background-color: #ccc;
+  }
 
-    .toast.show {
-      opacity: 1;
-      bottom: 50px;
-    }
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #28a745;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.4s ease, bottom 0.4s ease;
+    z-index: 1000;
+    font-size: 14px;
+  }
 
-    .keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 10px auto 20px auto;
-  width: 80%;
-}
+  .toast.show {
+    opacity: 1;
+    bottom: 40px;
+  }
 
-.key {
-  padding: 15px;
-  font-size: 18px;
-  border: none;
-  border-radius: 6px;
-  background: #f1f1f1;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 10px auto 20px auto;
+    width: 90%;
+  }
 
-.key:hover {
-  background: #ddd;
-}
+  .key {
+    padding: 14px;
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    background: #f1f1f1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
 
-  </style>
+  .key:hover {
+    background: #ddd;
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 20px; }
+    .grid-item { font-size: 15px; padding: 10px; }
+    .modal-content input { width: 90%; }
+    .modal-content button { width: 45%; font-size: 15px; }
+    .key { padding: 12px; font-size: 16px; }
+  }
+</style>
+
 </head>
 <body>
   <div class="header-top">
