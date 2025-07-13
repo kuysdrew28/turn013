@@ -367,7 +367,7 @@ submitBtn.onclick = () => {
 
   const enteredPin = pinInput.value;
   if (enteredPin === selectedPin.toString()) {
-    db.collection("attendance_0712").add({
+    db.collection("attendance_0713").add({
       name: selectedName,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
