@@ -245,7 +245,7 @@
       if (!name || !datetime) return;
 
       try {
-        await setDoc(doc(db, 'wk28', name), {
+        await setDoc(doc(db, 'wk29', name), {
           assignedTime: datetime
         }, { merge: true });
 
