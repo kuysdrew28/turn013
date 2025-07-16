@@ -16,16 +16,15 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      min-height: 100vh;
     }
 
     h2 {
       text-align: center;
       color: #333;
-      margin: 20px 0 10px;
+      margin: 20px 10px 10px;
     }
 
-    /* Header Color Strip */
     .header-top {
       display: flex;
       height: 10px;
@@ -40,7 +39,6 @@
     .white { background-color: #ffffff; }
     .red { background-color: #dc3545; }
 
-    /* Header */
     header {
       width: 100%;
       background-color: #fff;
@@ -50,15 +48,25 @@
       align-items: center;
       border-bottom: 2px solid #f6a000;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      flex-wrap: wrap;
     }
 
     .logo img {
       height: 40px;
     }
 
+    .nav-toggle {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
     .nav {
       display: flex;
-      gap: 15px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .nav a {
@@ -75,17 +83,16 @@
       color: white;
     }
 
-    /* Chatbox */
     #chatbox {
       background: #ffffff;
       border-radius: 10px;
       padding: 15px;
-      width: 100%;
+      width: 90%;
       max-width: 600px;
       height: 400px;
       overflow-y: auto;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin: 20px 0;
+      margin: 20px auto;
     }
 
     .msg {
@@ -93,20 +100,16 @@
       word-wrap: break-word;
     }
 
-    .user {
-      color: #0d6efd;
-    }
-
-    .bot {
-      color: #28a745;
-    }
+    .user { color: #0d6efd; }
+    .bot { color: #28a745; }
 
     .input-area {
       display: flex;
-      width: 100%;
+      flex-wrap: wrap;
+      width: 90%;
       max-width: 600px;
       gap: 10px;
-      margin-bottom: 30px;
+      margin: 0 auto 30px;
     }
 
     input[type="text"] {
@@ -115,6 +118,7 @@
       font-size: 16px;
       border-radius: 6px;
       border: 1px solid #ccc;
+      width: 100%;
     }
 
     button {
@@ -131,7 +135,6 @@
       background-color: #0b5ed7;
     }
 
-    /* Footer */
     footer {
       background: url('footer.jpg') no-repeat center center/cover;
       color: white;
@@ -156,41 +159,52 @@
     }
 
     footer img {
-      width: 160px;
+      width: 120px;
       margin-bottom: 10px;
     }
 
-    /* Responsive Design */
-    @media (max-width: 600px) {
-      #chatbox {
-        height: 300px;
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .nav.show {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+        color: #333;
       }
 
       .input-area {
         flex-direction: column;
+        align-items: stretch;
       }
 
       button {
         width: 100%;
       }
 
-      .nav {
-        flex-direction: column;
-        align-items: flex-start;
+      footer {
+        padding: 30px 15px;
+        font-size: 14px;
       }
     }
 
     @keyframes blink {
-  0% { opacity: 0.2; }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; }
-}
+      0% { opacity: 0.2; }
+      50% { opacity: 1; }
+      100% { opacity: 0.2; }
+    }
 
-.msg.bot em {
-  font-style: italic;
-  animation: blink 3s infinite;
-}
-
+    .msg.bot em {
+      font-style: italic;
+      animation: blink 3s infinite;
+    }
   </style>
 </head>
 <body>
@@ -205,12 +219,13 @@
     <div class="logo">
       <img src="tsv_logo.png" alt="TSV Logo">
     </div>
-    <nav class="nav">
+    <button class="nav-toggle" onclick="toggleNav()">☰</button>
+    <nav class="nav" id="navLinks">
       <a href="home.html">Home</a>
       <a href="index.html">Suguan</a>
-       <a href="panata.html" >Panata</a>
+      <a href="panata.html">Panata</a>
       <a href="chatbot.html" class="active">Chat Bot</a>
-        <a href="announcement.html">Announcement</a>
+      <a href="announcement.html">Announcement</a>
       <a href="activities.html">Activities</a>
       <a href="user.html">My Schedule</a>
       <a href="login1.html">Admin</a>
@@ -231,10 +246,17 @@
     <p><i>Version <u>2025.06.19</u></i></p>
     <p>&copy; 2025 SecretDev. All rights reserved.</p>
   </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <!-- (your original <script> section remains untouched here) -->
   <script>
+    function toggleNav() {
+      const nav = document.getElementById("navLinks");
+      nav.classList.toggle("show");
+    }
+
+
+
  const botResponses = {
     "what is tsv": "TSV stands for Technical Support for Video-Streaming, which is composed of brethren who possess technical knowledge and skills. The Iglesia Ni Cristo conducts worship services that utilize modern technology. Through this technology, brethren are able to witness the leadership of the Executive Minister even without physically going to the local congregation. With the help of modern tools, the message of the Church Administration is delivered to the brethren more efficiently and effectively.",
     "who can attend tsv": "TSV is open to everyone, especially youth members from Virac and nearby barangays.",
