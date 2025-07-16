@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>TSV Virac - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,9 +16,7 @@
       height: 10px;
     }
 
-    .header-top div {
-      flex: 1;
-    }
+    .header-top div { flex: 1; }
 
     .green { background-color: #28a745; }
     .white { background-color: #ffffff; }
@@ -26,9 +25,6 @@
     header {
       background-color: #fff;
       padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       border-bottom: 2px solid #f6a000;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
@@ -37,7 +33,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 100%;
+      flex-wrap: wrap;
     }
 
     .logo img {
@@ -45,12 +41,28 @@
       max-width: 100%;
     }
 
+    .menu-toggle {
+      display: none;
+      font-size: 18px;
+      background-color: #f6a000;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
     .nav {
       display: flex;
+      flex-wrap: wrap;
       gap: 15px;
     }
 
-    .nav a {
+    .nav a, .nav button {
       font-weight: bold;
       font-size: 16px;
       padding: 10px 16px;
@@ -58,11 +70,17 @@
       color: #333;
       border-radius: 6px;
       transition: background-color 0.3s, color 0.3s;
+      background: none;
+      border: none;
     }
 
-    .nav a.active,
-    .nav a:hover {
+    .nav a.active, .nav a:hover {
       background-color: #f6a000;
+      color: white;
+    }
+
+    .nav button {
+      background-color: #c62828;
       color: white;
     }
 
@@ -113,114 +131,115 @@
       line-height: 1.6;
     }
 
-footer {
-  background: url('footer.jpg') no-repeat center center/cover;
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-  margin-top: 50px;
-  position: relative;
-}
+    footer {
+      background: url('footer.jpg') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 50px;
+      position: relative;
+    }
 
-footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
-  z-index: 0;
-}
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
 
-footer * {
-  position: relative;
-  z-index: 1;
-}
+    footer * {
+      position: relative;
+      z-index: 1;
+    }
 
-footer img {
-  width: 160px;
-  margin-bottom: 10px;
-}
-
-    
+    footer img {
+      width: 160px;
+      margin-bottom: 10px;
+    }
 
     @media (max-width: 768px) {
-      .banner {
-        font-size: 24px;
-        height: 200px;
-        text-align: center;
-        padding: 0 20px;
+      .nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
       }
 
-      .main-content {
-        padding: 20px;
+      .nav.show {
+        display: flex;
       }
 
-      .video-container iframe {
-        height: 250px;
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav a, .nav button {
+        text-align: left;
+        width: 100%;
+        border-top: 1px solid #ccc;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Tricolor Header Strip -->
-  <div class="header-top">
-    <div class="green"></div>
-    <div class="white"></div>
-    <div class="red"></div>
-  </div>
+<div class="header-top">
+  <div class="green"></div>
+  <div class="white"></div>
+  <div class="red"></div>
+</div>
 
 <header>
-  <div class="header-container" style="display: flex; justify-content: space-between; align-items: center;">
-    
-    <!-- Logo -->
+  <div class="header-container">
     <div class="logo">
-      <img src="tsv_logo.png" alt="TSV Logo" style="height: 40px;">
+      <img src="tsv_logo.png" alt="TSV Logo">
     </div>
-
-    <!-- Navigation Links -->
-    <nav class="nav" style="display: flex; gap: 15px; align-items: center;">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav class="nav" id="navbarMenu">
       <a href="home.html" class="active">Home</a>
       <a href="index.html">Suguan</a>
-       <a href="panata.html" >Panata</a>
-       <a href="chatbot.html">Chat Bot</a>
+      <a href="panata.html">Panata</a>
+      <a href="chatbot.html">Chat Bot</a>
       <a href="announcement.html">Announcement</a>
       <a href="activities.html">Activities</a>
       <a href="user.html">My Schedule</a>
       <a href="login1.html">Admin</a>
-      <!-- 🔒 Logout Button -->
-      <button onclick="logout()" style="padding: 6px 14px; background-color: #c62828; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Logout
-      </button>
+      <button onclick="logout()">Logout</button>
     </nav>
-
   </div>
 </header>
 
+<div class="banner">
+  Welcome po, Kapatid!
+</div>
 
-  <div class="banner">
-    Welcome po, Kapatid!
-  </div>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/oIJ5zF7t9kY" allowfullscreen></iframe>
+</div>
 
-  <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/oIJ5zF7t9kY" allowfullscreen></iframe>
-  </div>
+<div class="main-content">
+  <h2>About This Website</h2>
+  <p>
+    TSV Virac is the official digital hub dedicated to the activities, announcements, and updates of the Virac Technical Support for Video Streaming Officers.
+  </p>
 
-  <div class="main-content">
-    <h2>About This Website</h2>
-    <p>
-      TSV Virac is the official digital hub dedicated to the activities, announcements, and updates of the Virac Technical Support for Video Streaming Officers. This platform is designed to streamline communication, highlight upcoming events, and foster a connected community.
-    </p>
+  <h2>What You’ll Find Here</h2>
+  <ul>
+    <li><strong>Announcements:</strong> Stay informed with the latest updates.</li>
+    <li><strong>Activities:</strong> Discover upcoming events and schedules.</li>
+    <li><strong>Suguan List:</strong> View your schedule of duties in Worship Services and special gatherings.</li>
+  </ul>
+</div>
 
-    <h2>What You’ll Find Here</h2>
-    <ul>
-      <li><strong>Announcements:</strong> Stay informed with the latest updates.</li>
-      <li><strong>Activities:</strong> Discover upcoming events and schedules.</li>
-      <li><strong>Suguan List:</strong> View your schedule of duties in Worship Services and any special gatherings.</li>
-    </ul>
-  </div>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<footer>
+  <img src="tsv_logo.png" alt="TSV Footer Logo">
+  <p><i>Version <u>2025.06.19</u></i></p>
+  <p>&copy; 2025 SecretDev. All rights reserved.</p>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
@@ -234,7 +253,6 @@ footer img {
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-  // ✅ Redirect user to login if not logged in
   auth.onAuthStateChanged((user) => {
     if (!user) {
       alert("You must be logged in to access this page.");
@@ -242,7 +260,7 @@ footer img {
     }
   });
 
-    function logout() {
+  function logout() {
     firebase.auth().signOut()
       .then(() => {
         alert("You have been logged out.");
@@ -252,14 +270,11 @@ footer img {
         alert("Logout failed: " + error.message);
       });
   }
+
+  function toggleMenu() {
+    document.getElementById("navbarMenu").classList.toggle("show");
+  }
 </script>
-
-
-  <footer>
-    <img src="tsv_logo.png" alt="TSV Footer Logo">
-    <p><i>Version <u>2025.06.19</u></i></p>
-    <p>&copy; 2025 SecretDev. All rights reserved.</p>
-  </footer>
 
 </body>
 </html>
