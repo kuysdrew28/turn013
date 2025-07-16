@@ -1,34 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>TSV Virac - My Schedule</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    .menu-button-wrapper {
+  display: none;
+  width: 100%;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 20px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background-color: #f6a000;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.menu-toggle:hover {
+  background-color: #d98f00;
+}
+
+@media (max-width: 768px) {
+  .menu-button-wrapper {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav.show {
+    display: flex;
+  }
+
+  .nav a, .nav button {
+    width: 100%;
+    text-align: left;
+    padding: 12px;
+    border-top: 1px solid #ddd;
+  }
+}
+.menu-button-wrapper {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .menu-button-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .menu-toggle {
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .nav {
+    width: 100%;
+  }
+}
+
     body {
       font-family: Arial, sans-serif;
-      padding: 30px;
+      padding: 20px;
+      margin: 0;
       background-color: #f9f9f9;
     }
 
-    h1 {
+    h1, h2, p {
       text-align: center;
-      color: #f6a000;
     }
 
-    h2 {
-      text-align: center;
-      color: #000000;
-    }
-
-    p {
-      text-align: center;
-    }
+    h1 { color: #f6a000; }
+    h2 { color: #000; }
 
     #panel {
       max-width: 500px;
       margin: auto;
       background: white;
-      padding: 25px;
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
@@ -104,27 +182,14 @@
       margin: auto;
       padding: 25px;
       border: 1px solid #888;
-      width: 80%;
+      width: 90%;
       max-width: 400px;
       border-radius: 10px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.2);
       text-align: center;
     }
 
-    .modal-content button {
-      background-color: #f6a000;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      margin-top: 15px;
-      font-size: 15px;
-    }
-
-    .modal-content button:hover {
-      background-color: #d98f00;
-    }
-
-        footer {
+    footer {
       background: url('footer.jpg') no-repeat center center/cover;
       color: white;
       text-align: center;
@@ -141,72 +206,162 @@
       z-index: 0;
     }
 
-    footer * { position: relative; z-index: 1; }
-    footer img { width: 160px; margin-bottom: 10px; }
+    footer * {
+      position: relative;
+      z-index: 1;
+    }
 
-        .header-top {
+    footer img {
+      width: 160px;
+      margin-bottom: 10px;
+    }
+
+    /* Header */
+    .header-top {
       display: flex;
       height: 10px;
     }
-    .header-top div { flex: 1; }
+
+    .header-top div {
+      flex: 1;
+    }
+
     .green { background-color: #28a745; }
     .white { background-color: #ffffff; }
     .red { background-color: #dc3545; }
 
     header {
       background-color: #fff;
-      padding: 15px 30px;
+      padding: 15px 20px;
       display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
       align-items: center;
+      justify-content: space-between;
       border-bottom: 2px solid #f6a000;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
+    .logo img {
+      width: 130px;
+      max-width: 100%;
     }
 
-    .logo img { width: 160px; max-width: 100%; }
-    .nav { display: flex; gap: 15px; }
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
     .nav a {
       font-weight: bold;
-      font-size: 16px;
-      padding: 10px 16px;
+      font-size: 15px;
+      padding: 8px 12px;
       text-decoration: none;
       color: #333;
       border-radius: 6px;
       transition: background-color 0.3s, color 0.3s;
     }
+
     .nav a.active,
     .nav a:hover {
       background-color: #f6a000;
       color: white;
     }
+
+    .nav button {
+      background-color: #c62828;
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: none;
+      color: white;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
+
+      .nav a, .nav button {
+        width: 100%;
+        text-align: center;
+      }
+
+      #panel {
+        padding: 15px;
+      }
+    }
+
+    .menu-toggle {
+  display: none;
+  font-size: 26px;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+    margin-top: 10px;
+  }
+
+  .nav.show {
+    display: flex;
+  }
+
+  .nav a, .nav button {
+    padding: 12px;
+    border-top: 1px solid #ddd;
+    width: 100%;
+    text-align: left;
+  }
+}
+
   </style>
 </head>
 <body>
-    <div class="header-container">
-      <div class="logo">
-        <img src="tsv_logo.png" alt="TSV Logo">
-      </div>
-      <nav class="nav">
-        <a href="home.html">Home</a>
-         <a href="index.html">Suguan</a>
-         <a href="panata.html">Panata</a>
-         <a href="chatbot.html">Chat Bot</a>
-        <a href="announcement.html">Annoucement</a>
-        <a href="activities.html">Activties</a>
-        <a href="user.html" class="active">My Schedule</a>
-        <a href="login1.html">Admin</a>
-      <button onclick="logout()" style="padding: 6px 14px; background-color: #c62828; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Logout
-      </button>
-      </nav>
+<header>
+  <div class="header-container">
+    <div class="logo">
+      <img src="tsv_logo.png" alt="TSV Logo">
     </div>
+    <div class="menu-button-wrapper">
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <nav class="nav" id="navbarMenu">
+      <a href="home.html">Home</a>
+      <a href="index.html">Suguan</a>
+      <a href="panata.html">Panata</a>
+      <a href="chatbot.html">Chat Bot</a>
+      <a href="announcement.html">Announcement</a>
+      <a href="activities.html">Activities</a>
+      <a href="user.html" class="active">My Schedule</a>
+      <a href="login1.html">Admin</a>
+      <button onclick="logout()">Logout</button>
+    </nav>
+  </div>
+</header>
+
   <h1>My Schedule</h1>
   <h2>Technical Support for VideoStreaming</h2>
   <p>Locale of Virac</p>
@@ -264,6 +419,11 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
 <script>
+
+function toggleMenu() {
+    const nav = document.getElementById("navbarMenu");
+    nav.classList.toggle("show");
+  }
   const firebaseConfig = {
     apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
     authDomain: "virac-tsv.firebaseapp.com",
@@ -435,6 +595,18 @@
         showModal("No schedule found for this name.");
       }
     });
+
+
+
+  
   </script>
 </body>
+<script>
+  function toggleMenu() {
+    const nav = document.getElementById("navbarMenu");
+    nav.classList.toggle("show");
+  }
+</script>
+
+       
 </html>
