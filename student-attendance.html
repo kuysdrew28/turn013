@@ -7,13 +7,13 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
-
   <style>
+    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #f9f9f9;
-      padding: 40px 20px;
       margin: 0;
+      padding: 40px 20px;
       text-align: center;
     }
     h1 { color: #ff7a06; margin-bottom: 10px; }
@@ -22,14 +22,12 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 16px;
-      margin-top: 30px;
+      margin: 30px auto 0 auto;
       max-width: 1000px;
-      margin-left: auto;
-      margin-right: auto;
     }
     .grid-item {
       background: white;
-      padding: 15px 20px;
+      padding: 15px;
       border-left: 6px solid #f6a000;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -39,10 +37,7 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
     }
-    .grid-item:hover {
-      background: #fff7e6;
-      transform: scale(1.02);
-    }
+    .grid-item:hover { background: #fff7e6; transform: scale(1.02); }
     .grid-item.submitted {
       background: #e6ffe6;
       color: #888;
@@ -53,11 +48,6 @@
       background: #d4edda !important;
       border-left: 6px solid #28a745 !important;
       color: #155724 !important;
-      animation: fadeIn 0.6s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
     }
     .status {
       margin-top: 25px;
@@ -139,7 +129,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      margin: 10px auto 20px auto;
+      margin: 10px auto;
       width: 80%;
     }
     .key {
@@ -151,9 +141,7 @@
       cursor: pointer;
       transition: background 0.2s ease;
     }
-    .key:hover {
-      background: #ddd;
-    }
+    .key:hover { background: #ddd; }
     video {
       border-radius: 6px;
       margin-top: 10px;
