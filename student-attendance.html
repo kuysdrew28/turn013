@@ -6,7 +6,6 @@
   <title>Attendance</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -170,7 +169,6 @@
 
   <footer>Powered by KuysDrew Solution • Copyright 2025</footer>
 
-  <!-- Modal -->
   <div id="pinModal" class="modal">
     <div class="modal-content">
       <h3 id="modalTitle">Enter PIN</h3>
@@ -190,7 +188,6 @@
     </div>
   </div>
 
-  <!-- Toast -->
   <div id="toast" class="toast"></div>
 
   <script>
@@ -205,7 +202,6 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    const storage = firebase.storage();
 
     const webcam = document.getElementById("webcam");
     const canvas = document.getElementById("snapshotCanvas");
@@ -221,9 +217,9 @@
     const submittedNames = new Set();
     let selectedName = "", selectedPin = "", selectedId = "";
 
-    const allowedLatitude = 13.579750;
-    const allowedLongitude = 124.219473;
-    const allowedRadiusMeters = 30;
+    const allowedLatitude = 13.57;
+    const allowedLongitude = 124.21;
+    const allowedRadiusMeters = 1500;
 
     function toRadians(deg) {
       return deg * Math.PI / 180;
@@ -244,8 +240,6 @@
             const userLat = pos.coords.latitude;
             const userLon = pos.coords.longitude;
             const d = getDistance(userLat, userLon, allowedLatitude, allowedLongitude);
-            console.log(`📍 Your location: ${userLat}, ${userLon}`);
-            console.log(`📏 Distance to target: ${d.toFixed(2)} meters`);
             callback(d <= allowedRadiusMeters);
           },
           () => {
@@ -327,40 +321,38 @@
       submitBtn.textContent = "Submitting...";
       if (pinInput.value === selectedPin.toString()) {
         const imageData = captureSnapshot();
-        const imageName = `attendance_0727/${selectedName}_${Date.now()}.jpg`;
-        const ref = storage.ref().child(imageName);
-        ref.putString(imageData, 'data_url')
-          .then(snapshot => snapshot.ref.getDownloadURL())
-          .then(url => {
-            return db.collection("attendance_0727").add({
-              name: selectedName,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-              photoURL: url
-            });
-          })
-          .then(() => {
-            showToast(`✅ ${selectedName}, attendance recorded!`);
-            document.querySelectorAll(".grid-item").forEach(item => {
-              if (item.textContent === selectedName) {
-                item.textContent = `✅ ${selectedName}`;
-                item.className = "grid-item submitted submitted-confirmed";
-                item.onclick = null;
-              }
-            });
-            modal.style.display = "none";
-            stopWebcam();
-          })
-          .catch(err => {
-            console.error(err);
-            statusMsg.textContent = "⚠️ Error recording attendance.";
-            statusMsg.className = "status error";
-            modal.style.display = "none";
-            stopWebcam();
-          })
-          .finally(() => {
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Submit";
+        const link = document.createElement("a");
+        link.href = imageData;
+        link.download = `${selectedName}_${Date.now()}.jpg`;
+        link.click();
+
+        db.collection("attendance_0727").add({
+          name: selectedName,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => {
+          showToast(`✅ ${selectedName}, attendance recorded!`);
+          document.querySelectorAll(".grid-item").forEach(item => {
+            if (item.textContent === selectedName) {
+              item.textContent = `✅ ${selectedName}`;
+              item.className = "grid-item submitted submitted-confirmed";
+              item.onclick = null;
+            }
           });
+          modal.style.display = "none";
+          stopWebcam();
+        })
+        .catch(err => {
+          console.error(err);
+          statusMsg.textContent = "⚠️ Error recording attendance.";
+          statusMsg.className = "status error";
+          modal.style.display = "none";
+          stopWebcam();
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit";
+        });
       } else {
         statusMsg.textContent = "❌ Incorrect PIN. Try again.";
         statusMsg.className = "status error";
