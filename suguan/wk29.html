@@ -135,26 +135,36 @@
       border-radius: 5px;
     }
 
-    footer {
-      background: url('footer.jpg') no-repeat center center/cover;
-      color: white;
-      text-align: center;
-      padding: 40px 20px;
-      margin-top: 50px;
-      position: relative;
-    }
+footer {
+  width: 100vw; /* Make it span the full viewport width */
+  margin-left: calc(-50vw + 50%); /* Cancel out body padding if needed */
+  background: url('footer.jpg') no-repeat center center/cover;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 50px;
+  position: relative;
+  overflow: hidden;
+}
 
-    footer::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 0;
-    }
 
-    footer * { position: relative; z-index: 1; }
-    footer img { width: 160px; margin-bottom: 10px; }
+footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
+  z-index: 0;
+}
 
+footer * {
+  position: relative;
+  z-index: 1;
+}
+
+footer img {
+  width: 160px;
+  margin-bottom: 10px;
+}
 
     .clock-container {
       position: fixed;
@@ -255,63 +265,10 @@
     button:hover {
       background-color: #c0392b;
     }
-  #location-popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #location-popup > div {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    text-align: center;
-    max-width: 400px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    animation: fadeIn 0.3s ease-in-out;
-  }
-
-  #location-popup h3 {
-    margin-bottom: 10px;
-    color: #333;
-  }
-
-  #location-popup p {
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #555;
-  }
-
-  #location-ok {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-
-  #location-ok:hover {
-    background-color: #0056b3;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-  }
   </style>
 </head>
 <body>
-   <audio id="popup-sound" src="alert.mp3" preload="auto"></audio>
+  <audio id="popup-sound" src="alert.mp3" preload="auto"></audio>
 
   <!-- Tricolor Header Strip -->
   <div class="header-top">
@@ -320,61 +277,51 @@
     <div class="red"></div>
   </div>
 
-  <div id="password-popup">
-    <div class="modal-content">
-      <h2>Enter PIN</h2>
-      <input type="password" id="input-password" placeholder="Enter your PIN" />
-      <div id="warning-message" style="display: none;"></div>
-      <div>
-        <button id="confirm-password">Confirm</button>
-        <button id="cancel-password">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Missing location popup insertion -->
-  <div id="location-popup">
+<div id="password-popup">
+  <div class="modal-content">
+    <h2>Enter PIN</h2>
+    <input type="password" id="input-password" placeholder="Enter your PIN" />
+    <div id="warning-message" style="display: none;"></div>
     <div>
-      <h3>Location Verification Required</h3>
-      <p>You must be within the TSV Room to log in.</p>
-      <button id="location-ok">OK</button>
+      <button id="confirm-password">Confirm</button>
+      <button id="cancel-password">Cancel</button>
     </div>
   </div>
-
+</div>
+  </div>
   <header>
-    <div class="header-container">
-      <div class="logo">
-        <img src="tsv_logo.png" alt="TSV Logo">
-      </div>
-      <nav class="nav">
-        <a href="home.html">Home</a>
-        <a href="index.html" class="active">Suguan</a>
-        <a href="chatbot.html">Chat Bot</a>
-        <a href="announcement.html">Announcement</a>
-        <a href="activities.html">Activties</a>
-        <a href="user.html">My Schedule</a>
-        <a href="login1.html">Admin</a>
-      </nav>
+    <div class="logo">
+      <img src="tsv_logo.png" alt="TSV Logo">
     </div>
+    <nav class="nav">
+      <a href="home.html" >Home</a>
+      <a href="index.html" class="active">Suguan</a>
+ <a href="panata.html">Panata</a>
+       <a href="chatbot.html">Chat Bot</a>
+      <a href="announcement.html" >Announcement</a>
+      <a href="activities.html">Activities</a>
+      <a href="user.html">My Schedule</a>
+      <a href="login1.html">Admin</a>
+    </nav>
   </header>
-
 
   <div class="clock-container">
     <div id="time">--:--:--</div>
     <div id="date">Loading date...</div>
   </div>
 
+
   <h1>SUGUAN NG TECHNICAL SUPPORT FOR VIDEO STREAMING</h1>
-<h4>(Week 28)</h4>
+<h4>(Week 29)</h4>
   <div class="event-info">
     <h2>MIDWEEK</h2>
-    <p>July 9-10, 2025</p>
+    <p>July 16-17, 2025</p>
   </div>
 
   <!-- Repeat this block with different session titles -->
   <ul class="student-session">
     <h3>WEDNESDAY 6:00 AM</h3>
-    <li data-name="MARK ANDREW ERISARE"><span>MARK ANDREW ERISARE</span>  <div class="button-group">
+    <li data-name="ROI VINCENT TUGAY"><span>ROI VINCENT TUGAY</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
@@ -382,19 +329,23 @@
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
       </div></li>
-    <li data-name="FRANCIS MAGDAONG"><span>FRANCIS MAGDAONG</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
-  </div></li>
-  </ul>
+
 
   <ul class="student-session">
     <h3>THURSDAY 6:00 AM   <i>(English)</i></h3>
-    <li data-name="RENZO MANUEL ESPARAS"><span>RENZO MANUEL ESPARAS</span>  <div class="button-group">
+    <li data-name="KEITH MANUEL ESPARAS"><span>KEITH MANUEL ESPARAS</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
-    <li data-name="ROI VINCENT TUGAY"><span>ROI VINCENT TUGAY</span>  <div class="button-group">
+    <li data-name="ANJENETTE MANALO"><span>ANJENETTE MANALO</span>  <div class="button-group">
+    <button class="time-in-btn">Pagtanggap</button>
+    <button class="time-out-btn">Pagtupad</button>
+  </div></li>
+
+
+  <ul class="student-session">
+    <h3>THURSDAY 7:00 PM</h3>
+    <li data-name="ROGER TUGAY"><span>ROGER TUGAY JR.</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
@@ -402,27 +353,11 @@
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
-  </ul>
 
-  <ul class="student-session">
-    <h3>THURSDAY 7:00 PM</h3>
-    <li data-name="KEITH MANUEL ESPARAS"><span>KEITH MANUEL ESPARAS</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
-  </div></li>
-    <li data-name="ANJENETTE MANALO1"><span>ANJENETTE MANALO</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
-  </div></li>
-    <li data-name="EFREN EVANGELISTA"><span>EFREN EVANGELISTA</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
-  </div></li>
-  </ul>
 
   <div class="event-info">
     <h2>WEEKEND</h2>
-    <p>July 12-13, 2025</p>
+    <p>July 19-20, 2025</p>
   </div>
 
   <ul class="student-session">
@@ -431,19 +366,26 @@
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
-    <li data-name="SHIRRA MAE FERNANDEZ"><span>SHIRRA MAE FERNANDEZ</span>  <div class="button-group">
+    <li data-name="FRANCIS MAGDAONG"><span>FRANCIS MAGDAONG</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
-    <li data-name="KATHLYN TATING"><span>KATHLYN TATING</span>  <div class="button-group">
+
+  </ul>
+  <ul class="student-session">
+    <h3>PASALAMAT NG KABATAAN 8:00 AM</h3>
+    <li data-name="MARK ANDREW ERISARE"><span>MARK ANDREW ERISARE</span>  <div class="button-group">
+    <button class="time-in-btn">Pagtanggap</button>
+    <button class="time-out-btn">Pagtupad</button>
+  </div></li>
+    <li data-name="VENDRED EVANGELISTA"><span>VENDRED EVANGELISTA<i>Reserba</i></span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
   </ul>
-
   <ul class="student-session">
     <h3>SUNDAY 6:00 AM <i>(English)</i></h3>
-    <li data-name="JHESTER OGALESCO"><span>JHESTER OGALESCO</span>  <div class="button-group">
+    <li data-name="SHIRRA MAE FERNANDEZ"><span>SHIRRA MAE FERNANDEZ</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
@@ -451,23 +393,9 @@
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
-    <li data-name="VENDRED EVANGELISTA"><span>VENDRED EVANGELISTA</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
-  </div></li>
-  </ul>
 
-  <ul class="student-session">
-    <h3>PAGSAMBA NG KABATAAN 8:00 AM</h3>
-    <li data-name="AVEENA MARIE BAUSIN"><span>AVEENA MARIE BAUSIN</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
-  </div></li>
-    <li data-name="ROI VINCENT TUGAY1"><span>ROI VINCENT TUGAY <i>Reserba</i></span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
-  </div></li>
-  </ul>
+
+
 
   <ul class="student-session">
     <h3>SUNDAY 10:00 AM</h3>
@@ -475,11 +403,7 @@
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
-    <li data-name="DARLENE TURADO"><span>DARLENE TURADO</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
-  </div></li>
-    <li data-name="AVEENA MARIE BAUSIN1"><span>AVEENA MARIE BAUSIN</span>  <div class="button-group">
+    <li data-name="AVEENA MARIE BAUSIN"><span>AVEENA MARIE BAUSIN</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
@@ -487,11 +411,6 @@
 
 
 
-  <footer>
-    <img src="tsv_logo.png" alt="TSV Footer Logo">
-          <p><i>Version <u>2025.06.19</u></i></p>
-    <p>&copy; 2025 SecretDev. All rights reserved.</p>
-  </footer>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
@@ -509,125 +428,10 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const studentPasswords = {
-"ALLAN HARLEM KRYSLER CADABA" : "1234",
-"ANDREA ESTRELLADO":"0124",
-"ANJENETTE MANALO":"0214",
-"AVEENA MARIE BAUSIN":"0901",
-"DARLENE TURADO":"0128",
-"EDGAR PANTI II":"0507",
-"FIONA MAGDARAOG" : "0903",
-"FRANCIS MAGDAONG" : "0211",
-"JHESTER OGALESCO" : "1113" ,
-"KATHLYN TATING" : "1234",
-"KEITH MANUEL ESPARAS" : "0607",
-"MARK ANDREW ERISARE" : "0328",
-"MICAH FERNANDEZ" : "1234",
-"MIKEE GIANAN" : "0416",
-"NHADYIE ROSE OLINO" : "0704",
-"RENZO MANUEL ESPARAS" : "0712",
-"ROI VINCENT TUGAY" : "0714",
-"RONNIE BERINO" : "0719",
-"ROGER TUGAY" : "0323",
-"SHIRRA MAE FERNANDEZ" : "0903",
-"VENDRED EVANGELISTA" : "1234",
-"EFREN EVANGELISTA" : "1234", 
 
 
-"ALLAN HARLEM KRYSLER CADABA1" : "1234",
-"ANDREA ESTRELLADO1":"0124",
-"ANJENETTE MANALO1":"0214",
-"AVEENA MARIE BAUSIN1":"0901",
-      "AVEENA MARIE BAUSIN2":"0901",
-"DARLENE TURADO1":"0128",
-"EDGAR PANTI II1":"0507",
-"FIONA MAGDARAOG1" : "0903",
-"FRANCIS MAGDAONG1" : "0211",
-"JHESTER OGALESCO1" : "1113" ,
-"KATHLYN TATING1" : "1234",
-"KEITH MANUEL ESPARAS1" : "0607",
-"MARK ANDREW ERISARE1" : "0328",
-"MICAH FERNANDEZ1" : "1234",
-"MIKEE GIANAN1" : "0416",
-"NHADYIE ROSE OLINO1" : "0704",
-"RENZO MANUEL ESPARAS1" : "0712",
-"ROI VINCENT TUGAY1" : "0714",
-"RONNIE BERINO1" : "0719",
-"ROGER TUGAY1" : "0323",
-"SHIRRA MAE FERNANDEZ1" : "0903",
-"VENDRED EVANGELISTA1" : "1234"
-    };
-
-  const allowedLatitude = 13.57975;    // Replace with TSV Virac actual latitude
-  const allowedLongitude = 124.21946;  // Replace with TSV Virac actual longitude
-  const allowedRadiusMeters = 100;
-
-  function toRadians(degrees) {
-    return degrees * Math.PI / 180;
-  }
-
-  function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
-    const R = 6371000; // Radius of the Earth in meters
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
-    const a = 
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
-
-  function isWithinAllowedLocation(callback) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const distance = getDistanceFromLatLonInMeters(
-            position.coords.latitude,
-            position.coords.longitude,
-            allowedLatitude,
-            allowedLongitude
-        
-          );
-          console.log("Your distance from allowed point:", distance, "meters");
-console.log("Your actual position:", position.coords.latitude, position.coords.longitude);
-
-
-          callback(distance <= allowedRadiusMeters);
-        },
-error => {
-  console.error("Geolocation error:", error);
-  alert("📍 Location access is required to confirm attendance.");
-  callback(false);
-}
-
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
-      callback(false);
-    }
-  }
-
-     function showLocationPopup() {
-      document.getElementById('location-popup').style.display = 'flex';
-      document.getElementById('location-ok').addEventListener('click', () => {
-        document.getElementById('location-popup').style.display = 'none';
-      });
-    }
-
-    // Call location check and disable all buttons if outside area
-    isWithinAllowedLocation(isAllowed => {
-      if (!isAllowed) {
-        showLocationPopup();
-        document.querySelectorAll(".time-in-btn, .time-out-btn").forEach(btn => {
-          btn.disabled = true;
-          btn.title = "Disabled: Outside allowed location";
-        });
-      }
-    });
-
-    async function loadAttendanceStatus() {
-      const snapshot = await getDocs(collection(db, 'wk28'));
+ async function loadAttendanceStatus() {
+      const snapshot = await getDocs(collection(db, 'wk29'));
       snapshot.forEach(docSnap => {
         const name = docSnap.id;
         const data = docSnap.data();
@@ -663,7 +467,7 @@ error => {
         btn.innerText = '✔️';
         btn.disabled = true;
 
-        await setDoc(doc(db, 'wk28', name), { timeIn: true }, { merge: true });
+        await setDoc(doc(db, 'wk29', name), { timeIn: true }, { merge: true });
       });
 
       li.querySelector('.time-out-btn').addEventListener('click', async () => {
@@ -675,79 +479,86 @@ error => {
         btn.innerText = '✔️';
         btn.disabled = true;
 
-        await setDoc(doc(db, 'wk28', name), { timeOut: true }, { merge: true });
+        await setDoc(doc(db, 'wk29', name), { timeOut: true }, { merge: true });
       });
     });
 
-    function showPasswordPopup(name, correctPass) {
-      return new Promise((resolve) => {
-        const popup = document.getElementById('password-popup');
-        const input = document.getElementById('input-password');
-        const warning = document.getElementById('warning-message');
-        const confirm = document.getElementById('confirm-password');
-        const cancel = document.getElementById('cancel-password');
-        input.value = '';
-        warning.style.display = 'none';
-        popup.style.display = 'flex';
+ 
+  function showPasswordPopup(name, correctPass) {
+  return new Promise((resolve) => {
+    const popup = document.getElementById('password-popup');
+    const input = document.getElementById('input-password');
+    const warning = document.getElementById('warning-message');
+    const confirm = document.getElementById('confirm-password');
+    const cancel = document.getElementById('cancel-password');
 
-        const audio = document.getElementById('popup-sound');
-        if (audio) {
-          audio.currentTime = 0;
-          audio.play().catch(e => console.warn('Audio play failed:', e));
-        }
+    input.value = '';
+    warning.style.display = 'none';
+    popup.style.display = 'flex';
 
-        function handleConfirm() {
-          const entered = input.value.trim();
-          if (entered === correctPass) {
-            popup.style.display = 'none';
-            cleanup();
-            resolve(entered);
-          } else {
-            warning.textContent = 'Incorrect PIN. Please try again.';
-            warning.style.display = 'block';
-          }
-        }
-
-        function handleCancel() {
-          popup.style.display = 'none';
-          cleanup();
-          resolve(null);
-        }
-
-        function handleKeyDown(e) {
-          if (e.key === 'Enter') handleConfirm();
-        }
-
-        function cleanup() {
-          confirm.removeEventListener('click', handleConfirm);
-          cancel.removeEventListener('click', handleCancel);
-          input.removeEventListener('keydown', handleKeyDown);
-        }
-
-        confirm.addEventListener('click', handleConfirm);
-        cancel.addEventListener('click', handleCancel);
-        input.addEventListener('keydown', handleKeyDown);
-      });
+    // 🔊 Play alert sound
+    const audio = document.getElementById('popup-sound');
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(e => console.warn('Audio play failed:', e));
     }
 
-    // Disable time-out if grace period has ended
-    document.querySelectorAll('ul.student-session').forEach(session => {
-      const sessionTimeStr = session.getAttribute('data-time');
-      if (!sessionTimeStr) return;
-
-      const sessionTime = new Date(sessionTimeStr);
-      const now = new Date();
-      const gracePeriodEnd = new Date(sessionTime.getTime() + 2 * 60 * 60 * 1000);
-
-      if (now > gracePeriodEnd) {
-        session.querySelectorAll('.time-out-btn').forEach(btn => {
-          btn.disabled = true;
-          btn.style.opacity = "0.5";
-          btn.title = "Pagtupad disabled: grace period ended";
-        });
+    function handleConfirm() {
+      const entered = input.value.trim();
+      if (entered === correctPass) {
+        popup.style.display = 'none';
+        cleanup();
+        resolve(entered);
+      } else {
+        warning.textContent = 'Incorrect PIN. Please try again.';
+        warning.style.display = 'block';
       }
-    });
+    }
 
+    function handleCancel() {
+      popup.style.display = 'none';
+      cleanup();
+      resolve(null);
+    }
+
+    function handleKeyDown(e) {
+      if (e.key === 'Enter') handleConfirm();
+    }
+
+    function cleanup() {
+      confirm.removeEventListener('click', handleConfirm);
+      cancel.removeEventListener('click', handleCancel);
+      input.removeEventListener('keydown', handleKeyDown);
+    }
+
+    confirm.addEventListener('click', handleConfirm);
+    cancel.addEventListener('click', handleCancel);
+    input.addEventListener('keydown', handleKeyDown);
+  });
+}
+// Disable "Pagtupad" if 2-hour grace period after scheduled time has passed
+document.querySelectorAll('ul.student-session').forEach(session => {
+  const sessionTimeStr = session.getAttribute('data-time');
+  if (!sessionTimeStr) return;
+
+  const sessionTime = new Date(sessionTimeStr);
+  const now = new Date();
+
+  // Add 2 hours (in milliseconds)
+  const gracePeriodEnd = new Date(sessionTime.getTime() + 2 * 60 * 60 * 1000);
+
+  if (now > gracePeriodEnd) {
+    session.querySelectorAll('.time-out-btn').forEach(btn => {
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btn.title = "Pagtupad disabled: grace period ended";
+    });
+  }
+});
+
+     function showWarning() {
+      alert("⚠️ Warning: Hindi ka nakapagtanggap!");
+    } 
     function updateClock() {
       const now = new Date();
       const time = now.toLocaleTimeString();
@@ -763,8 +574,19 @@ error => {
     }
 
     setInterval(updateClock, 1000);
+   
     updateClock();
-  </script>
+
+
   
+  </script>
+
+  
+
+  <footer>
+    <img src="tsv_logo.png" alt="TSV Footer Logo">
+          <p><i>Version <u>2025.06.19</u></i></p>
+    <p>&copy; 2025 SecretDev. All rights reserved.</p>
+  </footer>
 </body>
 </html>
