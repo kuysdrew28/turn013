@@ -15,9 +15,7 @@
       height: 10px;
     }
 
-    .header-top div {
-      flex: 1;
-    }
+    .header-top div { flex: 1; }
 
     .green { background-color: #28a745; }
     .white { background-color: #ffffff; }
@@ -26,9 +24,6 @@
     header {
       background-color: #fff;
       padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       border-bottom: 2px solid #f6a000;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
@@ -37,7 +32,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 100%;
+      flex-wrap: wrap;
     }
 
     .logo img {
@@ -45,12 +40,28 @@
       max-width: 100%;
     }
 
+    .menu-toggle {
+      display: none;
+      font-size: 18px;
+      background-color: #f6a000;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
     .nav {
       display: flex;
+      flex-wrap: wrap;
       gap: 15px;
     }
 
-    .nav a {
+    .nav a, .nav button {
       font-weight: bold;
       font-size: 16px;
       padding: 10px 16px;
@@ -58,11 +69,17 @@
       color: #333;
       border-radius: 6px;
       transition: background-color 0.3s, color 0.3s;
+      background: none;
+      border: none;
     }
 
-    .nav a.active,
-    .nav a:hover {
+    .nav a.active, .nav a:hover {
       background-color: #f6a000;
+      color: white;
+    }
+
+    .nav button {
+      background-color: #c62828;
       color: white;
     }
 
@@ -113,49 +130,53 @@
       line-height: 1.6;
     }
 
-footer {
-  background: url('footer.jpg') no-repeat center center/cover;
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-  margin-top: 50px;
-  position: relative;
-}
+    footer {
+      background: url('footer.jpg') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 50px;
+      position: relative;
+    }
 
-footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
-  z-index: 0;
-}
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
 
-footer * {
-  position: relative;
-  z-index: 1;
-}
+    footer * {
+      position: relative;
+      z-index: 1;
+    }
 
-footer img {
-  width: 160px;
-  margin-bottom: 10px;
-}
-
-    
+    footer img {
+      width: 160px;
+      margin-bottom: 10px;
+    }
 
     @media (max-width: 768px) {
-      .banner {
-        font-size: 24px;
-        height: 200px;
-        text-align: center;
-        padding: 0 20px;
+      .nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
       }
 
-      .main-content {
-        padding: 20px;
+      .nav.show {
+        display: flex;
       }
 
-      .video-container iframe {
-        height: 250px;
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav a, .nav button {
+        text-align: left;
+        width: 100%;
+        border-top: 1px solid #ccc;
       }
     }
   </style>
@@ -170,29 +191,22 @@ footer img {
   </div>
 
 <header>
-  <div class="header-container" style="display: flex; justify-content: space-between; align-items: center;">
-    
-    <!-- Logo -->
+  <div class="header-container">
     <div class="logo">
-      <img src="tsv_logo.png" alt="TSV Logo" style="height: 40px;">
+      <img src="tsv_logo.png" alt="TSV Logo">
     </div>
-
-    <!-- Navigation Links -->
-    <nav class="nav" style="display: flex; gap: 15px; align-items: center;">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav class="nav" id="navbarMenu">
       <a href="home.html" >Home</a>
       <a href="index.html">Suguan</a>
-       <a href="panata.html" >Panata</a>
-       <a href="chatbot.html">Chat Bot</a>
+      <a href="panata.html">Panata</a>
+      <a href="chatbot.html">Chat Bot</a>
       <a href="announcement.html">Announcement</a>
       <a href="activities.html" class="active">Activities</a>
       <a href="user.html">My Schedule</a>
       <a href="login1.html">Admin</a>
-      <!-- 🔒 Logout Button -->
-      <button onclick="logout()" style="padding: 6px 14px; background-color: #c62828; color: white; border: none; border-radius: 4px; cursor: pointer;">
-        Logout
-      </button>
+      <button onclick="logout()">Logout</button>
     </nav>
-
   </div>
 </header>
 
@@ -257,6 +271,9 @@ The award brought great joy to those who participated in the event and served as
       .catch((error) => {
         alert("Logout failed: " + error.message);
       });
+  }
+    function toggleMenu() {
+    document.getElementById("navbarMenu").classList.toggle("show");
   }
 </script>
 
