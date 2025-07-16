@@ -3,12 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <title>TSV Virac - Suguan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-     body {
+    html {
+      font-size: 16px;
+    }
+
+    body {
       font-family: Arial, sans-serif;
       margin: 0;
       background-color: #f4f4f4;
+      line-height: 1.5;
     }
+
     .header-top {
       display: flex;
       height: 10px;
@@ -20,7 +27,7 @@
 
     header {
       background-color: #fff;
-      padding: 15px 30px;
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -36,11 +43,11 @@
     }
 
     .logo img { width: 160px; max-width: 100%; }
-    .nav { display: flex; gap: 15px; }
+    .nav { display: flex; gap: 1rem; }
     .nav a {
       font-weight: bold;
-      font-size: 16px;
-      padding: 10px 16px;
+      font-size: 1rem;
+      padding: 0.6rem 1rem;
       text-decoration: none;
       color: #333;
       border-radius: 6px;
@@ -55,73 +62,67 @@
     h1 {
       text-align: center;
       color: #f6a000;
-      margin-top: 30px;
+      margin-top: 2rem;
+      font-size: 1.8rem;
     }
 
-     h4 {
+    h4 {
       text-align: center;
-     }
-    
-    p1 {
-      color: red;
+      font-size: 1.1rem;
     }
 
     .event-info {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 1rem;
     }
 
     ul#student-list, ul.student-session {
       list-style: none;
       padding: 0;
-      max-width: 500px;
-      margin: 20px auto;
+      max-width: 90%;
+      margin: 1.5rem auto;
     }
 
     ul.student-session h3 {
-      margin-bottom: 10px;
+      margin-bottom: 0.8rem;
+      font-size: 1.2rem;
     }
 
     #student-list li, .student-session li {
       background: #fff;
-      margin-bottom: 10px;
-      padding: 15px;
+      margin-bottom: 0.8rem;
+      padding: 1rem;
       border-radius: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
     }
 
-/* Base button style */
-#student-list button, .student-session button {
-  padding: 6px 12px;
-  border: none;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
+    #student-list button, .student-session button {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
 
-/* Time-in (Pagtanggap) = Blue */
-.time-in-btn {
-  background-color: #007bff;
-}
-.time-in-btn:hover {
-  background-color: #0056b3;
-}
+    .time-in-btn { background-color: #007bff; }
+    .time-in-btn:hover { background-color: #0056b3; }
+    .time-out-btn { background-color: #28a745; }
+    .time-out-btn:hover { background-color: #1e7e34; }
 
-/* Time-out (Pagtupad) = Green */
-.time-out-btn {
-  background-color: #28a745;
-}
-.time-out-btn:hover {
-  background-color: #1e7e34;
-}
-.button-group {
-  display: flex;
-  gap: 10px;
-}   
+    .button-group {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
     .highlight {
       background-color: rgb(50, 241, 32);
       padding: 5px 10px;
@@ -135,60 +136,50 @@
       border-radius: 5px;
     }
 
-footer {
-  width: 100vw; /* Make it span the full viewport width */
-  margin-left: calc(-50vw + 50%); /* Cancel out body padding if needed */
-  background: url('footer.jpg') no-repeat center center/cover;
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-  margin-top: 50px;
-  position: relative;
-  overflow: hidden;
-}
+    footer {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      background: url('footer.jpg') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
 
+    footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
 
-footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* dark overlay for readability */
-  z-index: 0;
-}
+    footer * {
+      position: relative;
+      z-index: 1;
+    }
 
-footer * {
-  position: relative;
-  z-index: 1;
-}
-
-footer img {
-  width: 160px;
-  margin-bottom: 10px;
-}
+    footer img {
+      width: 120px;
+      margin-bottom: 10px;
+    }
 
     .clock-container {
       position: fixed;
-      top: 130px;
-      left: 20px;
+      top: 120px;
+      left: 10px;
       background: rgba(255, 255, 255, 0.95);
-      padding: 15px 25px;
+      padding: 0.8rem 1.2rem;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       z-index: 9999;
       text-align: right;
     }
 
-    #time {
-      font-size: 30px;
-      color: #333;
-      font-weight: bold;
-    }
-
-    #date {
-      font-size: 15px;
-      color: #666;
-    }
-
+    #time { font-size: 1.4rem; color: #333; font-weight: bold; }
+    #date { font-size: 0.9rem; color: #666; }
 
     #password-popup {
       display: none;
@@ -203,32 +194,33 @@ footer img {
 
     #password-popup .modal-content {
       background: white;
-      padding: 30px 20px;
+      padding: 1.5rem;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      width: 300px;
+      width: 90%;
+      max-width: 320px;
       text-align: center;
       animation: fadeIn 0.3s ease-in-out;
     }
 
-    #password-popup h2 { margin: 0 0 15px; color: #333; }
+    #password-popup h2 { margin: 0 0 1rem; color: #333; font-size: 1.2rem; }
 
     #password-popup input {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 0.6rem;
+      margin: 0.5rem 0;
       border-radius: 6px;
       border: 1px solid #ccc;
-      font-size: 16px;
+      font-size: 1rem;
     }
 
     #password-popup button {
-      margin: 5px 10px;
-      padding: 10px 16px;
+      margin: 0.3rem 0.5rem;
+      padding: 0.6rem 1rem;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 0.9rem;
     }
 
     #confirm-password { background-color: #28a745; color: white; }
@@ -236,7 +228,7 @@ footer img {
 
     #warning-message {
       color: red;
-      font-size: 0.9em;
+      font-size: 0.9rem;
       margin-bottom: 10px;
     }
 
@@ -246,27 +238,67 @@ footer img {
     }
 
     @media (max-width: 600px) {
-      header { flex-direction: column; align-items: flex-start; padding: 15px; }
-      .nav { flex-direction: column; align-items: flex-start; width: 100%; margin-top: 10px; }
-      .nav a { width: 100%; }
-      ul#student-list, ul.student-session { width: 90%; }
+      html { font-size: 14px; }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+      }
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+      .nav a {
+        width: 100%;
+        padding: 0.5rem 0.8rem;
+      }
+      .clock-container {
+        top: auto;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        text-align: center;
+      }
+      h1 { font-size: 1.4rem; }
+      h4, h3 { font-size: 1rem; }
+      #time { font-size: 1.2rem; }
+      #date { font-size: 0.8rem; }
     }
 
-      button {
-      background-color: #e74c3c;
-      color: white;
+    .menu-toggle {
+      background: none;
       border: none;
-      padding: 15px 30px;
-      font-size: 16px;
-      border-radius: 8px;
+      font-size: 1.5rem;
       cursor: pointer;
+      display: block;
     }
 
-    button:hover {
-      background-color: #c0392b;
+    .nav {
+      display: none;
+      flex-direction: column;
+      gap: 0.8rem;
+      width: 100%;
+      margin-top: 0.8rem;
+    }
+
+    .nav.show { display: flex; }
+
+    @media (min-width: 769px) {
+      .nav {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-top: 0;
+      }
+      .menu-toggle { display: none; }
     }
   </style>
 </head>
+
+
+
 <body>
   <audio id="popup-sound" src="alert.mp3" preload="auto"></audio>
 
@@ -289,21 +321,25 @@ footer img {
   </div>
 </div>
   </div>
-  <header>
+<header>
+  <div class="header-container">
     <div class="logo">
       <img src="tsv_logo.png" alt="TSV Logo">
     </div>
-    <nav class="nav">
-      <a href="home.html" >Home</a>
+    <button id="menu-toggle" class="menu-toggle">&#9776;</button>
+    <nav class="nav" id="main-nav">
+      <a href="home.html">Home</a>
       <a href="index.html" class="active">Suguan</a>
- <a href="panata.html">Panata</a>
-       <a href="chatbot.html">Chat Bot</a>
-      <a href="announcement.html" >Announcement</a>
+      <a href="panata.html">Panata</a>
+      <a href="chatbot.html">Chat Bot</a>
+      <a href="announcement.html">Announcement</a>
       <a href="activities.html">Activities</a>
       <a href="user.html">My Schedule</a>
       <a href="login1.html">Admin</a>
     </nav>
-  </header>
+  </div>
+</header>
+
 
   <div class="clock-container">
     <div id="time">--:--:--</div>
@@ -331,7 +367,7 @@ footer img {
       </div></li>
 
 
-  <ul class="student-session">
+ 
     <h3>THURSDAY 6:00 AM   <i>(English)</i></h3>
     <li data-name="KEITH MANUEL ESPARAS"><span>KEITH MANUEL ESPARAS</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
@@ -343,7 +379,7 @@ footer img {
   </div></li>
 
 
-  <ul class="student-session">
+ 
     <h3>THURSDAY 7:00 PM</h3>
     <li data-name="ROGER TUGAY"><span>ROGER TUGAY JR.</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
@@ -360,7 +396,7 @@ footer img {
     <p>July 19-20, 2025</p>
   </div>
 
-  <ul class="student-session">
+
     <h3>SATURDAY 6:00 AM</h3>
     <li data-name="EDGAR PANTI II"><span>EDGAR PANTI II</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
@@ -395,9 +431,6 @@ footer img {
   </div></li>
 
 
-
-
-  <ul class="student-session">
     <h3>SUNDAY 10:00 AM</h3>
     <li data-name="ANDREA ESTRELLADO"><span>ANDREA ESTRELLADO</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
@@ -625,7 +658,13 @@ document.querySelectorAll('ul.student-session').forEach(session => {
     updateClock();
 
 
-  
+const menuToggle = document.getElementById("menu-toggle");
+const mainNav = document.getElementById("main-nav");
+
+menuToggle.addEventListener("click", () => {
+  mainNav.classList.toggle("show");
+});
+
   </script>
 
   
@@ -636,4 +675,5 @@ document.querySelectorAll('ul.student-session').forEach(session => {
     <p>&copy; 2025 SecretDev. All rights reserved.</p>
   </footer>
 </body>
+
 </html>
