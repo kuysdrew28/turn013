@@ -1,33 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Ensures responsiveness -->
   <title>Create Account - Virac TSV</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background-color: #eef2f5;
-      padding: 40px;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
+
     .container {
+      width: 100%;
       max-width: 400px;
-      margin: auto;
       background-color: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #333;
+    }
+
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-top: 10px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 6px;
+      font-size: 16px;
     }
+
     button {
       width: 100%;
       margin-top: 20px;
@@ -35,10 +55,15 @@
       background-color: #28a745;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 16px;
       cursor: pointer;
     }
+
+    button:hover {
+      background-color: #218838;
+    }
+
     .google-btn {
       background-color: white;
       color: #444;
@@ -46,129 +71,147 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 10px;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
     }
+
     .google-btn img {
       width: 20px;
-      margin-right: 10px;
     }
+
     .message {
       text-align: center;
       margin-top: 15px;
       font-weight: bold;
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 20px;
+      }
+
+      input, button, .google-btn {
+        font-size: 15px;
+      }
+
+      .container {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>Create Account</h2>
+  <div class="container">
+    <h2>Create Account</h2>
 
-  <input type="email" id="email" placeholder="Email" required />
-  <input type="password" id="password" placeholder="Password (min 6 chars)" required />
-  <input type="text" id="fullName" placeholder="Full Name (optional)" />
-  <button onclick="register()">Register</button>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password (min 6 chars)" required />
+    <input type="text" id="fullName" placeholder="Full Name (optional)" />
+    <button onclick="register()">Register</button>
 
-  <hr style="margin: 20px 0;">
+    <hr style="margin: 20px 0;" />
 
-  <button class="google-btn" onclick="registerWithGoogle()">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" />
-    Sign up with Google
-  </button>
+    <button class="google-btn" onclick="registerWithGoogle()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" />
+      Sign up with Google
+    </button>
 
-  <div class="message" id="message"></div>
-</div>
+    <div class="message" id="message"></div>
+  </div>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
-    authDomain: "virac-tsv.firebaseapp.com",
-    projectId: "virac-tsv",
-    storageBucket: "virac-tsv.appspot.com",
-    messagingSenderId: "455316064834",
-    appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
-  };
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-  const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const provider = new firebase.auth.GoogleAuthProvider();
 
-  async function register() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const fullName = document.getElementById("fullName").value.trim();
-    const message = document.getElementById("message");
+    async function register() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const fullName = document.getElementById("fullName").value.trim();
+      const message = document.getElementById("message");
 
-    if (password.length < 6) {
-      message.textContent = "Password must be at least 6 characters.";
-      message.style.color = "red";
-      return;
-    }
-
-    try {
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-
-      await db.collection("users").doc(user.uid).set({
-        email: email,
-        name: fullName,
-        pin: "",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      message.textContent = "Account created! Redirecting...";
-      message.style.color = "green";
-      setTimeout(() => {
-        window.location.href = "home.html";
-      }, 1500);
-    } catch (error) {
-      message.textContent = error.message;
-      message.style.color = "red";
-    }
-  }
-
-  async function registerWithGoogle() {
-    const message = document.getElementById("message");
-
-    try {
-      const result = await auth.signInWithPopup(provider);
-      const user = result.user;
-
-      // Auto-fill full name in input
-      if (user.displayName) {
-        document.getElementById("fullName").value = user.displayName;
-      }
-
-      // Check if account was created with email/password
-      const methods = await auth.fetchSignInMethodsForEmail(user.email);
-      if (methods.includes("password")) {
-        await auth.signOut();
-        message.textContent = "This email is already registered with a password. Please use email login instead.";
+      if (password.length < 6) {
+        message.textContent = "Password must be at least 6 characters.";
         message.style.color = "red";
         return;
       }
 
-      // Check if user document exists
-      const userDoc = await db.collection("users").doc(user.uid).get();
-      if (!userDoc.exists) {
+      try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
         await db.collection("users").doc(user.uid).set({
-          email: user.email,
-          name: user.displayName || "",
+          email: email,
+          name: fullName,
           pin: "",
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-      }
 
-      message.textContent = "Google account linked! Redirecting...";
-      message.style.color = "green";
-      setTimeout(() => {
-        window.location.href = "home.html";
-      }, 1500);
-    } catch (error) {
-      message.textContent = error.message;
-      message.style.color = "red";
+        message.textContent = "Account created! Redirecting...";
+        message.style.color = "green";
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 1500);
+      } catch (error) {
+        message.textContent = error.message;
+        message.style.color = "red";
+      }
     }
-  }
-</script>
+
+    async function registerWithGoogle() {
+      const message = document.getElementById("message");
+
+      try {
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
+
+        if (user.displayName) {
+          document.getElementById("fullName").value = user.displayName;
+        }
+
+        const methods = await auth.fetchSignInMethodsForEmail(user.email);
+        if (methods.includes("password")) {
+          await auth.signOut();
+          message.textContent = "This email is already registered with a password. Please use email login instead.";
+          message.style.color = "red";
+          return;
+        }
+
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        if (!userDoc.exists) {
+          await db.collection("users").doc(user.uid).set({
+            email: user.email,
+            name: user.displayName || "",
+            pin: "",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+
+        message.textContent = "Google account linked! Redirecting...";
+        message.style.color = "green";
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 1500);
+      } catch (error) {
+        message.textContent = error.message;
+        message.style.color = "red";
+      }
+    }
+  </script>
 </body>
 </html>
