@@ -261,7 +261,7 @@
     "what is tsv": "TSV stands for Technical Support for Video-Streaming, which is composed of brethren who possess technical knowledge and skills. The Iglesia Ni Cristo conducts worship services that utilize modern technology. Through this technology, brethren are able to witness the leadership of the Executive Minister even without physically going to the local congregation. With the help of modern tools, the message of the Church Administration is delivered to the brethren more efficiently and effectively.",
     "who can attend tsv": "TSV is open to everyone, especially youth members from Virac and nearby barangays.",
     "what time is tsv": "TSV services are usually held in Midweek: Wednesday 6AM, Thursday 6AM (ENGLISH), Thursday 7PM (With Sign Language) During Weekend Saturday 6AM, Sunday 6AM (ENGLISH), PNK 8AM and 10AM (With Sign Language). Check with the bulletin board in Locale of Virac for the updated schedule",
-    "schedule of worship service": "The Schedule of Worship Services are: <br> During <b>Midweek: </b> <br> Wednesday 6AM, <br> Thursday 6AM (ENGLISH), <br>Thursday 7PM (With Sign Language) <br>During <b> Weekend </b><br>Saturday 6AM, <br>Sunday 6AM (ENGLISH), <br>PNK 8AM and <br>10AM (With Sign Language). <br><br>Check with the bulletin board in Locale of Virac for the updated schedule",
+    "schedule of worship service": "The Schedule of Worship Services are:  During Midweek:   Wednesday 6AM,  Thursday 6AM (ENGLISH), Thursday 7PM (With Sign Language) During  Weekend Saturday 6AM, Sunday 6AM (ENGLISH), PNK 8AM and 10AM (With Sign Language). Check with the bulletin board in Locale of Virac for the updated schedule",
     "how to confirm attendance": "You can confirm your attendance by signing in at the TSV attendance system using your assigned PIN code.",
     "where is the venue": "The TSV room is located at Locale of Virac, Male Dressing Room",
     "who are the leaders": "Due to the data privacy act of 2012. Please ask the resident minister regarding this matter.",
@@ -338,17 +338,17 @@ function chat() {
   document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
 
   // Delay and then show response
-  setTimeout(() => {
-    const response = getBotReply(input);
+setTimeout(() => {
+  const response = getBotReply(input);
 
-    // Remove typing indicator
-    const typing = document.getElementById("typingIndicator");
-    if (typing) typing.remove();
+  // Remove typing indicator
+  const typing = document.getElementById("typingIndicator");
+  if (typing) typing.remove();
 
-    appendMessage("TSV Bot", response, "bot");
-  }, 1000); // Delay for 1 second
+  appendMessage("TSV Bot", response, "bot");
+}, 1200); // Slightly longer delay for realism
+
 }
-
 function getBotReply(input) {
   for (const key in botResponses) {
     if (input.includes(key)) {
@@ -359,13 +359,28 @@ function getBotReply(input) {
 }
 
 
-  function appendMessage(sender, text, cls) {
-    const div = document.createElement("div");
-    div.className = `msg ${cls}`;
-    div.innerHTML = `<strong>${sender}:</strong> ${text}`;
-    document.getElementById("chatbox").appendChild(div);
-    document.getElementById("chatbox").scrollTop = document.getElementById("chatbox").scrollHeight;
-  }
+function appendMessage(sender, text, cls) {
+  const chatbox = document.getElementById("chatbox");
+  const div = document.createElement("div");
+  div.className = `msg ${cls}`;
+  div.innerHTML = `<strong>${sender}:</strong> <span id="typingText"></span>`;
+  chatbox.appendChild(div);
+  chatbox.scrollTop = chatbox.scrollHeight;
+
+  // Slow typing effect
+  let i = 0;
+  const typingSpan = div.querySelector("#typingText");
+  const typingInterval = setInterval(() => {
+    if (i < text.length) {
+      typingSpan.innerHTML += text.charAt(i);
+      i++;
+      chatbox.scrollTop = chatbox.scrollHeight;
+    } else {
+      clearInterval(typingInterval);
+    }
+  }, 30); // 30ms per character (adjust speed here)
+}
+
 
   document.getElementById("userInput").addEventListener("keypress", function(e) {
     if (e.key === "Enter") chat();
