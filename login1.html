@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Important for responsiveness -->
-  <title>Login - Virac TSV</title>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures mobile responsiveness -->
+  <title>Admin Login</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,226 +11,94 @@
 
     body {
       font-family: Arial, sans-serif;
-      background-color: #eef2f5;
+      background-color: #f0f0f0;
       margin: 0;
       padding: 20px;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
     }
 
-    .container {
-      width: 100%;
-      max-width: 400px;
-      background-color: white;
-      padding: 25px;
+    .login-box {
+      background-color: #fff;
+      padding: 30px 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .login-box img {
+      width: 80px;
+      margin: 0 auto 20px;
+      display: block;
     }
 
     h2 {
-      margin-bottom: 15px;
-      font-size: 22px;
-      color: #333;
+      text-align: center;
+      color: #f6a000;
+      margin-bottom: 20px;
     }
 
-    input {
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 6px;
       font-size: 16px;
     }
 
-    .btn {
+    button {
       width: 100%;
       padding: 12px;
-      background-color: #1976D2;
-      color: white;
+      background-color: #f6a000;
       border: none;
-      border-radius: 6px;
+      color: white;
+      font-weight: bold;
       font-size: 16px;
+      border-radius: 5px;
       cursor: pointer;
       margin-top: 10px;
     }
 
-    .btn:hover {
-      background-color: #1259a7;
+    button:hover {
+      background-color: #d48b00;
     }
 
-    .google-btn {
-      background-color: white;
-      color: #444;
-      border: 1px solid #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .google-btn img {
-      width: 20px;
-    }
-
-    .message {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .link {
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    .link a {
-      color: #1976D2;
-      text-decoration: none;
-    }
-
-    .link a:hover {
-      text-decoration: underline;
-    }
-
-    .container img {
-      width: 90px;
-      margin: 0 auto 15px;
-    }
-
-    @media (max-width: 480px) {
-      h2 {
-        font-size: 20px;
-      }
-
-      input, .btn {
-        font-size: 15px;
-      }
-
-      .container {
-        padding: 20px;
-      }
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h2>Login to Virac TSV</h2>
+  <div class="login-box">
     <img src="tsv_logo.png" alt="TSV Logo" />
-
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button class="btn" onclick="loginWithEmail()">Login</button>
-
-    <div class="link">
-      <a href="#" onclick="forgotPassword()">Forgot Password?</a> |
-      <a href="register.html">Register</a>
-    </div>
-
-    <hr style="margin: 20px 0;" />
-
-    <button class="btn google-btn" onclick="loginWithGoogle()">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" />
-      Sign in with Google
-    </button>
-
-    <div class="message" id="message"></div>
+    <h2>Admin Login</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <div class="error" id="error-msg"></div>
   </div>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
-      authDomain: "virac-tsv.firebaseapp.com",
-      projectId: "virac-tsv",
-      storageBucket: "virac-tsv.appspot.com",
-      messagingSenderId: "455316064834",
-      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    function loginWithEmail() {
-      const email = document.getElementById("email").value.trim();
+    function login() {
+      const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
-      const message = document.getElementById("message");
+      const errorMsg = document.getElementById("error-msg");
 
-      if (!email || !password) {
-        message.textContent = "Please enter email and password.";
-        message.style.color = "red";
-        return;
-      }
+      const adminUser = "tsv@virac";
+      const adminPass = "discat";
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          message.textContent = "Login successful! Redirecting...";
-          message.style.color = "green";
-          setTimeout(() => {
-            window.location.href = "home1.html";
-          }, 1000);
-        })
-        .catch((error) => {
-          let errorMsg = "An error occurred. Please try again.";
-          switch (error.code) {
-            case "auth/invalid-email":
-              errorMsg = "The email address is not valid.";
-              break;
-            case "auth/user-disabled":
-              errorMsg = "This user has been disabled.";
-              break;
-            case "auth/user-not-found":
-              errorMsg = "No account found with this email.";
-              break;
-            case "auth/wrong-password":
-              errorMsg = "Incorrect email or password.";
-              break;
-            case "auth/too-many-requests":
-              errorMsg = "Too many failed attempts. Please try again later.";
-              break;
-          }
-          message.textContent = errorMsg;
-          message.style.color = "red";
-        });
-    }
-
-    function loginWithGoogle() {
-      const message = document.getElementById("message");
-
-      auth.signInWithPopup(provider)
-        .then(() => {
-          message.textContent = "Login successful! Redirecting...";
-          message.style.color = "green";
-          setTimeout(() => {
-            window.location.href = "home1.html";
-          }, 1000);
-        })
-        .catch((error) => {
-          message.textContent = error.message;
-          message.style.color = "red";
-        });
-    }
-
-    function forgotPassword() {
-      const email = prompt("Enter your email to reset your password:");
-      const message = document.getElementById("message");
-
-      if (email) {
-        auth.sendPasswordResetEmail(email)
-          .then(() => {
-            message.textContent = "Password reset email sent!";
-            message.style.color = "green";
-          })
-          .catch((error) => {
-            message.textContent = error.message;
-            message.style.color = "red";
-          });
+      if (username === adminUser && password === adminPass) {
+        window.location.href = "assign.html";
       } else {
-        message.textContent = "Email is required.";
-        message.style.color = "red";
+        errorMsg.textContent = "Invalid username or password!";
       }
     }
   </script>
