@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TSV Virac - Panata Attendance</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
@@ -77,15 +77,13 @@
       font-weight: bold;
       font-size: 16px;
     }
+
     nav {
       background-color: #ffcc00;
       padding: 10px;
       text-align: center;
     }
-    .header-top {
-      display: flex;
-      height: 20px;
-    }
+
     nav button {
       margin: 0 10px;
       padding: 10px 20px;
@@ -102,6 +100,7 @@
       background-color: #333;
       color: #fff;
     }
+
     .success { color: #28a745; }
     .error { color: #d9534f; }
 
@@ -124,7 +123,6 @@
       color: #888;
     }
 
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -163,16 +161,9 @@
       cursor: pointer;
     }
 
-    #submitPinBtn {
-      background-color: #28a745;
-      color: white;
-    }
+    #submitPinBtn { background-color: #28a745; color: white; }
+    #cancelBtn { background-color: #ccc; }
 
-    #cancelBtn {
-      background-color: #ccc;
-    }
-
-    /* Toast */
     .toast {
       position: fixed;
       bottom: 30px;
@@ -194,27 +185,26 @@
     }
 
     .keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 10px auto 20px auto;
-  width: 80%;
-}
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 10px auto 20px auto;
+      width: 80%;
+    }
 
-.key {
-  padding: 15px;
-  font-size: 18px;
-  border: none;
-  border-radius: 6px;
-  background: #f1f1f1;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
+    .key {
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 6px;
+      background: #f1f1f1;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
 
-.key:hover {
-  background: #ddd;
-}
-
+    .key:hover {
+      background: #ddd;
+    }
   </style>
 </head>
 <body>
@@ -223,14 +213,13 @@
     <div class="white"></div>
     <div class="red"></div>
   </div>
-  <!-- Navigation -->
+
   <nav>
     <button onclick="location.href='panata-attendance.html'">📋 Attendance</button>
     <button onclick="location.href='summary-attendance.html'">📊 Summary</button>
   </nav>
-  <div class="logo">
-    <img src="tsv_logo.png" alt="TSV Logo" />
-  </div>
+
+  <div class="logo"><img src="tsv_logo.png" alt="TSV Logo"/></div>
 
   <h1>TSV Virac Attendance sa Pagdalo ng Panata</h1>
   <p>July 17, 2025</p>
@@ -239,37 +228,27 @@
   <div class="grid" id="nameList"></div>
   <p class="status" id="statusMessage"></p>
 
-  <footer>
-    Powered by KuysDrew Solution • Copyright 2025
-  </footer>
+  <footer>Powered by KuysDrew Solution • Copyright 2025</footer>
 
   <!-- Modal -->
   <div id="pinModal" class="modal">
     <div class="modal-content">
-        <input type="password" id="pinInput" placeholder="Enter PIN" readonly />
-
-<div id="keypad" class="keypad">
-  <button class="key">1</button>
-  <button class="key">2</button>
-  <button class="key">3</button>
-  <button class="key">4</button>
-  <button class="key">5</button>
-  <button class="key">6</button>
-  <button class="key">7</button>
-  <button class="key">8</button>
-  <button class="key">9</button>
-  <button class="key">←</button>
-  <button class="key">0</button>
-  <button class="key">C</button>
-</div>
-
-<div>
-  <button id="submitPinBtn">Submit</button>
-  <button id="cancelBtn">Cancel</button>
-</div>
-
       <h3 id="modalTitle">Enter PIN</h3>
-      <input type="password" id="pinInput" placeholder="Enter PIN" />
+      <input type="password" id="pinInput" placeholder="Enter PIN" readonly/>
+      <div class="keypad" id="keypad">
+        <button class="key">1</button>
+        <button class="key">2</button>
+        <button class="key">3</button>
+        <button class="key">4</button>
+        <button class="key">5</button>
+        <button class="key">6</button>
+        <button class="key">7</button>
+        <button class="key">8</button>
+        <button class="key">9</button>
+        <button class="key">←</button>
+        <button class="key">0</button>
+        <button class="key">C</button>
+      </div>
       <div>
         <button id="submitPinBtn">Submit</button>
         <button id="cancelBtn">Cancel</button>
@@ -277,7 +256,6 @@
     </div>
   </div>
 
-  <!-- Toast -->
   <div id="toast" class="toast"></div>
 
   <script>
@@ -306,148 +284,154 @@
     const submitBtn = document.getElementById("submitPinBtn");
     const cancelBtn = document.getElementById("cancelBtn");
 
+    const allowedLatitude = 13.580320726663365;
+    const allowedLongitude = 124.21640368621617;
+    const allowedRadiusMeters = 100;
 
-  const allowedLatitude = 13.580320726663365;    // Replace with TSV Virac actual latitude
-  const allowedLongitude = 124.21640368621617;  // Replace with TSV Virac actual longitude
-  const allowedRadiusMeters = 100;
-
-  function toRadians(degrees) {
-    return degrees * Math.PI / 180;
-  }
-
-  function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
-    const R = 6371000; // Radius of the Earth in meters
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
-    const a = 
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
-
-  function isWithinAllowedLocation(callback) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const distance = getDistanceFromLatLonInMeters(
-            position.coords.latitude,
-            position.coords.longitude,
-            allowedLatitude,
-            allowedLongitude
-          );
-
-          callback(distance <= allowedRadiusMeters);
-        },
-        error => {
-          alert("📍 Location access is required to confirm attendance.");
-          callback(false);
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
-      callback(false);
+    function toRadians(degrees) {
+      return degrees * Math.PI / 180;
     }
-  }
 
+    function getDistanceFromLatLonInMeters(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const dLat = toRadians(lat2 - lat1);
+      const dLon = toRadians(lon2 - lon1);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
 
- db.collection("attendance_0717").get().then(attSnap => {
-  attSnap.forEach(doc => submittedNames.add(doc.data().name));
-
-  db.collection("seminar_participants").orderBy("name").get().then(partSnap => {
-    partSnap.forEach(doc => {
-      const data = doc.data();
-      const div = document.createElement("div");
-      div.classList.add("grid-item");
-      const alreadySubmitted = submittedNames.has(data.name);
-      div.textContent = alreadySubmitted ? `✅ ${data.name}` : data.name;
-
-      if (alreadySubmitted) {
-        div.classList.add("submitted");
+    function isWithinAllowedLocation(callback) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const distance = getDistanceFromLatLonInMeters(
+              position.coords.latitude,
+              position.coords.longitude,
+              allowedLatitude,
+              allowedLongitude
+            );
+            callback(distance <= allowedRadiusMeters);
+          },
+          () => {
+            alert("📍 Location access is required.");
+            callback(false);
+          }
+        );
       } else {
-        div.onclick = () => {
-          isWithinAllowedLocation(isAllowed => {
-            if (isAllowed) {
-              selectedName = data.name;
-              selectedPin = data.pin;
-              selectedId = doc.id;
-              modalTitle.textContent = `🔒 Enter PIN for ${selectedName}`;
-              pinInput.value = "";
-              modal.style.display = "block";
-              pinInput.focus();
-            } else {
-              showToast("🚫 Huwag Madaya! Kailangan mong pumunta sa Kapilya para mapabilang ka sa mga dumalo.");
+        alert("Geolocation is not supported.");
+        callback(false);
+      }
+    }
+
+    db.collection("attendance_0717").get().then(attSnap => {
+      attSnap.forEach(doc => submittedNames.add(doc.data().name));
+
+      db.collection("seminar_participants").orderBy("name").get().then(partSnap => {
+        partSnap.forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.classList.add("grid-item");
+          const alreadySubmitted = submittedNames.has(data.name);
+          div.textContent = alreadySubmitted ? `✅ ${data.name}` : data.name;
+
+          if (alreadySubmitted) {
+            div.classList.add("submitted");
+          } else {
+            div.onclick = () => {
+              const now = new Date();
+              const hour = now.getHours();
+              if (hour < 17 || hour >= 22) {
+                showToast("⏰ Attendance is closed right now. The designated time for the devotional prayer has not yet arrived.");
+                return;
+              }
+
+              isWithinAllowedLocation(isAllowed => {
+                if (isAllowed) {
+                  selectedName = data.name;
+                  selectedPin = data.pin;
+                  selectedId = doc.id;
+                  modalTitle.textContent = `🔒 Enter PIN for ${selectedName}`;
+                  pinInput.value = "";
+                  modal.style.display = "block";
+                  pinInput.focus();
+                } else {
+                  showToast("🚫 Huwag Madaya! Kailangan mong pumunta sa Kapilya.");
+                }
+              });
+            };
+          }
+
+          nameList.appendChild(div);
+        });
+      });
+    });
+
+    submitBtn.onclick = () => {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+      const enteredPin = pinInput.value;
+      if (enteredPin === selectedPin.toString()) {
+        db.collection("attendance_0717").add({
+          name: selectedName,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          showToast(`✅ ${selectedName}, attendance recorded!`);
+          document.querySelectorAll(".grid-item").forEach(item => {
+            if (item.textContent === selectedName) {
+              item.textContent = `✅ ${selectedName}`;
+              item.className = "grid-item submitted submitted-confirmed";
+              item.onclick = null;
             }
           });
-        };
+          modal.style.display = "none";
+        }).catch(error => {
+          console.error(error);
+          statusMsg.textContent = "⚠️ Error recording attendance.";
+          statusMsg.className = "status error";
+          modal.style.display = "none";
+        }).finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit";
+        });
+      } else {
+        statusMsg.textContent = "❌ Incorrect PIN. Please try again.";
+        statusMsg.className = "status error";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
       }
+    };
 
-      nameList.appendChild(div);
-    });
-  });
-});
+    cancelBtn.onclick = () => modal.style.display = "none";
+    window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
 
-// 🔒 PIN Submit button logic
-submitBtn.onclick = () => {
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Submitting...";
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
 
-  const enteredPin = pinInput.value;
-  if (enteredPin === selectedPin.toString()) {
-    db.collection("attendance_0717").add({
-      name: selectedName,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      showToast(`✅ ${selectedName}, attendance recorded!`);
-      document.querySelectorAll(".grid-item").forEach(item => {
-        if (item.textContent === selectedName) {
-          item.textContent = `✅ ${selectedName}`;
-          item.className = "grid-item submitted submitted-confirmed";
-          item.onclick = null;
+    document.querySelectorAll('.key').forEach(button => {
+      button.addEventListener('click', () => {
+        const val = button.textContent;
+        if (val === 'C') {
+          pinInput.value = '';
+        } else if (val === '←') {
+          pinInput.value = pinInput.value.slice(0, -1);
+        } else {
+          pinInput.value += val;
         }
       });
-      modal.style.display = "none";
-    }).catch(error => {
-      console.error(error);
-      statusMsg.textContent = "⚠️ Error recording attendance.";
-      statusMsg.className = "status error";
-      modal.style.display = "none";
-    }).finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Submit";
     });
-  } else {
-    statusMsg.textContent = "❌ Incorrect PIN. Please try again.";
-    statusMsg.className = "status error";
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit";
-  }
-};
 
-cancelBtn.onclick = () => modal.style.display = "none";
-window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
-
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 3000);
-}
-
-document.querySelectorAll('.key').forEach(button => {
-  button.addEventListener('click', () => {
-    const val = button.textContent;
-    if (val === 'C') {
-      pinInput.value = '';
-    } else if (val === '←') {
-      pinInput.value = pinInput.value.slice(0, -1);
-    } else {
-      pinInput.value += val;
-    }
-  });
-});
-
-
+    window.addEventListener('load', () => {
+      const hour = new Date().getHours();
+      if (hour < 17 || hour >= 22) {
+        showToast("⏰ Attendance is closed right now. The designated time for the devotional prayer has not yet arrived.");
+      }
+    });
   </script>
 </body>
 </html>
