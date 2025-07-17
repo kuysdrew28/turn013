@@ -77,7 +77,31 @@
       font-weight: bold;
       font-size: 16px;
     }
+    nav {
+      background-color: #ffcc00;
+      padding: 10px;
+      text-align: center;
+    }
+    .header-top {
+      display: flex;
+      height: 20px;
+    }
+    nav button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      background-color: #fff;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
+    nav button:hover {
+      background-color: #333;
+      color: #fff;
+    }
     .success { color: #28a745; }
     .error { color: #d9534f; }
 
@@ -199,7 +223,11 @@
     <div class="white"></div>
     <div class="red"></div>
   </div>
-
+  <!-- Navigation -->
+  <nav>
+    <button onclick="location.href='panata-attendance.html'">📋 Attendance</button>
+    <button onclick="location.href='summary-attendance.html'">📊 Summary</button>
+  </nav>
   <div class="logo">
     <img src="tsv_logo.png" alt="TSV Logo" />
   </div>
