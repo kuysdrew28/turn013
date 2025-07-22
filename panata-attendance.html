@@ -222,7 +222,7 @@
   <div class="logo"><img src="tsv_logo.png" alt="TSV Logo"/></div>
 
   <h1>TSV Virac Attendance sa Pagdalo ng Panata</h1>
-  <p>July 21, 2025</p>
+  <p>July 22, 2025</p>
   <p>Click your name and enter your PIN to confirm attendance.</p>
 
   <div class="grid" id="nameList"></div>
@@ -326,7 +326,7 @@
       }
     }
 
-    db.collection("attendance_0721").get().then(attSnap => {
+    db.collection("attendance_0722").get().then(attSnap => {
       attSnap.forEach(doc => submittedNames.add(doc.data().name));
 
       db.collection("seminar_participants").orderBy("name").get().then(partSnap => {
@@ -374,7 +374,7 @@
       submitBtn.textContent = "Submitting...";
       const enteredPin = pinInput.value;
       if (enteredPin === selectedPin.toString()) {
-        db.collection("attendance_0721").add({
+        db.collection("attendance_0722").add({
           name: selectedName,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
