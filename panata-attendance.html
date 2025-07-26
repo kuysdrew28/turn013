@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>404 Not Found</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website Closed</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -12,46 +17,47 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       text-align: center;
     }
 
     .container {
       background-color: white;
-      padding: 40px 30px;
+      padding: 2rem 1.5rem;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
       width: 90%;
+      max-width: 400px;
     }
 
     .container img {
-      width: 100px;
-      margin-bottom: 20px;
+      width: 80px;
+      margin-bottom: 1rem;
     }
 
     h1 {
       color: #dc3545;
-      font-size: 28px;
-      margin-bottom: 15px;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
     }
 
     p {
-      font-size: 18px;
+      font-size: 1rem;
       color: #333;
+      margin: 0 0 1rem;
     }
 
     .warning-icon {
-      font-size: 60px;
+      font-size: 3rem;
       color: #f6a000;
-      margin-bottom: 10px;
+      margin-bottom: 0.5rem;
     }
 
     .home-button {
       display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
+      margin-top: 1.2rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
       color: white;
       background-color: #007bff;
       text-decoration: none;
@@ -64,8 +70,8 @@
     }
 
     footer {
-      margin-top: 40px;
-      font-size: 14px;
+      margin-top: 2rem;
+      font-size: 0.85rem;
       color: #888;
     }
   </style>
@@ -75,13 +81,10 @@
   <div class="container">
     <img src="tsv_logo.png" alt="TSV Logo" />
     <div class="warning-icon">⚠️</div>
-<h1>Website Closed</h1>
-<p>Our website is currently closed and unavailable at this time.<br>
-Please check back later. Thank you for your understanding.</p>
-
-
+    <h1>Website Closed</h1>
+    <p>Our website is currently closed and unavailable at this time.<br>
+    Please check back later. Thank you for your understanding.</p>
     <a href="home.html" class="home-button">Refresh</a>
-
     <footer>
       &copy; 2025 SecretDev. All rights reserved.
     </footer>
