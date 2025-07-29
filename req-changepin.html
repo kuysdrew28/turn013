@@ -47,6 +47,7 @@
   <div class="container">
     <h2>Request PIN Change</h2>
     <input type="text" id="fullName" placeholder="Full Name" required>
+    <input type="password" id="oldPin" placeholder="Old PIN" required>
     <input type="password" id="newPin" placeholder="New PIN" required>
     <button onclick="submitRequest()">Submit Request</button>
     <p id="status" class="success"></p>
@@ -68,22 +69,25 @@
 
     function submitRequest() {
       const fullName = document.getElementById('fullName').value.trim();
+      const oldPin = document.getElementById('oldPin').value.trim();
       const newPin = document.getElementById('newPin').value.trim();
       const status = document.getElementById('status');
 
-      if (!fullName || !newPin) {
+      if (!fullName || !oldPin || !newPin) {
         alert("Please fill out all fields.");
         return;
       }
 
       db.collection("pin_change_requests").add({
         fullName: fullName,
+        oldPin: oldPin,
         requestedPin: newPin,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       })
       .then(() => {
         status.textContent = "Request submitted successfully!";
         document.getElementById('fullName').value = "";
+        document.getElementById('oldPin').value = "";
         document.getElementById('newPin').value = "";
       })
       .catch((error) => {
