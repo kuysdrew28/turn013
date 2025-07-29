@@ -507,7 +507,7 @@
     };
 
  async function loadAttendanceStatus() {
-      const snapshot = await getDocs(collection(db, 'wk30'));
+      const snapshot = await getDocs(collection(db, 'wk31'));
       snapshot.forEach(docSnap => {
         const name = docSnap.id;
         const data = docSnap.data();
@@ -543,7 +543,7 @@
         btn.innerText = '✔️';
         btn.disabled = true;
 
-        await setDoc(doc(db, 'wk30', name), { timeIn: true }, { merge: true });
+        await setDoc(doc(db, 'wk31', name), { timeIn: true }, { merge: true });
       });
 
       li.querySelector('.time-out-btn').addEventListener('click', async () => {
@@ -555,7 +555,7 @@
         btn.innerText = '✔️';
         btn.disabled = true;
 
-        await setDoc(doc(db, 'wk30', name), { timeOut: true }, { merge: true });
+        await setDoc(doc(db, 'wk31', name), { timeOut: true }, { merge: true });
       });
     });
 
