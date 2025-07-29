@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - Virac TSV</title>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -9,14 +10,15 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #eef2f5;
-      padding: 40px;
+      margin: 0;
+      padding: 20px;
     }
 
     .container {
       max-width: 400px;
       margin: auto;
       background-color: white;
-      padding: 30px;
+      padding: 30px 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       text-align: center;
@@ -32,6 +34,7 @@
       margin: 10px 0;
       border: 1px solid #ccc;
       border-radius: 4px;
+      font-size: 16px;
     }
 
     .btn {
@@ -67,6 +70,7 @@
     .message {
       margin-top: 15px;
       font-weight: bold;
+      font-size: 14px;
     }
 
     .link {
@@ -83,9 +87,33 @@
       text-decoration: underline;
     }
 
-        .container img {
-      width: 100px;
+    .container img {
+      width: 80px;
       margin-bottom: 20px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px 15px;
+      }
+
+      input,
+      .btn {
+        font-size: 15px;
+        padding: 10px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      .message {
+        font-size: 13px;
+      }
+
+      .link a {
+        font-size: 13px;
+      }
     }
   </style>
 </head>
@@ -93,8 +121,7 @@
 
 <div class="container">
   <h2>Login to Virac TSV</h2>
-      <img src="tsv_logo.png" alt="TSV Logo" />
-    <div class="warning-icon"></div>
+  <img src="tsv_logo.png" alt="TSV Logo" />
 
   <!-- Email & Password Login -->
   <input type="email" id="email" placeholder="Email" required />
@@ -147,39 +174,38 @@
         message.textContent = "Login successful! Redirecting...";
         message.style.color = "green";
         setTimeout(() => {
-          window.location.href = "home1.html";
+          window.location.href = "home.html";
         }, 1000);
       })
-.catch((error) => {
-  let errorMsg = "An error occurred. Please try again.";
-  switch (error.code) {
-    case "auth/invalid-email":
-      errorMsg = "The email address is not valid.";
-      break;
-    case "auth/user-disabled":
-      errorMsg = "This user has been disabled.";
-      break;
-    case "auth/user-not-found":
-      errorMsg = "No account found with this email.";
-      break;
-    case "auth/wrong-password":
-      errorMsg = "Incorrect email or password.";
-      break;
-    case "auth/too-many-requests":
-      errorMsg = "Too many failed attempts. Please try again later.";
-      break;
-  }
-  message.textContent = errorMsg;
-  message.style.color = "red";
-});
-
+      .catch((error) => {
+        let errorMsg = "An error occurred. Please try again.";
+        switch (error.code) {
+          case "auth/invalid-email":
+            errorMsg = "The email address is not valid.";
+            break;
+          case "auth/user-disabled":
+            errorMsg = "This user has been disabled.";
+            break;
+          case "auth/user-not-found":
+            errorMsg = "No account found with this email.";
+            break;
+          case "auth/wrong-password":
+            errorMsg = "Incorrect email or password.";
+            break;
+          case "auth/too-many-requests":
+            errorMsg = "Too many failed attempts. Please try again later.";
+            break;
+        }
+        message.textContent = errorMsg;
+        message.style.color = "red";
+      });
   }
 
   function loginWithGoogle() {
     const message = document.getElementById("message");
 
     auth.signInWithPopup(provider)
-      .then((result) => {
+      .then(() => {
         message.textContent = "Login successful! Redirecting...";
         message.style.color = "green";
         setTimeout(() => {
