@@ -203,14 +203,13 @@
     <select id="slot" required>
       <option value="">-- Choose a Schedule --</option>
       <!-- Use upcoming fixed future dates to generate valid ISO strings -->
-      <option value="2025-07-23T06:00:00">Wednesday 6:00 AM</option>
-      <option value="2025-07-24T06:00:00">Thursday 6:00 AM</option>
-      <option value="2025-07-24T19:00:00">Thursday 7:00 PM</option>
-      <option value="2025-07-26T06:00:00">Saturday 6:00 AM</option>
-      <option value="2025-07-26T10:00:00">Saturday 10:00 AM</option>
-      <option value="2025-07-26T08:00:00">Sunday 6:00AM</option>
-      <option value="2025-07-27T10:00:00">PNK Sunday 9:00 AM</option>
-        <option value="2025-07-26T03:00:00">BAUTISMO Saturday 03:00 PM</option>
+      <option value="2025-07-30T06:00:00">Wednesday 6:00 AM</option>
+      <option value="2025-07-31T06:00:00">Thursday 6:00 AM</option>
+      <option value="2025-07-31T19:00:00">Thursday 7:00 PM</option>
+      <option value="2025-08-02T06:00:00">Saturday 6:00 AM</option>
+      <option value="2025-08-03T08:00:00">Sunday 6:00AM</option>
+      <option value="2025-08-03T10:00:00">Sunday 10:00 AM</option>
+      <option value="2025-08-03T10:00:00">PNK Sunday 9:00 AM</option>
     </select>
 
     <button type="submit">Assign</button>
@@ -246,7 +245,7 @@
       if (!name || !datetime) return;
 
       try {
-        await setDoc(doc(db, 'wk30', name), {
+        await setDoc(doc(db, 'wk31', name), {
           assignedTime: datetime
         }, { merge: true });
 
@@ -263,7 +262,7 @@
   <footer>
     <img src="tsv_logo.png" alt="TSV Footer Logo">
           <p><i>Version <u>2025.06.19</u></i></p>
-    <p>&copy; 2025 SecretDev. All rights reserved.</p>
+    <p>&copy; 2025 kuysdrew Dev. All rights reserved.</p>
   </footer>
 </body>
 </html>
