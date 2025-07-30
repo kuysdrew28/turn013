@@ -59,10 +59,11 @@
     <div id="statusMessage" class="mt-4"></div>
   </div>
 
-  <!-- Firebase -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
+  <!-- Firebase Logic and Redirect -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
@@ -88,21 +89,17 @@
         return;
       }
 
-db.collection("scheduleSurvey").add({
-  name: name,
-  schedules: schedules,
-  timestamp: firebase.firestore.FieldValue.serverTimestamp()
-}).then(() => {
-  alert("✅ Success! Your response has been submitted.");
-  document.getElementById('scheduleForm').reset();
-
-  // Redirect after popup is dismissed
-  window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
-}).catch((error) => {
-  document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-});
-
-
+      db.collection("scheduleSurvey").add({
+        name: name,
+        schedules: schedules,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert("✅ Success! Your response has been submitted.");
+        document.getElementById('scheduleForm').reset();
+        window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
+      }).catch((error) => {
+        document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+      });
     });
   </script>
 </body>
