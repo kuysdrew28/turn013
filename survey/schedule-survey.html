@@ -88,21 +88,22 @@
         return;
       }
 
-      db.collection("scheduleSurvey").add({
-        name: name,
-        schedules: schedules,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        document.getElementById('statusMessage').innerHTML = '<div class="alert alert-success">Thank you! Your response has been submitted. Redirecting...</div>';
-        document.getElementById('scheduleForm').reset();
+db.collection("scheduleSurvey").add({
+  name: name,
+  schedules: schedules,
+  timestamp: firebase.firestore.FieldValue.serverTimestamp()
+}).then(() => {
+  document.getElementById('statusMessage').innerHTML = '<div class="alert alert-success">Thank you! Your response has been submitted. Redirecting...</div>';
+  document.getElementById('scheduleForm').reset();
 
-        // Redirect to home.html in the root of /turn013
-        setTimeout(() => {
-          window.location.href = "/turn013/home.html";
-        }, 2000);
-      }).catch((error) => {
-        document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
-      });
+  // ✅ Redirect to external website after 2 seconds
+  setTimeout(() => {
+    window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
+  }, 2000);
+}).catch((error) => {
+  document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+});
+
     });
   </script>
 </body>
