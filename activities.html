@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>TSV Virac - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ MOBILE VIEWPORT -->
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,7 +25,7 @@
 
     header {
       background-color: #fff;
-      padding: 15px 30px;
+      padding: 15px 20px;
       border-bottom: 2px solid #f6a000;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
@@ -58,13 +60,13 @@
     .nav {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 10px;
     }
 
     .nav a, .nav button {
       font-weight: bold;
       font-size: 16px;
-      padding: 10px 16px;
+      padding: 10px 14px;
       text-decoration: none;
       color: #333;
       border-radius: 6px;
@@ -91,28 +93,33 @@
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 36px;
+      font-size: 32px;
       font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      box-sizing: border-box;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
 
     .video-container {
       display: flex;
       justify-content: center;
-      margin: 40px 0;
+      margin: 30px 0;
+      padding: 0 10px;
     }
 
     .video-container iframe {
-      width: 90%;
+      width: 100%;
       max-width: 800px;
-      height: 450px;
+      height: 56.25vw; /* Maintain 16:9 ratio */
+      max-height: 450px;
       border: none;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .main-content {
-      padding: 40px 20px;
+      padding: 30px 15px;
       max-width: 900px;
       margin: auto;
       background-color: #fff;
@@ -126,7 +133,7 @@
     }
 
     .main-content p {
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1.6;
     }
 
@@ -134,7 +141,7 @@
       background: url('footer.jpg') no-repeat center center/cover;
       color: white;
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 15px;
       margin-top: 50px;
       position: relative;
     }
@@ -153,10 +160,11 @@
     }
 
     footer img {
-      width: 160px;
+      width: 140px;
       margin-bottom: 10px;
     }
 
+    /* ✅ MOBILE ADJUSTMENTS */
     @media (max-width: 768px) {
       .nav {
         display: none;
@@ -177,6 +185,25 @@
         text-align: left;
         width: 100%;
         border-top: 1px solid #ccc;
+        background-color: white;
+      }
+
+      .banner {
+        font-size: 24px;
+        height: 200px;
+        padding: 20px;
+      }
+
+      .main-content h2 {
+        font-size: 20px;
+      }
+
+      .main-content p {
+        font-size: 15px;
+      }
+
+      footer img {
+        width: 120px;
       }
     }
   </style>
@@ -190,98 +217,84 @@
     <div class="red"></div>
   </div>
 
-<header>
-  <div class="header-container">
-    <div class="logo">
-      <img src="tsv_logo.png" alt="TSV Logo">
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <img src="tsv_logo.png" alt="TSV Logo">
+      </div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <nav class="nav" id="navbarMenu">
+        <a href="home.html">Home</a>
+        <a href="index.html">Suguan</a>
+        <a href="chatbot.html">Chat Bot</a>
+        <a href="announcement.html">Announcement</a>
+        <a href="activities.html" class="active">Activities</a>
+        <a href="user.html">My Schedule</a>
+        <a href="login1.html">Admin</a>
+        <button onclick="logout()">Logout</button>
+      </nav>
     </div>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <nav class="nav" id="navbarMenu">
-      <a href="home.html" >Home</a>
-      <a href="index.html">Suguan</a>
-      <a href="chatbot.html">Chat Bot</a>
-      <a href="announcement.html">Announcement</a>
-      <a href="activities.html" class="active">Activities</a>
-      <a href="user.html">My Schedule</a>
-      <a href="login1.html">Admin</a>
-      <button onclick="logout()">Logout</button>
-    </nav>
-  </div>
-</header>
+  </header>
 
- 
+  <div class="banner">TSV ACTIVITIES</div>
+
   <div class="main-content">
-    <h1>TSV ACTIVITIES</h1>
+    <h2>TSV TALK AND WORKSHOP</h2>
+    <img src="TSVAct2.jpg" alt="Activity Image" style="width: 100%; max-width: 700px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+    <p style="font-style: italic; margin-top: 10px; color: #555;">
+  The TSV Talk and Workshop held in Legazpi City, Albay was actively attended by TSV officers from the Ecclesiastical District of Catanduanes. This activity provided valuable support in enhancing their technical knowledge, particularly in areas such as cable management. The workshop emphasized the importance of proper cable organization, which plays a vital role in maintaining the functionality and longevity of equipment within the TSV room. Through this initiative, participants gained practical insights and skills that will help improve the overall efficiency and upkeep of their technical setups.
+    </p>
     <hr>
-
-    <div style="margin-top: 30px; text-align: justify;">
-            <h2>TSV TALK AND WORKSHOP</h2>
-      <img src="TSVAct2.jpg" alt="Activity Image" style="width: 100%; max-width: 700px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-      <p style="font-style: italic; margin-top: 10px; color: #555;">
-  
-      The TSV Talk and Workshop held in Legazpi City, Albay was actively attended by TSV officers from the Ecclesiastical District of Catanduanes. This activity provided valuable support in enhancing their technical knowledge, particularly in areas such as cable management. The workshop emphasized the importance of proper cable organization, which plays a vital role in maintaining the functionality and longevity of equipment within the TSV room. Through this initiative, participants gained practical insights and skills that will help improve the overall efficiency and upkeep of their technical setups.
-      </p>
-      <hr>
-    </div>
-          <div style="margin-top: 30px; text-align: justify;">
-                    <h2>DISTRICT OF CATANDUANES EARNED 3rd PLACE</h2>
-      <img src="TSVAct1.jpg" alt="Activity Image" style="width: 100%; max-width: 700px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-      <p style="font-style: italic; margin-top: 10px; color: #555;">
-
-  The District of Catanduanes earned 3rd Place Overall in the various activities conducted during the workshop. This recognition reflects the dedication and growing competence of the Catanduanes TSV officers in fulfilling their technical duties.
-
-The award brought great joy to those who participated in the event and served as a strong motivation for them to continue performing their duties with even more enthusiasm and commitment.</p>
-    </div>
+    <h2>DISTRICT OF CATANDUANES EARNED 3rd PLACE</h2>
+    <img src="TSVAct1.jpg" alt="Activity Image" style="width: 100%; max-width: 700px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+    <p style="font-style: italic; margin-top: 10px; color: #555;">
+ The District of Catanduanes earned 3rd Place Overall in the various activities conducted during the workshop. This recognition reflects the dedication and growing competence of the Catanduanes TSV officers in fulfilling their technical duties. The award brought great joy to those who participated in the event and served as a strong motivation for them to continue performing their duties with even more enthusiasm and commitment.
+    </p>
   </div>
-
-
-
-  </div>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
-    authDomain: "virac-tsv.firebaseapp.com",
-    projectId: "virac-tsv",
-    storageBucket: "virac-tsv.appspot.com",
-    messagingSenderId: "455316064834",
-    appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  // ✅ Redirect user to login if not logged in
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      alert("You must be logged in to access this page.");
-      window.location.href = "login.html";
-    }
-  });
-
-    function logout() {
-    firebase.auth().signOut()
-      .then(() => {
-        alert("You have been logged out.");
-        window.location.href = "login.html";
-      })
-      .catch((error) => {
-        alert("Logout failed: " + error.message);
-      });
-  }
-    function toggleMenu() {
-    document.getElementById("navbarMenu").classList.toggle("show");
-  }
-</script>
-
 
   <footer>
     <img src="tsv_logo.png" alt="TSV Footer Logo">
     <p><i>Version <u>2025.06.19</u></i></p>
     <p>&copy; 2025 SecretDev. All rights reserved.</p>
   </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        alert("You must be logged in to access this page.");
+        window.location.href = "login.html";
+      }
+    });
+
+    function logout() {
+      firebase.auth().signOut()
+        .then(() => {
+          alert("You have been logged out.");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          alert("Logout failed: " + error.message);
+        });
+    }
+
+    function toggleMenu() {
+      document.getElementById("navbarMenu").classList.toggle("show");
+    }
+  </script>
 
 </body>
 </html>
