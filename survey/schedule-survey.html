@@ -93,16 +93,15 @@ db.collection("scheduleSurvey").add({
   schedules: schedules,
   timestamp: firebase.firestore.FieldValue.serverTimestamp()
 }).then(() => {
-  document.getElementById('statusMessage').innerHTML = '<div class="alert alert-success">Thank you! Your response has been submitted. Redirecting...</div>';
+  alert("✅ Success! Your response has been submitted.");
   document.getElementById('scheduleForm').reset();
 
-  // ✅ Redirect to external website after 2 seconds
-  setTimeout(() => {
-    window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
-  }, 2000);
+  // Redirect after popup is dismissed
+  window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
 }).catch((error) => {
   document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
 });
+
 
     });
   </script>
