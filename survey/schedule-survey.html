@@ -59,11 +59,10 @@
     <div id="statusMessage" class="mt-4"></div>
   </div>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
-  <!-- JavaScript Submission and Redirect Logic -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
@@ -97,12 +96,10 @@
         document.getElementById('statusMessage').innerHTML = '<div class="alert alert-success">Thank you! Your response has been submitted. Redirecting...</div>';
         document.getElementById('scheduleForm').reset();
 
-        // ✅ Redirect to home after 2 seconds
-// ✅ Redirect to home after 2 seconds
-setTimeout(() => {
-  window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
-}, 2000);
-
+        // Redirect to home.html in the root of /turn013
+        setTimeout(() => {
+          window.location.href = "/turn013/home.html";
+        }, 2000);
       }).catch((error) => {
         document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
       });
