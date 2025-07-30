@@ -328,16 +328,7 @@
       <img src="tsv_logo.png" alt="TSV Logo">
     </div>
     <button id="menu-toggle" class="menu-toggle">&#9776;</button>
-    <nav class="nav" id="main-nav">
-      <a href="home.html">Home</a>
-      <a href="index.html" class="active">Suguan</a>
-      <a href="panata.html">Panata</a>
-      <a href="chatbot.html">Chat Bot</a>
-      <a href="announcement.html">Announcement</a>
-      <a href="activities.html">Activities</a>
-      <a href="user.html">My Schedule</a>
-      <a href="login1.html">Admin</a>
-    </nav>
+
   </div>
 </header>
 
@@ -359,36 +350,30 @@
   <ul class="student-session">
     <h3>WEDNESDAY 6:00 AM</h3>
     <li data-name="ROI VINCENT TUGAY"><span>ROI VINCENT TUGAY</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+❌
   </div></li>
     <li data-name="VENDRED EVANGELISTA"><span>VENDRED EVANGELISTA</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+❌
       </div></li>
 
 
  
     <h3>THURSDAY 6:00 AM   <i>(English)</i></h3>
     <li data-name="RENZO MANUEL ESPARAS"><span>RENZO MANUEL ESPARAS</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+✅
   </div></li>
     <li data-name="JHESTER OGALESCO"><span>JHESTER OGALESCO</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+❌
   </div></li>
 
 
  
     <h3>THURSDAY 7:00 PM</h3>
     <li data-name="KATHLYN TATING"><span>KATHLYN TATING</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+❌
   </div></li>
     <li data-name="ANDREA ESTRELLADO"><span>ANDREA ESTRELLADO</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+ ✅
   </div></li>
 </ul>
 
@@ -400,43 +385,35 @@
   <ul class="student-session">
     <h3>SATURDAY 6:00 AM</h3>
     <li data-name="MARK ANDREW ERISARE"><span>MARK ANDREW ERISARE</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+✅
   </div></li>
     <li data-name="ALLAN HARLEM KRYSLER CADABA"><span>KRYSLER CADABA</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+❌
   </div></li>
 
       <h3>SATURDAY 10:00 AM</h3>
     <li data-name="SHIRRA MAE FERNANDEZ"><span>SHIRRA MAE FERNANDEZ</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+✅
   </div></li>
     <li data-name="DARLENE TURADO"><span>DARLENE TURADO</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+✅
   </div></li>
 
     <h3>SUNDAY 6:00 AM <i>(English)</i></h3>
     <li data-name="KEITH MANUEL ESPARAS"><span>KEITH MANUEL ESPARAS</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+✅
   </div></li>
     <li data-name="ROGER TUGAY"><span>ROGER TUGAY JR.</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+✅
   </div></li>
 
 
     <h3>PAGSAMBA NG KABATAAN 8:00 AM</h3>
     <li data-name="ANDREA ESTRELLADO1"><span>ANDREA ESTRELLADO</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+✅
   </div></li>
     <li data-name="DARLENE TURADO1"><span>DARLENE TURADO<i> Reserba</i></span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+❌
   </div></li>
   </ul>
     <div class="event-info">
@@ -446,8 +423,7 @@
   <ul class="student-session">
     <h3>SATURDAY 3:00 PM</h3>
     <li data-name="MARK ANDREW ERISARE1"><span>MARK ANDREW ERISARE</span>  <div class="button-group">
-    <button class="time-in-btn">Pagtanggap</button>
-    <button class="time-out-btn">Pagtupad</button>
+✅
   </div></li>
   </ul>
 
@@ -457,14 +433,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
     import { getFirestore, collection, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
-      authDomain: "virac-tsv.firebaseapp.com",
-      projectId: "virac-tsv",
-      storageBucket: "virac-tsv.appspot.com",
-      messagingSenderId: "455316064834",
-      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
-    };
+
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
