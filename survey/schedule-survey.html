@@ -55,9 +55,11 @@
 
       <button type="submit" class="btn btn-primary mt-4">Submit</button>
     </form>
+
+    <div id="statusMessage" class="mt-4"></div>
   </div>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
@@ -82,20 +84,25 @@
       const schedules = Array.from(checkboxes).map(cb => cb.value);
 
       if (!name || schedules.length === 0) {
-        alert("Please enter your name and select at least one schedule.");
+        document.getElementById('statusMessage').innerHTML = '<div class="alert alert-warning">Please enter your name and select at least one schedule.</div>';
         return;
       }
 
-      db.collection("scheduleSurvey").add({
-        name: name,
-        schedules: schedules,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        alert("Thank you! Your response has been submitted.");
-        window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
-      }).catch((error) => {
-        alert("Error: " + error.message);
-      });
+db.collection("scheduleSurvey").add({
+  name: name,
+  schedules: schedules,
+  timestamp: firebase.firestore.FieldValue.serverTimestamp()
+}).then(() => {
+  alert("✅ Success! Your response has been submitted.");
+  document.getElementById('scheduleForm').reset();
+
+  // Redirect after popup is dismissed
+  window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
+}).catch((error) => {
+  document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+});
+
+
     });
   </script>
 </body>
