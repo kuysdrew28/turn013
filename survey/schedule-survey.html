@@ -98,9 +98,11 @@
         document.getElementById('scheduleForm').reset();
 
         // ✅ Redirect to home after 2 seconds
-        setTimeout(() => {
-          window.location.href = "kuysdrew28.github.io/turn013/home.html";
-        }, 2000);
+// ✅ Redirect to home after 2 seconds
+setTimeout(() => {
+  window.location.href = "https://kuysdrew28.github.io/turn013/home.html";
+}, 2000);
+
       }).catch((error) => {
         document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
       });
