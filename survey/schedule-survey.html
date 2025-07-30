@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Schedule Availability Survey</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-light">
+  <div class="container py-4">
+    <div class="text-center mb-4">
+      <img src="tsv_logo.png" alt="TSV Logo" width="100" class="mb-2">
+      <h2>Schedule Availability Survey</h2>
+    </div>
+
+    <form id="scheduleForm">
+      <div class="mb-3">
+        <label for="name" class="form-label">Enter your complete name:</label>
+        <input type="text" class="form-control" id="name" required>
+      </div>
+
+      <p class="fw-bold">Select all schedules you are available for:</p>
+
+      <!-- PAGSAMBA -->
+      <h5 class="mt-4">PAGSAMBA</h5>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pagsamba Wednesday 6AM" id="pwed6am">
+        <label class="form-check-label" for="pwed6am">Wednesday 6AM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pagsamba Thursday 6AM" id="pthu6am">
+        <label class="form-check-label" for="pthu6am">Thursday 6AM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pagsamba Thursday 7PM" id="pthu7pm">
+        <label class="form-check-label" for="pthu7pm">Thursday 7PM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pagsamba Saturday 6AM" id="psat6am">
+        <label class="form-check-label" for="psat6am">Saturday 6AM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pagsamba Sunday 6AM" id="psun6am">
+        <label class="form-check-label" for="psun6am">Sunday 6AM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pagsamba Sunday 8AM (PNK)" id="psun8am">
+        <label class="form-check-label" for="psun8am">Sunday 8AM (PNK)</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pagsamba Sunday 10AM" id="psun10am">
+        <label class="form-check-label" for="psun10am">Sunday 10AM</label>
+      </div>
+
+      <!-- PAMAMAHAYAG -->
+      <h5 class="mt-4">PAMAMAHAYAG</h5>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pamamahayag Monday 7PM" id="pmonday7pm">
+        <label class="form-check-label" for="pmonday7pm">Monday 7PM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pamamahayag Tuesday 7PM" id="ptuesday7pm">
+        <label class="form-check-label" for="ptuesday7pm">Tuesday 7PM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="Pamamahayag Friday 7PM" id="pfriday7pm">
+        <label class="form-check-label" for="pfriday7pm">Friday 7PM</label>
+      </div>
+
+      <!-- TANGING PAGTITIPON -->
+      <h5 class="mt-4">TANGING PAGTITIPON</h5>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="TP Monday 7PM" id="tpmonday7pm">
+        <label class="form-check-label" for="tpmonday7pm">Monday 7PM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="TP Tuesday 7PM" id="tptuesday7pm">
+        <label class="form-check-label" for="tptuesday7pm">Tuesday 7PM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="TP Friday 7PM" id="tpfriday7pm">
+        <label class="form-check-label" for="tpfriday7pm">Friday 7PM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="TP Saturday 10AM" id="tpsaturday10am">
+        <label class="form-check-label" for="tpsaturday10am">Saturday 10AM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="TP Sunday 4PM" id="tpsunday4pm">
+        <label class="form-check-label" for="tpsunday4pm">Sunday 4PM</label>
+      </div>
+
+      <!-- BAUTISMO -->
+      <h5 class="mt-4">BAUTISMO</h5>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="B Monday 8AM" id="bmonday8am">
+        <label class="form-check-label" for="bmonday8am">Monday 8AM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="B Friday 8AM" id="bfriday8am">
+        <label class="form-check-label" for="bfriday8am">Friday 8AM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="B Saturday 10AM" id="bsaturday10am">
+        <label class="form-check-label" for="bsaturday10am">Saturday 10AM</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="B Sunday 4PM" id="bsunday4pm">
+        <label class="form-check-label" for="bsunday4pm">Sunday 4PM</label>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-4">Submit</button>
+    </form>
+
+    <div id="statusMessage" class="mt-4"></div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.getElementById('scheduleForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      const schedules = Array.from(checkboxes).map(cb => cb.value);
+
+      if (!name || schedules.length === 0) {
+        document.getElementById('statusMessage').innerHTML = '<div class="alert alert-warning">Please enter your name and select at least one schedule.</div>';
+        return;
+      }
+
+      db.collection("scheduleSurvey").add({
+        name: name,
+        schedules: schedules,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        document.getElementById('statusMessage').innerHTML = '<div class="alert alert-success">Thank you! Your response has been submitted.</div>';
+        document.getElementById('scheduleForm').reset();
+      }).catch((error) => {
+        document.getElementById('statusMessage').innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+      });
+    });
+  </script>
+</body>
+</html>
