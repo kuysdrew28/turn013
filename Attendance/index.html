@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Attendance</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    h1 { color: #ff7a06; margin-bottom: 10px; }
+    p { color: #555; font-size: 16px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 30px auto 0 auto;
+      max-width: 1000px;
+    }
+    .grid-item {
+      background: white;
+      padding: 15px;
+      border-left: 6px solid #f6a000;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      font-size: 18px;
+      font-weight: 500;
+      color: #333;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .grid-item:hover { background: #fff7e6; transform: scale(1.02); }
+    .grid-item.submitted {
+      background: #e6ffe6;
+      color: #888;
+      cursor: not-allowed;
+      border-left: 6px solid #28a745;
+    }
+    .grid-item.submitted-confirmed {
+      background: #d4edda !important;
+      border-left: 6px solid #28a745 !important;
+      color: #155724 !important;
+    }
+    .status { margin-top: 25px; font-weight: bold; font-size: 16px; }
+    .success { color: #28a745; }
+    .error { color: #d9534f; }
+    .header-top { display: flex; height: 10px; width: 100%; }
+    .header-top div { flex: 1; }
+    .green { background-color: #28a745; }
+    .white { background-color: #ffee02; }
+    .red { background-color: #dc3545; }
+    .logo img { height: 60px; max-width: 100%; }
+    footer { margin-top: 40px; font-size: 14px; color: #888; }
+
+    #webcamContainer {
+      display: none;
+      margin-top: 20px;
+    }
+    video {
+      border-radius: 6px;
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+    }
+    #confirmBtn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.4s ease, bottom 0.4s ease;
+      z-index: 1000;
+      max-width: 90%;
+    }
+    .toast.show { opacity: 1; bottom: 50px; }
+  </style>
+</head>
+<body>
+
+  <div class="header-top">
+    <div class="green"></div>
+    <div class="white"></div>
+    <div class="red"></div>
+  </div>
+
+  <div class="logo">
+    <img src="catsu.png" alt="CatSU Logo" />
+  </div>
+
+  <h1>School Attendance</h1>
+  <p>July 12, 2025</p>
+  <p>Click your name to confirm attendance.</p>
+
+  <div class="grid" id="nameList"></div>
+  <p class="status" id="statusMessage"></p>
+
+  <div id="webcamContainer">
+    <video id="webcam" autoplay playsinline></video>
+    <canvas id="snapshotCanvas" style="display:none;"></canvas>
+    <button id="confirmBtn">📸 Confirm Attendance</button>
+  </div>
+
+  <footer>Powered by KuysDrew Solution • Copyright 2025</footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const nameList = document.getElementById("nameList");
+    const toast = document.getElementById("toast");
+    const webcam = document.getElementById("webcam");
+    const canvas = document.getElementById("snapshotCanvas");
+    const webcamContainer = document.getElementById("webcamContainer");
+    const confirmBtn = document.getElementById("confirmBtn");
+
+    const submittedNames = new Set();
+    let selectedName = "";
+
+    const allowedLatitude = 13.57975;
+    const allowedLongitude = 124.21947;
+    const allowedRadiusMeters = 5000000;
+
+    function toRadians(deg) { return deg * Math.PI / 180; }
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const dLat = toRadians(lat2 - lat1);
+      const dLon = toRadians(lon2 - lon1);
+      const a = Math.sin(dLat/2)**2 + Math.cos(toRadians(lat1))*Math.cos(toRadians(lat2))*Math.sin(dLon/2)**2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+    function isWithinAllowedLocation(callback) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            const userLat = pos.coords.latitude;
+            const userLon = pos.coords.longitude;
+            const d = getDistance(userLat, userLon, allowedLatitude, allowedLongitude);
+            callback(d <= allowedRadiusMeters);
+          },
+          () => { alert("📍 Location access is required."); callback(false); },
+          { enableHighAccuracy: true }
+        );
+      } else { alert("Geolocation is not supported."); callback(false); }
+    }
+    function startWebcam() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => { webcam.srcObject = stream; })
+        .catch(() => alert("📷 Webcam access is required."));
+    }
+    function stopWebcam() {
+      const stream = webcam.srcObject;
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        webcam.srcObject = null;
+      }
+    }
+    function captureSnapshot() {
+      const context = canvas.getContext('2d');
+      canvas.width = webcam.videoWidth;
+      canvas.height = webcam.videoHeight;
+      context.drawImage(webcam, 0, 0);
+      return canvas.toDataURL('image/jpeg');
+    }
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    db.collection("attendance_0727").get().then(attSnap => {
+      attSnap.forEach(doc => submittedNames.add(doc.data().name));
+      db.collection("student-list").orderBy("name").get().then(partSnap => {
+        partSnap.forEach(doc => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.classList.add("grid-item");
+          const submitted = submittedNames.has(data.name);
+          div.textContent = submitted ? `✅ ${data.name}` : data.name;
+          if (submitted) {
+            div.classList.add("submitted");
+          } else {
+            div.onclick = () => {
+              isWithinAllowedLocation(isAllowed => {
+                if (isAllowed) {
+                  selectedName = data.name;
+                  webcamContainer.style.display = "block";
+                  startWebcam();
+                } else {
+                  showToast("🚫 Location mismatch! Attendance only inside the area.");
+                }
+              });
+            };
+          }
+          nameList.appendChild(div);
+        });
+      });
+    });
+
+    confirmBtn.onclick = () => {
+      const imageData = captureSnapshot();
+      stopWebcam();
+      webcamContainer.style.display = "none";
+
+      const link = document.createElement("a");
+      link.href = imageData;
+      link.download = `${selectedName}_${Date.now()}.jpg`;
+      link.click();
+
+      db.collection("attendance_0727").add({
+        name: selectedName,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        showToast(`✅ ${selectedName}, attendance recorded!`);
+        document.querySelectorAll(".grid-item").forEach(item => {
+          if (item.textContent === selectedName) {
+            item.textContent = `✅ ${selectedName}`;
+            item.className = "grid-item submitted submitted-confirmed";
+            item.onclick = null;
+          }
+        });
+      }).catch(err => {
+        console.error(err);
+        showToast("❌ Error saving attendance.");
+      });
+    };
+  </script>
+</body>
+</html>
