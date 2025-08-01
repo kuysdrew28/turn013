@@ -9,19 +9,9 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      padding: 10px;
       background-color: #f4f4f4;
     }
-
-    .header-top {
-      display: flex;
-      height: 20px;
-    }
-
-    .header-top div { flex: 1; }
-    .green { background-color: #28a745; }
-    .white { background-color: #ffffff; }
-    .red { background-color: #dc3545; }
 
     nav {
       background-color: #ffcc00;
@@ -30,46 +20,50 @@
     }
 
     nav button {
-      margin: 0 10px;
-      padding: 10px 20px;
-      font-size: 16px;
+      margin: 0 5px;
+      padding: 8px 12px;
       font-weight: bold;
-      color: #333;
-      background-color: #fff;
-      border: 2px solid #333;
       border-radius: 5px;
+      border: 2px solid #333;
       cursor: pointer;
-    }
-
-    nav button:hover {
-      background-color: #333;
-      color: #fff;
     }
 
     .logo {
       text-align: center;
-      margin-top: 20px;
-    }
-
-    .logo img {
-      max-width: 150px;
-      height: auto;
+      margin: 10px 0;
     }
 
     h2 {
-      color: #333;
       text-align: center;
+      margin-top: 10px;
+      font-size: 20px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 15px 0;
+      gap: 10px;
+    }
+
+    .filters input[type="text"],
+    .filters input[type="date"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       background: white;
-      margin-top: 20px;
+      margin-top: 10px;
+      font-size: 14px;
     }
 
     th, td {
-      padding: 10px;
+      padding: 8px;
       border: 1px solid #ddd;
       text-align: center;
     }
@@ -80,47 +74,32 @@
     }
 
     img {
-      max-width: 100px;
-      max-height: 100px;
+      max-width: 80px;
+      max-height: 80px;
     }
 
     .action-buttons button {
       margin: 2px;
-      padding: 5px 10px;
+      padding: 5px 8px;
       border-radius: 5px;
       cursor: pointer;
       font-size: 12px;
     }
 
-    .download-btn {
-      background-color: #007bff;
-      color: white;
-      border: none;
-    }
+    .download-btn { background-color: #007bff; color: white; }
+    .delete-btn { background-color: #dc3545; color: white; }
 
-    .delete-btn {
-      background-color: #dc3545;
-      color: white;
-      border: none;
-    }
+    @media screen and (max-width: 600px) {
+      .filters {
+        flex-direction: column;
+      }
 
-    .download-btn:hover {
-      background-color: #0056b3;
-    }
-
-    .delete-btn:hover {
-      background-color: #a71d2a;
+      th, td { font-size: 12px; padding: 6px; }
+      .action-buttons button { font-size: 10px; }
     }
   </style>
 </head>
 <body>
-  <div class="header-top">
-    <div class="green"></div>
-    <div class="white"></div>
-    <div class="red"></div>
-  </div>
-
-  <!-- Navigation -->
   <nav>
     <button onclick="location.href='attendance.html'">📋 Attendance</button>
     <button onclick="location.href='summary.html'">📊 Summary</button>
@@ -132,6 +111,11 @@
   </div>
 
   <h2>📋 Attendance Records (Admin Panel)</h2>
+
+  <div class="filters">
+    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search for names...">
+    <input type="date" id="dateInput" onchange="loadAttendance()">
+  </div>
 
   <table id="attendanceTable">
     <thead>
@@ -158,86 +142,106 @@
     const db = firebase.firestore();
 
     const tableBody = document.querySelector("#attendanceTable tbody");
+    const dateInput = document.getElementById("dateInput");
 
-    function downloadImage(name, dataUrl) {
-      const a = document.createElement("a");
-      a.href = dataUrl;
-      a.download = name.replace(/\s+/g, '_') + "_selfie.png";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    // Set today's date as default
+    window.onload = () => {
+      const today = new Date().toISOString().split("T")[0];
+      dateInput.value = today;
+      loadAttendance();
+    };
+
+    function formatDateToCollection(dateStr) {
+      const date = new Date(dateStr);
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      return `attendance_${mm}${dd}`;
     }
 
-    function deleteRecord(docId) {
-      if (confirm("Are you sure you want to delete this attendance record?")) {
-        db.collection("attendance_0727").doc(docId).delete()
-          .then(() => {
-            alert("Deleted successfully.");
-            location.reload(); // Refresh to update the list
-          })
-          .catch(err => {
-            console.error("Delete error:", err);
-            alert("Failed to delete the record.");
+    function loadAttendance() {
+      const selectedDate = dateInput.value;
+      if (!selectedDate) return;
+
+      const collectionName = formatDateToCollection(selectedDate);
+      tableBody.innerHTML = "";
+
+      db.collection(collectionName)
+        .orderBy("timestamp", "desc")
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const tr = document.createElement("tr");
+
+            const nameCell = document.createElement("td");
+            nameCell.textContent = data.name || "—";
+
+            const tsCell = document.createElement("td");
+            const timestamp = data.timestamp?.toDate();
+            tsCell.textContent = timestamp ? timestamp.toLocaleString() : "Pending";
+
+            const photoCell = document.createElement("td");
+            if (data.photo && data.photo.startsWith("data:image")) {
+              const img = document.createElement("img");
+              img.src = data.photo;
+              photoCell.appendChild(img);
+            } else {
+              photoCell.textContent = "Not Available";
+            }
+
+            const actionsCell = document.createElement("td");
+            actionsCell.className = "action-buttons";
+
+            if (data.photo) {
+              const downloadBtn = document.createElement("button");
+              downloadBtn.textContent = "Download";
+              downloadBtn.className = "download-btn";
+              downloadBtn.onclick = () => {
+                const a = document.createElement("a");
+                a.href = data.photo;
+                a.download = `${data.name.replace(/\s+/g, "_")}_selfie.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+              };
+              actionsCell.appendChild(downloadBtn);
+            }
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Delete";
+            deleteBtn.className = "delete-btn";
+            deleteBtn.onclick = () => {
+              if (confirm("Delete this record?")) {
+                db.collection(collectionName).doc(doc.id).delete().then(() => {
+                  loadAttendance();
+                });
+              }
+            };
+            actionsCell.appendChild(deleteBtn);
+
+            tr.appendChild(nameCell);
+            tr.appendChild(tsCell);
+            tr.appendChild(photoCell);
+            tr.appendChild(actionsCell);
+            tableBody.appendChild(tr);
           });
+        })
+        .catch(err => {
+          console.error("Error loading attendance:", err);
+          alert("Failed to load attendance records.");
+        });
+    }
+
+    function filterTable() {
+      const filter = document.getElementById("searchInput").value.toLowerCase();
+      const rows = tableBody.getElementsByTagName("tr");
+
+      for (let i = 0; i < rows.length; i++) {
+        const nameCell = rows[i].getElementsByTagName("td")[0];
+        const name = nameCell?.textContent?.toLowerCase() || "";
+        rows[i].style.display = name.includes(filter) ? "" : "none";
       }
     }
-
-    db.collection("attendance_0727")
-      .orderBy("timestamp", "desc")
-      .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const tr = document.createElement("tr");
-
-          const nameCell = document.createElement("td");
-          nameCell.textContent = data.name || "—";
-
-          const tsCell = document.createElement("td");
-          const timestamp = data.timestamp?.toDate();
-          tsCell.textContent = timestamp
-            ? timestamp.toLocaleString()
-            : "Pending";
-
-          const photoCell = document.createElement("td");
-          let hasPhoto = false;
-          if (data.photo && data.photo.startsWith("data:image")) {
-            const img = document.createElement("img");
-            img.src = data.photo;
-            photoCell.appendChild(img);
-            hasPhoto = true;
-          } else {
-            photoCell.textContent = "Not Available";
-          }
-
-          const actionsCell = document.createElement("td");
-          actionsCell.className = "action-buttons";
-
-          if (hasPhoto) {
-            const downloadBtn = document.createElement("button");
-            downloadBtn.textContent = "Download";
-            downloadBtn.className = "download-btn";
-            downloadBtn.onclick = () => downloadImage(data.name, data.photo);
-            actionsCell.appendChild(downloadBtn);
-          }
-
-          const deleteBtn = document.createElement("button");
-          deleteBtn.textContent = "Delete";
-          deleteBtn.className = "delete-btn";
-          deleteBtn.onclick = () => deleteRecord(doc.id);
-          actionsCell.appendChild(deleteBtn);
-
-          tr.appendChild(nameCell);
-          tr.appendChild(tsCell);
-          tr.appendChild(photoCell);
-          tr.appendChild(actionsCell);
-          tableBody.appendChild(tr);
-        });
-      })
-      .catch(err => {
-        console.error("Error loading attendance data:", err);
-        alert("Failed to load attendance records.");
-      });
   </script>
 </body>
 </html>
