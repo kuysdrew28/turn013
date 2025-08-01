@@ -290,7 +290,7 @@
       navigator.geolocation.getCurrentPosition(
         pos => {
           const { latitude, longitude } = pos.coords;
-          const allowed = { lat: 13.5878, lng: 124.2374, radius: 100 };
+          const allowed = { lat: 13.58032072, lng: 124.21640368, radius: 100 };
           const distance = getDistance(latitude, longitude, allowed.lat, allowed.lng);
           if (distance <= allowed.radius) {
             captureAndSubmitAttendance();
