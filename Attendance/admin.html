@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Attendance Records</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .header-top {
+      display: flex;
+      height: 20px;
+    }
+
+    .header-top div { flex: 1; }
+    .green { background-color: #28a745; }
+    .white { background-color: #ffffff; }
+    .red { background-color: #dc3545; }
+
+    nav {
+      background-color: #ffcc00;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      background-color: #fff;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .logo {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .logo img {
+      max-width: 150px;
+      height: auto;
+    }
+
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f6a000;
+      color: white;
+    }
+
+    img {
+      max-width: 100px;
+      max-height: 100px;
+    }
+
+    .action-buttons button {
+      margin: 2px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .download-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+
+    .download-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .delete-btn:hover {
+      background-color: #a71d2a;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-top">
+    <div class="green"></div>
+    <div class="white"></div>
+    <div class="red"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <button onclick="location.href='attendance.html'">📋 Attendance</button>
+    <button onclick="location.href='summary.html'">📊 Summary</button>
+    <button onclick="location.href='admin.html'">👨🏻‍💼 Admin</button>
+  </nav>
+
+  <div class="logo">
+    <img src="tsv_logo.png" alt="TSV Logo" />
+  </div>
+
+  <h2>📋 Attendance Records (Admin Panel)</h2>
+
+  <table id="attendanceTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Timestamp</th>
+        <th>Snapshot</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const tableBody = document.querySelector("#attendanceTable tbody");
+
+    function downloadImage(name, dataUrl) {
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = name.replace(/\s+/g, '_') + "_selfie.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function deleteRecord(docId) {
+      if (confirm("Are you sure you want to delete this attendance record?")) {
+        db.collection("attendance_0727").doc(docId).delete()
+          .then(() => {
+            alert("Deleted successfully.");
+            location.reload(); // Refresh to update the list
+          })
+          .catch(err => {
+            console.error("Delete error:", err);
+            alert("Failed to delete the record.");
+          });
+      }
+    }
+
+    db.collection("attendance_0727")
+      .orderBy("timestamp", "desc")
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const tr = document.createElement("tr");
+
+          const nameCell = document.createElement("td");
+          nameCell.textContent = data.name || "—";
+
+          const tsCell = document.createElement("td");
+          const timestamp = data.timestamp?.toDate();
+          tsCell.textContent = timestamp
+            ? timestamp.toLocaleString()
+            : "Pending";
+
+          const photoCell = document.createElement("td");
+          let hasPhoto = false;
+          if (data.photo && data.photo.startsWith("data:image")) {
+            const img = document.createElement("img");
+            img.src = data.photo;
+            photoCell.appendChild(img);
+            hasPhoto = true;
+          } else {
+            photoCell.textContent = "Not Available";
+          }
+
+          const actionsCell = document.createElement("td");
+          actionsCell.className = "action-buttons";
+
+          if (hasPhoto) {
+            const downloadBtn = document.createElement("button");
+            downloadBtn.textContent = "Download";
+            downloadBtn.className = "download-btn";
+            downloadBtn.onclick = () => downloadImage(data.name, data.photo);
+            actionsCell.appendChild(downloadBtn);
+          }
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Delete";
+          deleteBtn.className = "delete-btn";
+          deleteBtn.onclick = () => deleteRecord(doc.id);
+          actionsCell.appendChild(deleteBtn);
+
+          tr.appendChild(nameCell);
+          tr.appendChild(tsCell);
+          tr.appendChild(photoCell);
+          tr.appendChild(actionsCell);
+          tableBody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        console.error("Error loading attendance data:", err);
+        alert("Failed to load attendance records.");
+      });
+  </script>
+</body>
+</html>

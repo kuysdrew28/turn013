@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TSV Student Attendance</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
+
+       .header-top {
+      display: flex;
+      height: 20px;
+    }
+
+    .header-top div { flex: 1; }
+    .green { background-color: #28a745; }
+    .white { background-color: #ffffff; }
+    .red { background-color: #dc3545; }
+
+    nav {
+      background-color: #ffcc00;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      background-color: #fff;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background-color: #333;
+      color: #fff;
+    }
+
+    header {
+      background: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    header img {
+      height: 80px;
+    }
+
+    h1 {
+      margin: 10px 0 0;
+      color: #333;
+      font-size: 24px;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    #studentList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .student-btn {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    .student-btn:hover:not(:disabled) {
+      background: #0056b3;
+    }
+
+    .student-btn:disabled {
+      background: #28a745 !important;
+      cursor: default;
+    }
+
+    #statusMessage {
+      margin-top: 25px;
+      text-align: center;
+      font-weight: bold;
+      color: #28a745;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+    }
+
+    #webcam {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    #confirmBtn {
+      background: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .close-button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .student-btn {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="header-top">
+    <div class="green"></div>
+    <div class="white"></div>
+    <div class="red"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <button onclick="location.href='attendance.html'">📋 Attendance</button>
+    <button onclick="location.href='summary.html'">📊 Summary</button>
+    <button onclick="location.href='login.html'">👨🏻‍💼 Admin</button>
+  </nav>
+  <header>
+    <img src="tsv_logo.png" alt="TSV Logo">
+    <h1>Student Attendance System</h1>
+  </header>
+
+  <main>
+    <section id="studentList"></section>
+    <div id="statusMessage"></div>
+  </main>
+
+  <div id="webcamModal" class="modal">
+    <div class="modal-content">
+      <video id="webcam" autoplay playsinline></video>
+      <canvas id="snapshotCanvas" style="display:none;"></canvas>
+      <button id="confirmBtn">📸 Confirm Attendance</button>
+      <button id="closeBtn" class="close-button">✖ Close</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const studentList = document.getElementById("studentList");
+    const statusMessage = document.getElementById("statusMessage");
+    const webcamModal = document.getElementById("webcamModal");
+    const webcam = document.getElementById("webcam");
+    const canvas = document.getElementById("snapshotCanvas");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const closeBtn = document.getElementById("closeBtn");
+
+    let selectedStudent = "";
+    const buttons = {};
+    const recordedAttendance = new Set();
+
+    // Load attendance then participants (sorted alphabetically)
+    db.collection("attendance_0727").get().then(attendanceSnapshot => {
+      attendanceSnapshot.forEach(doc => {
+        const name = doc.data().name;
+        if (name) recordedAttendance.add(name);
+      });
+
+      return db.collection("seminar_participants").get();
+    }).then(participantSnapshot => {
+      const names = [];
+      participantSnapshot.forEach(doc => {
+        const name = doc.data().name;
+        if (name) names.push(name);
+      });
+
+      names.sort((a, b) => a.localeCompare(b));
+
+      names.forEach(name => {
+        const btn = document.createElement("button");
+        btn.textContent = name;
+        btn.className = "student-btn";
+
+        if (recordedAttendance.has(name)) {
+          btn.disabled = true;
+          btn.style.backgroundColor = "#28a745";
+        } else {
+          btn.onclick = () => openModal(name);
+        }
+
+        studentList.appendChild(btn);
+        buttons[name] = btn;
+      });
+    }).catch(error => {
+      console.error("Error fetching data:", error);
+    });
+
+    function openModal(name) {
+      selectedStudent = name;
+      statusMessage.textContent = "";
+      webcamModal.style.display = "block";
+      startWebcam();
+    }
+
+    function closeModal() {
+      webcamModal.style.display = "none";
+      stopWebcam();
+    }
+
+    function startWebcam() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          webcam.srcObject = stream;
+        })
+        .catch(() => alert("Webcam access denied."));
+    }
+
+    function stopWebcam() {
+      const stream = webcam.srcObject;
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        webcam.srcObject = null;
+      }
+    }
+
+    confirmBtn.onclick = () => {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const { latitude, longitude } = pos.coords;
+          const allowed = { lat: 13.5878, lng: 124.2374, radius: 300000 };
+          const distance = getDistance(latitude, longitude, allowed.lat, allowed.lng);
+          if (distance <= allowed.radius) {
+            captureAndSubmitAttendance();
+          } else {
+            statusMessage.textContent = "⛔ You are outside the allowed area.";
+          }
+        },
+        () => alert("Unable to retrieve location.")
+      );
+    };
+
+    function captureAndSubmitAttendance() {
+      canvas.width = webcam.videoWidth;
+      canvas.height = webcam.videoHeight;
+      canvas.getContext("2d").drawImage(webcam, 0, 0);
+      const imageData = canvas.toDataURL("image/png");
+      const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+
+      db.collection("attendance_0727").add({
+        name: selectedStudent,
+        timestamp: timestamp,
+        photo: imageData
+      }).then(() => {
+        statusMessage.textContent = `✅ Attendance recorded for ${selectedStudent}.`;
+        buttons[selectedStudent].disabled = true;
+        buttons[selectedStudent].style.backgroundColor = "#28a745";
+        closeModal();
+      }).catch(() => {
+        statusMessage.textContent = "❌ Failed to record attendance.";
+      });
+    }
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+      const toRad = deg => deg * Math.PI / 180;
+      const R = 6371;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+      return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+    }
+
+    closeBtn.onclick = closeModal;
+  </script>
+</body>
+</html>

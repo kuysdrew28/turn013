@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance Summary</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+
+    .header-top {
+      display: flex;
+      height: 20px;
+    }
+
+    .header-top div { flex: 1; }
+    .green { background-color: #28a745; }
+    .white { background-color: #ffffff; }
+    .red { background-color: #dc3545; }
+
+    nav {
+      background-color: #ffcc00;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      background-color: #fff;
+      border: 2px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .logo {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .logo img {
+      max-width: 150px;
+      height: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+      text-align: center;
+    }
+
+    #print-btn {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #print-btn:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    th {
+      background-color: hsl(37, 100%, 50%);
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .check {
+      color: green;
+      font-weight: bold;
+    }
+
+    .x {
+      color: red;
+      font-weight: bold;
+    }
+
+    @media print {
+      #print-btn, nav {
+        display: none;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      body {
+        margin: 5mm;
+        background-color: white;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-top">
+    <div class="green"></div>
+    <div class="white"></div>
+    <div class="red"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <button onclick="location.href='attendance.html'">📋 Attendance</button>
+    <button onclick="location.href='summary.html'">📊 Summary</button>
+    <button onclick="location.href='login.html'">👨🏻‍💼 Admin</button>
+  </nav>
+
+  <!-- Logo and Title -->
+  <div class="logo">
+    <img src="tsv_logo.png" alt="TSV Logo" />
+  </div>
+
+  <h1>TSV Virac Attendance Summary sa Pagdalo ng Panata</h1>
+  <button id="print-btn" onclick="window.print()">🖨️ Print Summary</button>
+
+  <div id="table-container">Loading attendance summary...</div>
+
+  <footer>
+    Powered by KuysDrew Solution • Copyright 2025
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    async function getAttendanceCollectionsFallback() {
+      const allCollections = new Set();
+      const possibleDates = [];
+      const today = new Date();
+      for (let i = 0; i < 30; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        possibleDates.push(`attendance_${mm}${dd}`);
+        possibleDates.push(`attendance${mm}${dd}`);
+      }
+
+      for (const name of possibleDates) {
+        const snapshot = await db.collection(name).limit(1).get().catch(() => null);
+        if (snapshot && !snapshot.empty) {
+          allCollections.add(name);
+        }
+      }
+
+      return Array.from(allCollections).sort();
+    }
+
+    async function loadAttendanceSummary() {
+      const attendanceCollections = await getAttendanceCollectionsFallback();
+
+      const participantsSnap = await db.collection('seminar_participants').get();
+      let participants = participantsSnap.docs.map(doc => ({
+        name: doc.data().name?.trim().toLowerCase() || 'unnamed'
+      }));
+
+      participants.sort((a, b) => a.name.localeCompare(b.name));
+
+      const attendanceData = {};
+      for (let collectionName of attendanceCollections) {
+        const attendanceSnap = await db.collection(collectionName).get();
+        const presentNames = new Set(
+          attendanceSnap.docs.map(doc => (doc.data().name || '').trim().toLowerCase())
+        );
+        attendanceData[collectionName] = presentNames;
+      }
+
+      renderTable(participants, attendanceData);
+    }
+
+    function renderTable(participants, attendanceData) {
+      const table = document.createElement('table');
+      const headerRow = document.createElement('tr');
+
+      const nameHeader = document.createElement('th');
+      nameHeader.textContent = 'NAME';
+      headerRow.appendChild(nameHeader);
+
+      const dateKeys = Object.keys(attendanceData);
+      for (let date of dateKeys) {
+        const th = document.createElement('th');
+        th.textContent = formatDateLabel(date);
+        headerRow.appendChild(th);
+      }
+
+      table.appendChild(headerRow);
+
+      for (let student of participants) {
+        const row = document.createElement('tr');
+        const nameCell = document.createElement('td');
+        nameCell.textContent = capitalizeWords(student.name);
+        row.appendChild(nameCell);
+
+        for (let date of dateKeys) {
+          const td = document.createElement('td');
+          if (attendanceData[date].has(student.name)) {
+            td.innerHTML = '<span class="check">✅</span>';
+          } else {
+            td.innerHTML = '<span class="x">❌</span>';
+          }
+          row.appendChild(td);
+        }
+
+        table.appendChild(row);
+      }
+
+      const container = document.getElementById('table-container');
+      container.innerHTML = '';
+      container.appendChild(table);
+    }
+
+    function capitalizeWords(str) {
+      return str.replace(/\b\w/g, char => char.toUpperCase());
+    }
+
+    function formatDateLabel(id) {
+      const raw = id.replace("attendance_", "").replace("attendance", "");
+      return raw.length === 4 ? `${raw.slice(0, 2)}/${raw.slice(2)}` : id;
+    }
+
+    loadAttendanceSummary().catch(error => {
+      document.getElementById('table-container').textContent = 'Error loading data.';
+      console.error(error);
+    });
+  </script>
+</body>
+</html>
