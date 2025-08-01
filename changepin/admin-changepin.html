@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - PIN Requests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f0f2f5;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      word-break: break-word;
+    }
+    th {
+      background-color: #f7f7f7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>PIN Change Requests</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Full Name</th>
+          <th>Old PIN</th>
+          <th>Requested PIN</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody id="requestList">
+        <!-- Fetched data will appear here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const requestList = document.getElementById('requestList');
+
+    db.collection("pin_change_requests").orderBy("timestamp", "desc")
+      .onSnapshot(snapshot => {
+        requestList.innerHTML = ""; // Clear table
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${data.fullName || 'N/A'}</td>
+            <td>${data.oldPin || 'N/A'}</td>
+            <td>${data.requestedPin || 'N/A'}</td>
+            <td>${data.timestamp?.toDate().toLocaleString() || 'N/A'}</td>
+          `;
+          requestList.appendChild(row);
+        });
+      });
+  </script>
+
+</body>
+</html>
