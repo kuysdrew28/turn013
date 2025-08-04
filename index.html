@@ -546,7 +546,49 @@
       });
     });
 
- 
+    //For Allowed Time
+ function isAllowedTime() {
+  const now = new Date();
+  const day = now.getDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const timeInMinutes = hour * 60 + minute;
+
+  const ranges = {
+    0: [ // Sunday
+      [4 * 60, 8 * 60],    // 4AM to 8AM
+      [7 * 60, 12 * 60]    // 7AM to 12NN
+    ],
+        2: [ [18 * 60, 21 * 60] ], // Tuesday
+    3: [ [4 * 60, 8 * 60] ], // Wednesday
+    4: [                   // Thursday
+      [4 * 60, 8 * 60],    // 4AM to 8AM
+      [18 * 60, 21 * 60]   // 6PM to 9PM
+    ],
+    6: [ [4 * 60, 8 * 60] ]  // Saturday
+  };
+
+  const todayRanges = ranges[day] || [];
+  return todayRanges.some(([start, end]) => timeInMinutes >= start && timeInMinutes <= end);
+}
+
+function checkAvailability() {
+  const allowed = isAllowedTime();
+  document.querySelectorAll('.time-in-btn, .time-out-btn').forEach(btn => {
+    btn.disabled = !allowed;
+    btn.style.opacity = allowed ? "1" : "0.5";
+    if (!allowed) btn.title = "Button disabled outside of allowed schedule";
+  });
+}
+
+// Check once on page load
+checkAvailability();
+
+// Optional: re-check every minute in case user leaves tab open
+setInterval(checkAvailability, 60000);
+
+//END HERE
+
   function showPasswordPopup(name, correctPass) {
   return new Promise((resolve) => {
     const popup = document.getElementById('password-popup');
