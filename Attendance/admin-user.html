@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - TSV Virac</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #004080;
+    }
+
+    table {
+      width: 100%;
+      max-width: 700px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #004080;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    input {
+      width: 90%;
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .btn {
+      padding: 6px 10px;
+      margin: 0 2px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .edit-btn {
+      background-color: #ffc107;
+      color: white;
+    }
+
+    .save-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+        .header-top div { flex: 1; }
+    .green { background-color: #28a745; }
+    .white { background-color: #ffffff; }
+    .red { background-color: #dc3545; }
+   .logo img { height: 60px; }
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #004080;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="header-top">
+    <div class="green"></div>
+    <div class="white"></div>
+    <div class="red"></div>
+  </div>
+
+  <div class="logo">
+    <img src="tsv_logo.png" alt="TSV Logo" />
+  </div>
+  <h1>Admin Panel - Manage Users</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>PIN</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="userTableBody">
+      <!-- Users will be loaded here -->
+    </tbody>
+  </table>
+
+  <button class="back-btn" onclick="window.location.href='index.html'">⬅ Back</button>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+      authDomain: "virac-tsv.firebaseapp.com",
+      projectId: "virac-tsv",
+      storageBucket: "virac-tsv.appspot.com",
+      messagingSenderId: "455316064834",
+      appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const userTableBody = document.getElementById('userTableBody');
+
+    function loadUsers() {
+      db.collection("seminar_participants").get().then(snapshot => {
+        userTableBody.innerHTML = "";
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><input type="text" value="${data.name}" id="name-${doc.id}" disabled /></td>
+            <td><input type="text" value="${data.pin}" id="pin-${doc.id}" disabled maxlength="4"/></td>
+            <td>
+              <button class="btn edit-btn" onclick="enableEdit('${doc.id}')">✏️ Edit</button>
+              <button class="btn save-btn" style="display:none" id="save-${doc.id}" onclick="saveEdit('${doc.id}')">💾 Save</button>
+              <button class="btn delete-btn" onclick="deleteUser('${doc.id}')">🗑️ Delete</button>
+            </td>
+          `;
+          userTableBody.appendChild(tr);
+        });
+      });
+    }
+
+    function enableEdit(id) {
+      document.getElementById(`name-${id}`).disabled = false;
+      document.getElementById(`pin-${id}`).disabled = false;
+      document.getElementById(`save-${id}`).style.display = 'inline-block';
+    }
+
+    function saveEdit(id) {
+      const newName = document.getElementById(`name-${id}`).value.trim();
+      const newPin = document.getElementById(`pin-${id}`).value.trim();
+
+      if (newName === "" || newPin === "" || newPin.length !== 4 || isNaN(newPin)) {
+        alert("Please enter a valid name and a 4-digit PIN.");
+        return;
+      }
+
+      db.collection("seminar_participants").doc(id).update({
+        name: newName,
+        pin: newPin
+      }).then(() => {
+        document.getElementById(`name-${id}`).disabled = true;
+        document.getElementById(`pin-${id}`).disabled = true;
+        document.getElementById(`save-${id}`).style.display = 'none';
+        alert("User updated successfully.");
+      }).catch(err => {
+        console.error(err);
+        alert("Error updating user.");
+      });
+    }
+
+    function deleteUser(id) {
+      if (confirm("Are you sure you want to delete this user?")) {
+        db.collection("seminar_participants").doc(id).delete().then(() => {
+          alert("User deleted successfully.");
+          loadUsers();
+        }).catch(err => {
+          console.error(err);
+          alert("Error deleting user.");
+        });
+      }
+    }
+
+    window.onload = loadUsers;
+  </script>
+</body>
+</html>
