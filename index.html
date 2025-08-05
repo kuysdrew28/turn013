@@ -294,6 +294,33 @@
       }
       .menu-toggle { display: none; }
     }
+
+    /* Loading spinner */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-overlay .spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #f6a000;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
   </style>
 </head>
 
@@ -301,6 +328,10 @@
 
 <body>
   <audio id="popup-sound" src="alert.mp3" preload="auto"></audio>
+  <div class="loading-overlay" id="loading-spinner">
+  <div class="spinner"></div>
+</div>
+
 
   <!-- Tricolor Header Strip -->
   <div class="header-top">
@@ -330,7 +361,6 @@
     <nav class="nav" id="main-nav">
       <a href="home.html">Home</a>
       <a href="index.html" class="active">Suguan</a>
-            <a href="survey/schedule-survey.html">Appoint Schedule</a>
       <a href="chatbot.html">Chat Bot</a>
       <a href="announcement.html">Announcement</a>
       <a href="activities.html">Activities</a>
@@ -411,7 +441,7 @@
 
 
     <h3>PAGSAMBA NG KABATAAN 8:00 AM</h3>
-    <li data-name="FIONA MAGDARAOG"><span>FIONA MAGDARAOG</span>  <div class="button-group">
+    <li data-name="FIONA MAGDAONG"><span>FIONA MAGDAONG</span>  <div class="button-group">
     <button class="time-in-btn">Pagtanggap</button>
     <button class="time-out-btn">Pagtupad</button>
   </div></li>
@@ -531,7 +561,9 @@
         btn.innerText = '✔️';
         btn.disabled = true;
 
-        await setDoc(doc(db, 'wk32', name), { timeIn: true }, { merge: true });
+      await setDoc(doc(db, 'wk32', name), { timeIn: true }, { merge: true });
+document.getElementById('loading-spinner').style.display = 'none';
+
       });
 
       li.querySelector('.time-out-btn').addEventListener('click', async () => {
@@ -543,9 +575,13 @@
         btn.innerText = '✔️';
         btn.disabled = true;
 
-        await setDoc(doc(db, 'wk32', name), { timeOut: true }, { merge: true });
+await setDoc(doc(db, 'wk32', name), { timeOut: true }, { merge: true });
+document.getElementById('loading-spinner').style.display = 'none';
+
       });
     });
+
+
 
     //For Allowed Time
  function isAllowedTime() {
@@ -560,6 +596,7 @@
       [4 * 60, 8 * 60],    // 4AM to 8AM
       [7 * 60, 12 * 60]    // 7AM to 12NN
     ],
+        2: [ [18 * 60, 21 * 60] ], // Tuesday
     3: [ [4 * 60, 8 * 60] ], // Wednesday
     4: [                   // Thursday
       [4 * 60, 8 * 60],    // 4AM to 8AM
@@ -608,17 +645,19 @@ setInterval(checkAvailability, 60000);
       audio.play().catch(e => console.warn('Audio play failed:', e));
     }
 
-    function handleConfirm() {
-      const entered = input.value.trim();
-      if (entered === correctPass) {
-        popup.style.display = 'none';
-        cleanup();
-        resolve(entered);
-      } else {
-        warning.textContent = 'Incorrect PIN. Please try again.';
-        warning.style.display = 'block';
-      }
-    }
+function handleConfirm() {
+  const entered = input.value.trim();
+  if (entered === correctPass) {
+    document.getElementById('loading-spinner').style.display = 'flex'; // Show spinner
+    popup.style.display = 'none';
+    cleanup();
+    setTimeout(() => resolve(entered), 300); // Delay resolve slightly so spinner shows
+  } else {
+    warning.textContent = 'Incorrect PIN. Please try again.';
+    warning.style.display = 'block';
+  }
+}
+
 
     function handleCancel() {
       popup.style.display = 'none';
@@ -697,10 +736,8 @@ menuToggle.addEventListener("click", () => {
   <footer>
     <img src="tsv_logo.png" alt="TSV Footer Logo">
           <p><i>Version <u>2025.06.19</u></i></p>
-    <p>&copy; 2025 SecretDev. All rights reserved.</p>
+    <p>&copy; 2025 KuysDrew Dev. All rights reserved.</p>
   </footer>
 </body>
 
 </html>
-
-
