@@ -135,11 +135,7 @@
 
   <hr style="margin: 20px 0;">
 
-  <!-- Google Login -->
-  <button class="btn google-btn" onclick="loginWithGoogle()">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" />
-    Sign in with Google
-  </button>
+
 
   <div class="message" id="message"></div>
 </div>
@@ -201,22 +197,6 @@
       });
   }
 
-  function loginWithGoogle() {
-    const message = document.getElementById("message");
-
-    auth.signInWithPopup(provider)
-      .then(() => {
-        message.textContent = "Login successful! Redirecting...";
-        message.style.color = "green";
-        setTimeout(() => {
-          window.location.href = "home.html";
-        }, 1000);
-      })
-      .catch((error) => {
-        message.textContent = error.message;
-        message.style.color = "red";
-      });
-  }
 
   function forgotPassword() {
     const email = prompt("Enter your email to reset your password:");
