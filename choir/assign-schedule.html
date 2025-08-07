@@ -32,7 +32,7 @@
     <h2 class="text-center mb-4">Admin Panel - Assign Member Schedules</h2>
 
     <div class="mb-3">
-      <input type="text" id="searchInput" class="form-control" placeholder="Search by name or email..." />
+      <input type="text" id="searchInput" class="form-control" placeholder="Search by name..." />
     </div>
 
     <div class="table-responsive">
@@ -40,7 +40,7 @@
         <thead class="table-dark">
           <tr>
             <th>Name</th>
-            <th>Email</th>
+            <th>Birthdate</th>
             <th>Schedule</th>
             <th>Action</th>
           </tr>
@@ -87,7 +87,7 @@
 
       const filtered = allMembers.filter(member =>
         member.name.toLowerCase().includes(filter.toLowerCase()) ||
-        member.email.toLowerCase().includes(filter.toLowerCase())
+        member.birthdate.toLowerCase().includes(filter.toLowerCase())
       );
 
       filtered.forEach(member => {
@@ -95,7 +95,7 @@
 
         row.innerHTML = `
           <td>${member.name}</td>
-          <td>${member.email}</td>
+          <td>${member.birthdate}</td>
           <td>
             <select class="form-select" id="select-${member.id}">
               <option value="">-- Select Schedule --</option>
