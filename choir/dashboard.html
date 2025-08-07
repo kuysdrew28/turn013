@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f8;
+    }
+
+    .header {
+      background-color: #0d6efd;
+      color: white;
+      padding: 10px 20px;
+    }
+    .header-logo {
+      height: 50px;
+    }
+    .system-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .dashboard {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 30px 0;
+      color: #2b6cb0;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      height: 140px;
+      background-size: cover;
+      background-position: center;
+      padding: 30px;
+      border-radius: 12px;
+      color: white;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 18px;
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      transition: background 0.3s ease;
+    }
+
+    .card span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .card:hover::after {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    @media screen and (max-width: 480px) {
+      h1 {
+        font-size: 22px;
+        margin: 20px 0;
+      }
+      .logo {
+        max-height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+   <header class="header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <img src="images/logo.png" alt="System Logo" class="header-logo me-3">
+      <span class="system-title">Choir Management System</span>
+    </div>
+  </header>
+
+  <!-- Dashboard Grid -->
+  <div class="dashboard">
+    <h1>Admin Dashboard</h1>
+    <div class="grid">
+      <a href="add-choir.html" class="card" style="background-image: url('images/add-choir.png');">
+        <span>Add Choir</span>
+      </a>
+      <a href="admin-choir.html" class="card" style="background-image: url('images/choir-list.png');">
+        <span>Choir List</span>
+      </a>
+      <a href="assign-schedule.html" class="card" style="background-image: url('images/assign.png');">
+        <span>Assign Schedule</span>
+      </a>
+      <a href="schedule-dashboard.html" class="card" style="background-image: url('images/suguan.png');">
+        <span>Suguan</span>
+      </a>
+      <a href="absent.html" class="card" style="background-image: url('images/absent.png');">
+        <span>Magsasalaysay</span>
+      </a>
+      <a href="settings.html" class="card" style="background-image: url('images/settings.png');">
+        <span>Settings</span>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

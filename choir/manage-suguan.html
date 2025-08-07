@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirm Attendance - Choir</title>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8f0fe;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    #schedule-select {
+      display: block;
+      margin: 0 auto 30px auto;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 250px;
+      background-color: #fff;
+    }
+
+    .member-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .member-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      transition: transform 0.2s ease, background 0.2s ease;
+      position: relative;
+    }
+
+    .member-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .member-card span {
+      font-weight: bold;
+      display: block;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .member-card.confirmed {
+      background-color: #d4edda;
+      border-left: 5px solid #28a745;
+      pointer-events: none;
+    }
+
+    .member-card.confirmed span {
+      color: #155724;
+    }
+
+    .member-card button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      background-color: #e74c3c;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .member-card button:hover {
+      background-color: #c0392b;
+    }
+
+    @media (max-width: 600px) {
+      #schedule-select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Manage Suguan</h2>
+
+  <select id="schedule-select">
+    <option value="Miyerkules 6AM">Miyerkules 6AM</option>
+    <option value="Huwebes 6AM">Huwebes 6AM</option>
+    <option value="Huwebes 7PM">Huwebes 7PM</option>
+    <option value="Sabado 6AM">Sabado 6AM</option>
+    <option value="Linggo 6AM">Linggo 6AM</option>
+    <option value="Linggo 10AM">Linggo 10AM</option>
+  </select>
+
+  <div class="member-list" id="member-list"></div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDa4LTo10L_Oq3wb0LScO4QZxoF0caaRZ8",
+      authDomain: "dictcatanduanes-50aab.firebaseapp.com",
+      projectId: "dictcatanduanes-50aab",
+      storageBucket: "dictcatanduanes-50aab.appspot.com",
+      messagingSenderId: "1071736633938",
+      appId: "1:1071736633938:web:78e16d042e60fd7b25fd8b",
+      measurementId: "G-KLRJ6WB7RB"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const scheduleSelect = document.getElementById('schedule-select');
+    const memberList = document.getElementById('member-list');
+
+    scheduleSelect.addEventListener('change', () => {
+      const selectedSchedule = scheduleSelect.value;
+      memberList.innerHTML = '<p style="text-align:center;">Loading members...</p>';
+
+      db.collection("choir_schedule")
+        .where("schedule", "==", selectedSchedule)
+        .get()
+        .then(snapshot => {
+          memberList.innerHTML = '';
+          snapshot.forEach(doc => {
+            const data = doc.data();
+
+            const memberDiv = document.createElement('div');
+            memberDiv.className = 'member-card';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = data.name;
+
+            if (data.status === 'present') {
+              nameSpan.textContent += ' (Confirmed)';
+              memberDiv.classList.add('confirmed');
+            }
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (confirm(`Are you sure you want to delete ${data.name}?`)) {
+                db.collection("choir_schedule").doc(doc.id).delete().then(() => {
+                  memberDiv.remove();
+                  alert(`${data.name} has been deleted.`);
+                }).catch(err => {
+                  console.error("Error deleting:", err);
+                });
+              }
+            });
+
+            if (data.status !== 'present') {
+              memberDiv.addEventListener('click', () => {
+                db.collection("choir_schedule").doc(doc.id).update({
+                  status: 'present',
+                  timestamp: new Date().toISOString()
+                }).then(() => {
+                  memberDiv.classList.add('confirmed');
+                  nameSpan.textContent = data.name + ' (Confirmed)';
+                  memberDiv.style.pointerEvents = 'none';
+                });
+              });
+            }
+
+            memberDiv.appendChild(nameSpan);
+            memberDiv.appendChild(deleteBtn);
+            memberList.appendChild(memberDiv);
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching members:", error);
+          memberList.innerHTML = '<p>Error loading members.</p>';
+        });
+    });
+
+    // Initial load
+    scheduleSelect.dispatchEvent(new Event('change'));
+  </script>
+
+</body>
+</html>

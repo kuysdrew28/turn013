@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Absentee Summary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    .header {
+      background-color: #0d6efd;
+      color: white;
+      padding: 10px 20px;
+    }
+    .header-logo {
+      height: 50px;
+    }
+    .system-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+  </style>
+   <header class="header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <img src="images/logo.png" alt="System Logo" class="header-logo me-3">
+      <span class="system-title">Choir Management System</span>
+    </div>
+  </header>
+
+<body class="bg-light">
+  <div class="container py-5">
+    <h2 class="text-center mb-4">Admin Panel - Absentees Today</h2>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Schedule</th>
+            <th>Submitted?</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="absenteesTable">
+          <!-- Filled dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDa4LTo10L_Oq3wb0LScO4QZxoF0caaRZ8",
+      authDomain: "dictcatanduanes-50aab.firebaseapp.com",
+      projectId: "dictcatanduanes-50aab",
+      storageBucket: "dictcatanduanes-50aab.appspot.com",
+      messagingSenderId: "1071736633938",
+      appId: "1:1071736633938:web:78e16d042e60fd7b25fd8b"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    async function loadAbsentees() {
+      const membersSnapshot = await db.collection("members").get();
+      const logsSnapshot = await db.collection("attendance_logs")
+        .where("timestamp", ">=", firebase.firestore.Timestamp.fromDate(todayStart))
+        .where("timestamp", "<=", firebase.firestore.Timestamp.fromDate(todayEnd))
+        .get();
+
+      const attendedMemberIds = new Set();
+      logsSnapshot.forEach(doc => {
+        attendedMemberIds.add(doc.data().memberId);
+      });
+
+      const tableBody = document.getElementById("absenteesTable");
+      tableBody.innerHTML = "";
+
+      membersSnapshot.forEach(doc => {
+        const data = doc.data();
+        if (!attendedMemberIds.has(doc.id) && !data.submitted) {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${data.name}</td>
+            <td>${data.schedule}</td>
+            <td><span class="badge bg-${data.submitted ? "success" : "secondary"}">
+              ${data.submitted ? "Yes" : "No"}</span></td>
+            <td><button class="btn btn-sm btn-primary" onclick="markSubmitted('${doc.id}')">Mark as Submitted</button></td>
+          `;
+          tableBody.appendChild(row);
+        }
+      });
+    }
+
+    function markSubmitted(memberId) {
+      db.collection("members").doc(memberId).update({
+        submitted: true
+      }).then(() => {
+        alert("Marked as submitted!");
+        loadAbsentees(); // Refresh list
+      }).catch(err => {
+        alert("Error: " + err.message);
+      });
+    }
+
+    loadAbsentees();
+  </script>
+</body>
+</html>
