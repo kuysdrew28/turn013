@@ -124,7 +124,7 @@
             <td>${data.age}</td>
             <td>${data.address}</td>
             <td>
-              <button class="btn btn-sm btn-warning me-1" onclick="openEditModal('${doc.id}', '${data.name}', '${data.email}', '${data.contact}', '${data.age}', '${data.address}')">Edit</button>
+              <button class="btn btn-sm btn-warning me-1" onclick="openEditModal('${doc.id}', '${data.name}', '${data.birthdate}', '${data.contact}', '${data.age}', '${data.address}')">Edit</button>
               <button class="btn btn-sm btn-danger" onclick="deleteMember('${doc.id}')">Delete</button>
             </td>
           `;
@@ -142,7 +142,7 @@
       }
     }
 
-    function openEditModal(id, name, email, contact, age, address) {
+    function openEditModal(id, name, birthdate, contact, age, address) {
       document.getElementById("editId").value = id;
       document.getElementById("editName").value = name;
       document.getElementById("editBirthdate").value = birthdate;
