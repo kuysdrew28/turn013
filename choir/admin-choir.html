@@ -35,7 +35,7 @@
         <thead class="table-dark">
           <tr>
             <th>Full Name</th>
-            <th>Email</th>
+            <th>Birthdate</th>
             <th>Contact Number</th>
             <th>Age</th>
             <th>Address</th>
@@ -63,8 +63,8 @@
               <input type="text" class="form-control" id="editName" required>
             </div>
             <div class="mb-3">
-              <label for="editEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="editEmail" required>
+              <label for="editBirthdate" class="form-label">Birthdate</label>
+              <input type="birthdate" class="form-control" id="editBirthdate" required>
             </div>
             <div class="mb-3">
               <label for="editContact" class="form-label">Contact Number</label>
@@ -119,7 +119,7 @@
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${data.name}</td>
-            <td>${data.email}</td>
+            <td>${data.birthdate}</td>
             <td>${data.contact}</td>
             <td>${data.age}</td>
             <td>${data.address}</td>
@@ -145,7 +145,7 @@
     function openEditModal(id, name, email, contact, age, address) {
       document.getElementById("editId").value = id;
       document.getElementById("editName").value = name;
-      document.getElementById("editEmail").value = email;
+      document.getElementById("editBirthdate").value = birthdate;
       document.getElementById("editContact").value = contact;
       document.getElementById("editAge").value = age;
       document.getElementById("editAddress").value = address;
@@ -157,7 +157,7 @@
       const id = document.getElementById("editId").value;
       const updatedData = {
         name: document.getElementById("editName").value,
-        email: document.getElementById("editEmail").value,
+        birthdate: document.getElementById("editBirthdate").value,
         contact: document.getElementById("editContact").value,
         age: parseInt(document.getElementById("editAge").value),
         address: document.getElementById("editAddress").value
