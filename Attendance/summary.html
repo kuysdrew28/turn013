@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="30">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Attendance Summary</title>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -203,6 +206,7 @@
       let participants = participantsSnap.docs.map(doc => ({
         name: doc.data().name?.trim().toLowerCase() || 'unnamed'
       }));
+      
 
       participants.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -272,6 +276,10 @@
       document.getElementById('table-container').textContent = 'Error loading data.';
       console.error(error);
     });
+
+     setTimeout(function(){
+    location.reload();
+  }, 30000); // 30000 milliseconds = 30 seconds
   </script>
 </body>
 </html>
