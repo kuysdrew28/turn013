@@ -225,7 +225,7 @@
     const recordedAttendance = new Set();
 
     // Load attendance then participants (sorted alphabetically)
-    db.collection("attendance_0801").get().then(attendanceSnapshot => {
+    db.collection("attendance_0810").get().then(attendanceSnapshot => {
       attendanceSnapshot.forEach(doc => {
         const name = doc.data().name;
         if (name) recordedAttendance.add(name);
@@ -341,5 +341,6 @@ setTimeout(function(){
   </script>
 </body>
 </html>
+
 
 
