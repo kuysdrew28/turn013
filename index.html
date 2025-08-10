@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="30">
   <title>TSV Virac - Suguan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -729,7 +730,10 @@ const mainNav = document.getElementById("main-nav");
 menuToggle.addEventListener("click", () => {
   mainNav.classList.toggle("show");
 });
-
+    
+setTimeout(function(){
+    location.reload();
+  }, 30000); // 30000 milliseconds = 30 seconds
   </script>
 
   
@@ -742,3 +746,4 @@ menuToggle.addEventListener("click", () => {
 </body>
 
 </html>
+
