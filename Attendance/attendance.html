@@ -310,7 +310,7 @@
       const imageData = canvas.toDataURL("image/png");
       const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-      db.collection("attendance_0801").add({
+      db.collection("attendance_0810").add({
         name: selectedStudent,
         timestamp: timestamp,
         photo: imageData
