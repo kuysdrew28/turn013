@@ -176,42 +176,43 @@
     <label for="name">Select Name:</label>
     <select id="name" required>
       <option value="">-- Choose a Name --</option>
-     <option value="MARK ANDREW ERISARE">MARK ANDREW ERISARE</option>
+<option value="MARK ANDREW ERISARE">MARK ANDREW ERISARE</option>
       <option value="ALLAN HARLEM KRYSLER CADABA">ALLAN HARLEM KRYSLER CADABA</option>
       <option value="ANDREA ESTRELLADO">ANDREA ESTRELLADO</option>
+            <option value="ANGEL MAE VALENZUELA">ANGEL MAE VALENZUELA</option>
       <option value="ANJENETTE MANALO">ANJENETTE MANALO</option>
       <option value="AVEENA MARIE BAUSIN">AVEENA MARIE BAUSIN</option>
-      <option value="GENEVA VARGAS">GENEVA VARGAS</option>
+            <option value="CRISTINE ANGELA ICARO">CRISTINE ANGELA ICARO</option>
       <option value="EDGAR PANTI II">EDGAR PANTI II</option>
-            <option value="EFREN EVANGELISTA">EFREN EVANGELISTA</option>
       <option value="FIONA MAGDARAOG">FIONA MAGDARAOG</option>
       <option value="FRANCIS MAGDAONG">FRANCIS MAGDAONG</option>
-            <option value="JHESTER OGALESCO">JHESTER OGALESCO</option>
             <option value="GENEVA VARGAS">GENEVA VARGAS</option>
+                  <option value="JHESTER OGALESCO">JHESTER OGALESCO</option>
       <option value="KATHLYN TATING">KATHLYN TATING</option>
       <option value="KEITH MANUEL ESPARAS">KEITH MANUEL ESPARAS</option>
       <option value="RENZO MANUEL ESPARAS">RENZO MANUEL ESPARAS</option>
       <option value="MICAH FERNANDEZ">MICAH FERNANDEZ</option>
       <option value="ROI VINCENT TUGAY">ROI VINCENT TUGAY</option>
       <option value="RONNIE BERINO">RONNIE BERINO</option>
-      <option value="ROGER TUGAY">ROGER TUGAY JR.</option>
+      <option value="ROGER TUGAY">ROGER TUGAY</option>
+                       <option value="SHAELLA OGALESCO">SHAELLA O. OGALESCO</option>
       <option value="SHIRRA MAE FERNANDEZ">SHIRRA MAE FERNANDEZ</option>
       <option value="EFREN EVANGELISTA">EFREN EVANGELISTA</option>
-       <option value="VENDRED EVANGELISTA">VENDRED EVANGELISTA</option>
-      <!-- Add more names here -->
+      <option value="VENDRED EVANGELISTA">VENDRED EVANGELISTA</option>
     </select>
 
     <label for="slot">Select Schedule:</label>
     <select id="slot" required>
       <option value="">-- Choose a Schedule --</option>
       <!-- Use upcoming fixed future dates to generate valid ISO strings -->
-      <option value="2025-08-06T06:00:00">Wednesday 6:00 AM</option>
-      <option value="2025-08-07T06:00:00">Thursday 6:00 AM</option>
-      <option value="2025-08-07T19:00:00">Thursday 7:00 PM</option>
-      <option value="2025-08-09T06:00:00">Saturday 6:00 AM</option>
-      <option value="2025-08-10T08:00:00">Sunday 6:00AM</option>
-      <option value="2025-08-10T10:00:00">Sunday 10:00 AM</option>
-      <option value="2025-08-10T08:00:00">PNK Sunday 8:00 AM</option>
+      <option value="2025-08-13T06:00:00">Wednesday 6:00 AM</option>
+      <option value="2025-08-14T06:00:00">Thursday 6:00 AM</option>
+      <option value="2025-08-14T19:00:00">Thursday 7:00 PM</option>
+      <option value="2025-08-16T06:00:00">Saturday 6:00 AM</option>
+      <option value="2025-08-17T08:00:00">Sunday 6:00AM</option>
+      <option value="2025-08-17T10:00:00">Sunday 10:00 AM</option>
+      <option value="2025-08-17T08:00:00">PNK Sunday 8:00 AM</option>
+       <option value="2025-08-15T19:00:00">PAMAMAHAYAG 7:00PM</option>
     </select>
 
     <button type="submit">Assign</button>
@@ -247,7 +248,7 @@
       if (!name || !datetime) return;
 
       try {
-        await setDoc(doc(db, 'wk32', name), {
+        await setDoc(doc(db, 'wk33', name), {
           assignedTime: datetime
         }, { merge: true });
 
@@ -268,4 +269,3 @@
   </footer>
 </body>
 </html>
-
