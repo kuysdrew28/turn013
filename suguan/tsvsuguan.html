@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Public Schedule</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary-orange: #ff7e29;
+      --secondary-orange: #ff9e4d;
+      --dark-gray: #1a1a1a;
+      --light-gray: #f5f5f5;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --transition-ease: all 0.3s ease;
+    }
+
+    body {
+      background-color: var(--light-gray);
+      font-family: 'Inter', sans-serif;
+      color: var(--dark-gray);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+    
+    .navbar {
+      background: var(--dark-gray);
+      border-bottom: 3px solid var(--primary-orange);
+    }
+    .navbar-brand img {
+      filter: drop-shadow(0 0 5px rgba(255, 126, 41, 0.5));
+    }
+    .nav-link {
+      color: white !important;
+      font-weight: 500;
+      transition: var(--transition-ease);
+      padding: 0.5rem 1rem !important;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-orange);
+      transition: var(--transition-ease);
+      transform: translateX(-50%);
+    }
+    .nav-link:hover::after {
+      width: 80%;
+    }
+    .nav-link.active, .nav-link.active:hover {
+      color: var(--primary-orange) !important;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .notice-card {
+      background: white;
+      border: none;
+      border-radius: 15px;
+      box-shadow: var(--card-shadow);
+      padding: 2.5rem;
+      text-align: center;
+      max-width: 450px;
+    }
+
+    .spinner-border {
+      color: var(--primary-orange);
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .notice-card h1 {
+      font-size: 2rem;
+      color: var(--primary-orange);
+      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .notice-card p {
+      color: #6c757d;
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    .schedule-content {
+      display: none; /* Initially hide the schedule content */
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      position: relative;
+      padding-bottom: 10px;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: var(--primary-orange);
+      border-radius: 2px;
+    }
+
+    .schedule-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      transition: transform 0.2s ease-in-out;
+    }
+    .schedule-card:hover {
+      transform: translateY(-5px);
+    }
+    .schedule-header {
+      background: var(--primary-orange);
+      color: white;
+      font-weight: 700;
+      padding: 1rem 1.5rem;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .schedule-header .day {
+      font-weight: 800;
+    }
+    .schedule-header .time {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .table th, .table td {
+      vertical-align: middle;
+      font-size: 0.95rem;
+    }
+    .btn-time {
+      background-color: #28a745; /* Green */
+      border-color: #28a745;
+      color: white;
+      transition: background-color 0.2s ease-in-out;
+    }
+    .btn-time:hover {
+      background-color: #218838;
+    }
+    .btn-time.out {
+      background-color: #dc3545; /* Red */
+      border-color: #dc3545;
+    }
+    .btn-time.out:hover {
+      background-color: #c82333;
+    }
+    .btn-explain {
+      background-color: #ffc107; /* Amber */
+      border-color: #ffc107;
+      color: white;
+    }
+    .btn-explain:hover {
+      background-color: #e0a800;
+    }
+
+    .status-absent { color: #dc3545; font-weight: 600; }
+    .status-present { color: #28a745; font-weight: 600; }
+    .status-done { color: #007bff; font-weight: 600; }
+    
+    .modal-content {
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .modal-header {
+      background-color: var(--primary-orange);
+      color: white;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      border-bottom: none;
+    }
+    .modal-footer { border-top: none; }
+    .btn-primary, .btn-primary:hover {
+      background-color: var(--primary-orange);
+      border-color: var(--primary-orange);
+    }
+    
+    footer {
+      background-color: var(--dark-gray);
+      color: white;
+      padding: 40px 0;
+      margin-top: 4rem !important;
+    }
+    .footer-text { color: white; }
+
+    @media (max-width: 767.98px) {
+      .schedule-header { flex-direction: column; align-items: flex-start; }
+      .table th, .table td { font-size: 0.85rem; }
+      .btn { font-size: 0.8rem; padding: 0.5rem 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="image/tsv_logo.png" alt="TSV Virac Logo" height="60" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa-solid fa-bars text-white"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="tsvsuguan.html">Suguan</a></li>
+        <li class="nav-item"><a class="nav-link" href="resbot.html">Chat Bot</a></li>
+        <li class="nav-item"><a class="nav-link" href="denied-admin.html">Administrator</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div id="loadingNotice" class="notice-card" style="display: none;">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <h1>Generating Schedules</h1>
+    <p>Please wait while we generate the weekly schedules. Please contact system administrator for more info.</p>
+  </div>
+  
+  <div class="container my-5 schedule-content">
+    <h2 class="section-title text-center">Suguan ng TSV</h2>
+    <div id="scheduleContainer" class="row g-4"></div>
+  </div>
+</div>
+
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Mag-upload ng Liham ng Paliwanag</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="uploadInput" class="form-control" accept="image/*">
+        <input type="hidden" id="uploadUserId">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="uploadLetter()">I-Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container text-center">
+    <p class="footer-text mb-0">&copy; 2025 KuysDrew Web Development Inc. All rights reserved.</p>
+   <a href="privacy.html" class="btn btn-link text-decoration-none">Privacy Policy & Terms of Service</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { 
+    getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc, serverTimestamp 
+  } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
+    authDomain: "virac-tsv.firebaseapp.com",
+    projectId: "virac-tsv",
+    storageBucket: "virac-tsv.appspot.com",
+    messagingSenderId: "455316064834",
+    appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const scheduleSlots = [
+    "Martes 6PM", "Miyerkules 6AM", "Miyerkules 7PM", "Huwebes 6AM", "Huwebes 7PM", "Biyernes 7PM", 
+    "Sabado 6AM", "Linggo 6AM", "Linggo 10AM"
+  ];
+  
+  const scheduleContent = document.querySelector('.schedule-content');
+  const loadingNotice = document.getElementById('loadingNotice');
+
+  // Helper: ISO week id (YYYY-Www)
+  function getWeekIdForDate(d) {
+      const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      date.setDate(date.getDate() + 4 - (date.getDay() || 7));
+      const yearStart = new Date(date.getFullYear(), 0, 1);
+      const weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+      return date.getFullYear() + '-W' + String(weekNo).padStart(2, '0');
+  }
+
+  function checkDayAndDisplay() {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // Sunday is 0, Monday is 1
+
+    if (dayOfWeek === 1) { // Monday
+      scheduleContent.style.display = 'none';
+      loadingNotice.style.display = 'block';
+    } else {
+      scheduleContent.style.display = 'block';
+      loadingNotice.style.display = 'none';
+      loadPublicSchedule();
+    }
+  }
+
+  async function loadPublicSchedule() {
+    const container = document.getElementById("scheduleContainer");
+    container.innerHTML = "";
+
+    const weekId = getWeekIdForDate(new Date());
+
+    for (let slot of scheduleSlots) {
+      const q = query(collection(db, "users"), where("schedule", "==", slot));
+      const snapshot = await getDocs(q);
+
+      if (!snapshot.empty) {
+        const scheduleCard = document.createElement("div");
+        scheduleCard.className = "col-lg-6";
+        scheduleCard.innerHTML = `
+          <div class="schedule-card h-100">
+            <div class="schedule-header">
+              <span class="day">${slot.split(" ")[0]}</span>
+              <span class="time">${slot.split(" ")[1]}</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-striped mb-0">
+                <thead>
+                  <tr>
+                    <th>Pangalan</th>
+                    <th>Pagtanggap</th>
+                    <th>Pagtupad</th>
+                    <th class="text-center">Aksyon</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        const tbody = scheduleCard.querySelector("tbody");
+
+        for (const userDoc of snapshot.docs) {
+            const data = userDoc.data();
+            const attendanceDocId = userDoc.id + '_' + weekId;
+            const attendanceSnap = await getDocs(query(collection(db, "attendance"), where("__name__", "==", attendanceDocId)));
+            const attendanceData = attendanceSnap.docs.length > 0 ? attendanceSnap.docs[0].data() : {};
+          
+            const tr = document.createElement("tr");
+
+            const now = new Date();
+            const scheduleTime = parseScheduleTime(data.schedule);
+            const twoHoursBefore = new Date(scheduleTime.getTime() - 2 * 60 * 60 * 1000);
+
+            let tdTimeIn = document.createElement("td");
+            let tdTimeOut = document.createElement("td");
+            let tdAction = document.createElement("td");
+            tdAction.className = "text-center";
+
+            if (!attendanceData.timeOut && now > scheduleTime) {
+                tdTimeIn.innerHTML = `<span class="status-absent">ABSENT</span>`;
+                tdTimeOut.innerHTML = `<span class="status-absent">ABSENT</span>`;
+                tdAction.innerHTML = `<button class="btn btn-explain btn-sm" onclick="openUploadModal('${userDoc.id}')">Magsalaysay</button>`;
+            } else {
+                if (!attendanceData.timeIn) {
+                    tdTimeIn.innerHTML = `<button class="btn btn-time btn-sm" onclick="markTimeIn('${userDoc.id}', '${slot}', '${weekId}')">Pagtanggap</button>`;
+                    tdTimeOut.textContent = "-";
+                    tdAction.textContent = "-";
+                } else {
+                    tdTimeIn.innerHTML = `<span class="status-present"><i class="fa-solid fa-check me-1"></i> ${new Date(attendanceData.timeIn.seconds * 1000).toLocaleTimeString()}</span>`;
+                    
+                    if (!attendanceData.timeOut && now >= twoHoursBefore) {
+                        tdTimeOut.innerHTML = `<button class="btn btn-time out btn-sm" onclick="markTimeOut('${userDoc.id}', '${weekId}')">Pagtupad</button>`;
+                        tdAction.textContent = "-";
+                    } else if (attendanceData.timeOut) {
+                        tdTimeOut.innerHTML = `<span class="status-done"><i class="fa-solid fa-check-double me-1"></i> ${new Date(attendanceData.timeOut.seconds * 1000).toLocaleTimeString()}</span>`;
+                        tdAction.textContent = "-";
+                    } else {
+                        tdTimeOut.textContent = "-";
+                        tdAction.textContent = "-";
+                    }
+                }
+            }
+
+            tr.innerHTML = `<td>${data.fullName}</td>`;
+            tr.appendChild(tdTimeIn);
+            tr.appendChild(tdTimeOut);
+            tr.appendChild(tdAction);
+
+            tbody.appendChild(tr);
+        }
+
+        container.appendChild(scheduleCard);
+      }
+    }
+  }
+  
+  const daysMap = { "Linggo": 0, "Lunes": 1, "Martes": 2, "Miyerkules": 3, "Huwebes": 4, "Biyernes": 5, "Sabado": 6 };
+
+  function parseScheduleTime(scheduleStr) {
+    const [day, timeStr] = scheduleStr.split(" ");
+    const now = new Date();
+    const todayWeekday = now.getDay();
+    const scheduleWeekday = daysMap[day];
+
+    let hour = parseInt(timeStr.slice(0, -2));
+    const ampm = timeStr.slice(-2).toUpperCase();
+
+    if (ampm === 'PM' && hour < 12) hour += 12;
+    if (ampm === 'AM' && hour === 12) hour = 0;
+
+    const candidate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, 0, 0);
+    const daysUntil = (scheduleWeekday - todayWeekday + 7) % 7;
+    candidate.setDate(candidate.getDate() + daysUntil);
+
+    return candidate;
+  }
+  
+  // Expose functions to the global scope
+  window.markTimeIn = async function(uid, schedule, weekId) {
+    const attendanceDocId = uid + '_' + weekId;
+    const docRef = doc(db, "attendance", attendanceDocId);
+    await updateDoc(docRef, { 
+        timeIn: serverTimestamp(),
+        schedule: schedule
+    }, { merge: true });
+    loadPublicSchedule();
+  }
+
+  window.markTimeOut = async function(uid, weekId) {
+    const attendanceDocId = uid + '_' + weekId;
+    const docRef = doc(db, "attendance", attendanceDocId);
+    await updateDoc(docRef, { timeOut: serverTimestamp() });
+    loadPublicSchedule();
+  }
+
+  window.openUploadModal = function(uid) {
+    document.getElementById("uploadUserId").value = uid;
+    new bootstrap.Modal(document.getElementById("uploadModal")).show();
+  };
+
+  window.uploadLetter = async function() {
+    const fileInput = document.getElementById("uploadInput");
+    const uid = document.getElementById("uploadUserId").value;
+    const weekId = getWeekIdForDate(new Date());
+
+    if (fileInput.files.length === 0) return alert("Pumili muna ng larawan");
+
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      const base64String = e.target.result;
+      const attendanceDocId = uid + '_' + weekId;
+      const docRef = doc(db, "attendance", attendanceDocId);
+      await updateDoc(docRef, { 
+        explanationLetter: base64String,
+        status: 'Absent'
+      }, { merge: true });
+      alert("Na-upload ang liham.");
+      bootstrap.Modal.getInstance(document.getElementById("uploadModal")).hide();
+      loadPublicSchedule();
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  };
+
+  checkDayAndDisplay();
+
+
+</script>
+</body>
+</html>
