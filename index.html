@@ -1,994 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="30" />
-    <title>TSV Virac - Suguan</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <title>TSV Virac - Suguan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  html {
+      font-size: 16px;
+    }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-        rel="stylesheet"
-    />
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f4f4;
+      line-height: 1.5;
+    }
 
-    <style>
-        :root {
-            --primary-color: #f6a000;
-            --secondary-color: #333333;
-            --background-color: #f7f9fc;
-            --card-background: #ffffff;
-            --button-success: #28a745;
-            --button-danger: #dc3545;
-            --text-color-light: #666666;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --border-radius: 12px;
-        }
+    .header-top {
+      display: flex;
+      height: 10px;
+    }
+    .header-top div { flex: 1; }
+    .green { background-color: #28a745; }
+    .white { background-color: #ffffff; }
+    .red { background-color: #dc3545; }
 
-        /* --- Base Styles --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            font-size: 16px;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            line-height: 1.6;
-            color: var(--secondary-color);
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /* --- Layout --- */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        /* --- Header --- */
-        .header-top {
-            display: flex;
-            height: 8px;
-        }
-        .header-top div {
-            flex: 1;
-        }
-        .green {
-            background-color: #28a745;
-        }
-        .white {
-            background-color: #ffffff;
-        }
-        .red {
-            background-color: #dc3545;
-        }
-
-  /* HEADER */
     header {
-      background: #ffffff;
-      box-shadow: var(--shadow);
-      padding: 10px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background-color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #f6a000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .header-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 1200px;
-      margin: auto;
+      width: 100%;
     }
 
-    .logo img {
-      height: 50px;
-    }
-
-    nav {
-      display: flex;
-      gap: 10px;
-    }
-
-    nav a, nav button {
-      padding: 8px 14px;
-      border-radius: 6px;
+    .logo img { width: 160px; max-width: 100%; }
+    .nav { display: flex; gap: 1rem; }
+    .nav a {
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 0.6rem 1rem;
       text-decoration: none;
-      font-weight: 600;
-      color: var(--text-dark);
-      transition: all 0.3s ease;
+      color: #333;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .nav a.active,
+    .nav a:hover {
+      background-color: #f6a000;
+      color: white;
     }
 
-    nav a.active, nav a:hover {
-      background-color: var(--primary);
-      color: #ff9d00;
+    h1 {
+      text-align: center;
+      color: #f6a000;
+      margin-top: 2rem;
+      font-size: 1.8rem;
     }
 
-    nav button {
-      background-color: var(--danger);
+    h4 {
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .event-info {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    ul#student-list, ul.student-session {
+      list-style: none;
+      padding: 0;
+      max-width: 90%;
+      margin: 1.5rem auto;
+    }
+
+    ul.student-session h3 {
+      margin-bottom: 0.8rem;
+      font-size: 1.2rem;
+    }
+
+    #student-list li, .student-session li {
+      background: #fff;
+      margin-bottom: 0.8rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+    }
+
+    #student-list button, .student-session button {
+      padding: 0.4rem 0.8rem;
       border: none;
-      color: #000000;
+      color: #fff;
+      border-radius: 4px;
       cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
     }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--secondary-color);
-        }
+    .time-in-btn { background-color: #007bff; }
+    .time-in-btn:hover { background-color: #0056b3; }
+    .time-out-btn { background-color: #28a745; }
+    .time-out-btn:hover { background-color: #1e7e34; }
 
-        /* --- Main Content & Typography --- */
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-top: 2.5rem;
-            font-size: 2rem;
-            font-weight: 700;
-        }
+    .button-group {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+      flex: 1;
+      flex-wrap: wrap;
+    }
 
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
-        
-        h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
+    .highlight {
+      background-color: rgb(50, 241, 32);
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
 
-        h4 {
-            text-align: center;
-            font-size: 1rem;
-            color: var(--text-color-light);
-            font-weight: 400;
-        }
+    mark {
+      background-color: rgb(252, 51, 51);
+      color: black;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
 
-        .event-info {
-            text-align: center;
-            margin: 2rem 0 1rem;
-        }
+ footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background: url('footer.jpg') no-repeat center center/cover;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  z-index: 10;
+}
 
-        .event-info p {
-            color: var(--text-color-light);
-        }
+footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
 
-        /* --- Student List --- */
-        .student-session {
-            list-style: none;
-            padding: 0;
-            max-width: 700px;
-            margin: 1.5rem auto;
-            display: grid;
-            gap: 0.8rem;
-        }
+footer * {
+  position: relative;
+  z-index: 1;
+}
 
-        .student-session-item {
-            background: var(--card-background);
-            padding: 1rem 1.5rem;
-            border-radius: var(--border-radius);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease-in-out;
-        }
+footer img {
+  width: 120px;
+  margin-bottom: 10px;
+}
 
-        .student-session-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-        }
-        
-        .student-session-item span {
-            font-weight: 600;
-        }
 
-        .button-group {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
+    .clock-container {
+      position: fixed;
+      top: 120px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 0.8rem 1.2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      text-align: right;
+    }
 
-        .action-btn {
-            padding: 0.6rem 1rem;
-            border: none;
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: background-color 0.3s, transform 0.1s;
-        }
-        
-        .action-btn:active {
-            transform: scale(0.98);
-        }
+    #time { font-size: 1.4rem; color: #333; font-weight: bold; }
+    #date { font-size: 0.9rem; color: #666; }
 
-        .time-in-btn {
-            background-color: #007bff;
-        }
-        .time-in-btn:hover {
-            background-color: #0056b3;
-        }
-        .time-out-btn {
-            background-color: #28a745;
-        }
-        .time-out-btn:hover {
-            background-color: #1e7e34;
-        }
+    #password-popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
 
-        .highlight-in {
-            background-color: var(--button-success);
-            pointer-events: none;
-        }
-        .highlight-out {
-            background-color: var(--button-success);
-            pointer-events: none;
-        }
-        
-        .disabled-btn {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        
-        /* --- Highlights & Labels --- */
-        .highlight,
-        mark {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-left: 10px;
-        }
+    #password-popup .modal-content {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+      animation: fadeIn 0.3s ease-in-out;
+    }
 
-        .highlight {
-            background-color: #28a745;
-            color: white;
-        }
+    #password-popup h2 { margin: 0 0 1rem; color: #333; font-size: 1.2rem; }
 
-        mark {
-            background-color: #dc3545;
-            color: white;
-        }
+    #password-popup input {
+      width: 100%;
+      padding: 0.6rem;
+      margin: 0.5rem 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
 
-        /* --- Footer --- */
-        footer {
-            background-color: var(--secondary-color);
-            color: white;
-            text-align: center;
-            padding: 2rem 1rem;
-            margin-top: 2rem;
-            position: relative;
-        }
+    #password-popup button {
+      margin: 0.3rem 0.5rem;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
 
-        footer img {
-            height: 60px;
-            margin-bottom: 1rem;
-        }
+    #confirm-password { background-color: #28a745; color: white; }
+    #cancel-password { background-color: #dc3545; color: white; }
 
-        footer p {
-            margin: 0.5rem 0;
-            font-size: 0.9rem;
-            color: #b0b0b0;
-        }
+    #warning-message {
+      color: red;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
 
-        /* --- Clock --- */
-        .clock-container {
-            position: fixed;
-            top: 90px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 0.8rem 1.2rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            z-index: 999;
-            text-align: center;
-        }
-        
-        #time {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
-        #date {
-            font-size: 0.9rem;
-            color: var(--text-color-light);
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-        /* --- Modals (Popups) --- */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .popup-modal {
-            background: var(--card-background);
-            padding: 2rem;
-            text-align: center;
-            border-radius: var(--border-radius);
-            max-width: 350px;
-            width: 90%;
-            box-shadow: var(--box-shadow);
-            animation: fadeIn 0.3s ease-in-out;
-        }
+    @media (max-width: 600px) {
+      html { font-size: 14px; }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+      }
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+      .nav a {
+        width: 100%;
+        padding: 0.5rem 0.8rem;
+      }
+      .clock-container {
+        top: auto;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        text-align: center;
+      }
+      h1 { font-size: 1.4rem; }
+      h4, h3 { font-size: 1rem; }
+      #time { font-size: 1.2rem; }
+      #date { font-size: 0.8rem; }
+    }
 
-        .popup-modal h2 {
-            margin-bottom: 1rem;
-        }
-        .popup-modal input {
-            width: 100%;
-            padding: 0.8rem;
-            margin: 0.8rem 0;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
-        }
+    .menu-toggle {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: block;
+    }
 
-        .popup-modal .button-group {
-            justify-content: center;
-            margin-top: 1rem;
-        }
-        
-        .popup-modal .btn {
-            padding: 0.6rem 1.2rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: background-color 0.3s;
-        }
+    .nav {
+      display: none;
+      flex-direction: column;
+      gap: 0.8rem;
+      width: 100%;
+      margin-top: 0.8rem;
+    }
 
-        .btn-primary {
-            background: #007bff;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #0056b3;
-        }
+    .nav.show { display: flex; }
 
-        .btn-success {
-            background: var(--button-success);
-            color: white;
-        }
-        .btn-success:hover {
-            background: #1e7e34;
-        }
-        .btn-danger {
-            background: var(--button-danger);
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #b32d34;
-        }
+    @media (min-width: 769px) {
+      .nav {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-top: 0;
+      }
+      .menu-toggle { display: none; }
+    }
 
-        .warning-message {
-            color: var(--button-danger);
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
+.loading-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999; /* Lower than menu if needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Allow clicks to pass through */
+}
 
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        .loading-overlay .spinner {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid var(--primary-color);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        
-        /* --- Media Queries for Responsiveness --- */
-        @media (max-width: 768px) {
-            .header-container {
-                flex-wrap: wrap;
-            }
-            .nav {
-                display: none;
-                flex-direction: column;
-                gap: 0.5rem;
-                width: 100%;
-                margin-top: 1rem;
-            }
-            .nav.show {
-                display: flex;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .logo img {
-                height: 35px;
-                text-align: left;
-            }
-            .clock-container {
-                position: static;
-                margin: 1rem auto 0;
-                width: fit-content;
-                box-shadow: none;
-                background: none;
-                padding: 0;
-                text-align: center;
-            }
-            #time {
-                font-size: 1.5rem;
-            }
-            #date {
-                font-size: 0.8rem;
-            }
-            h1 {
-                font-size: 1.6rem;
-            }
-            h2 {
-                font-size: 1.2rem;
-            }
-            h3 {
-                font-size: 1rem;
-            }
-            .student-session-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            .button-group {
-                width: 100%;
-                justify-content: flex-start;
-            }
-        }
-        
-    </style>
+.spinner-content {
+  pointer-events: auto; /* Allow interaction only if needed inside the spinner */
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner-circle {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #f6a000;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-text {
+  font-weight: bold;
+  color: #f6a000;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+  </style>
 </head>
 
 <body>
-    <audio id="popup-sound" src="alert.mp3" preload="auto"></audio>
-    <div class="loading-overlay" id="loading-spinner">
-        <div class="spinner"></div>
+
+  <audio id="popup-sound" src="alert.mp3" preload="auto"></audio>
+
+  <!-- Tricolor Header Strip -->
+  <div class="header-top">
+    <div class="green"></div>
+    <div class="white"></div>
+    <div class="red"></div>
+  </div>
+
+  <!-- Password Modal -->
+  <div id="password-popup">
+    <div class="modal-content">
+      <h2>Enter PIN</h2>
+      <input type="password" id="input-password" placeholder="Enter your PIN" />
+      <div id="warning-message" style="display: none;"></div>
+      <div>
+        <button id="confirm-password">Confirm</button>
+        <button id="cancel-password">Cancel</button>
+      </div>
     </div>
+  </div>
 
-    <div class="header-top">
-        <div class="green"></div>
-        <div class="white"></div>
-        <div class="red"></div>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <img src="tsv_logo.png" alt="TSV Logo">
+      </div>
+      <button id="menu-toggle" class="menu-toggle">&#9776;</button>
+      <nav class="nav" id="main-nav">
+        <a href="home.html">Home</a>
+        <a href="index.html" class="active">Suguan</a>
+        <a href="chatbot.html">Chat Bot</a>
+        <a href="announcement.html">Announcement</a>
+        <a href="activities.html">Activities</a>
+        <a href="user.html">My Schedule</a>
+        <a href="login1.html">Admin</a>
+      </nav>
     </div>
+  </header>
 
-    <div id="password-popup" class="overlay" style="display: none;">
-        <div class="popup-modal">
-            <h2>Enter PIN</h2>
-            <input type="password" id="input-password" placeholder="Enter your PIN" />
-            <div id="warning-message" class="warning-message" style="display: none;"></div>
-            <div class="button-group">
-                <button id="confirm-password" class="btn btn-success">Confirm</button>
-                <button id="cancel-password" class="btn btn-danger">Cancel</button>
-            </div>
-        </div>
-    </div>
+<!-- Centered Non-blocking Spinner -->
+<div class="loading-overlay" id="loading-spinner">
+  <div class="spinner-content">
+    <div class="spinner-circle"></div>
+    <p class="spinner-text">Generating Suguan. Please Wait...</p>
+  </div>
+</div>
 
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <img src="tsv_logo.png" alt="TSV Logo" />
-            </div>
-            <button id="menu-toggle" class="menu-toggle">&#9776;</button>
-            <nav class="nav" id="main-nav">
-                <a href="home.html">Home</a>
-                <a href="index.html" class="active">Suguan</a>
-                <a href="survey/schedule-survey.html">Appoint Schedule</a>
-                <a href="chatbot.html">Chat Bot</a>
-                <a href="announcement.html">Announcement</a>
-                <a href="activities.html">Activities</a>
-                <a href="user.html">My Schedule</a>
-                <a href="login1.html">Admin</a>
-            </nav>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="clock-container">
-            <div id="time">--:--:--</div>
-            <div id="date">Loading date...</div>
-        </div>
 
-        <h1>SUGUAN NG TECHNICAL SUPPORT FOR VIDEO STREAMING</h1>
-        <h4>(Week 33)</h4>
+  <!-- Clock -->
+  <div class="clock-container">
+    <div id="time">--:--:--</div>
+    <div id="date">Loading date...</div>
+  </div>
 
-        <div class="event-info">
-            <h2>MIDWEEK</h2>
-            <p>August 13-14, 2025</p>
-        </div>
-        <ul class="student-session">
-            <h3>WEDNESDAY 6:00 AM</h3>
-            <li class="student-session-item" data-name="ROI VINCENT TUGAY">
-                <span>ROI VINCENT TUGAY</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="ALLAN HARLEM KRYSLER CADABA">
-                <span>KRYSLER CADABA</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-        </ul>
+  <script>
 
-        <ul class="student-session">
-            <h3>THURSDAY 6:00 AM <i>(English)</i></h3>
-            <li class="student-session-item" data-name="RENZO MANUEL ESPARAS">
-                <span>RENZO MANUEL ESPARAS</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-        </ul>
+  // Show the full-screen loading spinner
+  document.getElementById('loading-spinner').style.display = 'flex';
 
-        <ul class="student-session">
-            <h3>THURSDAY 7:00 PM</h3>
-            <li class="student-session-item" data-name="ROGER TUGAY">
-                <span>ROGER TUGAY JR.</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="RONNIE BERINO">
-                <span>RONNIE BERINO</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-        </ul>
 
-        <div class="event-info">
-            <h2>PAMAMAHAYAG</h2>
-            <p>August 15, 2025</p>
-        </div>
-        <ul class="student-session">
-            <h3>FRIDAY 7:00 PM</h3>
-            <li class="student-session-item" data-name="KEITH MANUEL ESPARAS1">
-                <span>KEITH MANUEL ESPARAS</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="ANGEL MAE VALENZUELA">
-                <span>ANGEL MAE VALENZUELA</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-        </ul>
 
-        <div class="event-info">
-            <h2>WEEKEND</h2>
-            <p>August 16-17, 2025</p>
-        </div>
-        <ul class="student-session">
-            <h3>SATURDAY 6:00 AM</h3>
-            <li class="student-session-item" data-name="EDGAR PANTI II">
-                <span>EDGAR PANTI II</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="KEITH MANUEL ESPARAS">
-                <span>KEITH MANUEL ESPARAS</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="CRISTINE ANGELA ICARO">
-                <span>CRISTINE ANGELA ICARO</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-        </ul>
+    // You can hide it later using:
+    // document.getElementById('loadingSpinner').style.display = 'none';
+  </script>
 
-        <ul class="student-session">
-            <h3>SUNDAY 6:00 AM <i>(English)</i></h3>
-            <li class="student-session-item" data-name="ANDREA ESTRELLADO">
-                <span>ANDREA ESTRELLADO</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="ANGEL MAE VALENZUELA">
-                <span>ANGEL MAE VALENZUELA</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="JHESTER OGALESCO">
-                <span>JHESTER OGALESCO</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-        </ul>
-
-        <ul class="student-session">
-            <h3>PAGSAMBA NG KABATAAN 8:00 AM</h3>
-            <li class="student-session-item" data-name="FIONA MAGDARAOG">
-                <span>FIONA MAGDARAOG</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-        </ul>
-
-        <ul class="student-session">
-            <h3>SUNDAY 10:00 AM</h3>
-            <li class="student-session-item" data-name="KATHLYN TATING">
-                <span>KATHLYN TATING</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="SHIRRA MAE FERNANDEZ">
-                <span>SHIRRA MAE FERNANDEZ</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-            <li class="student-session-item" data-name="MARK ANDREW ERISARE">
-                <span>MARK ANDREW ERISARE</span>
-                <div class="button-group">
-                    <button class="action-btn time-in-btn">Pagtanggap</button>
-                    <button class="action-btn time-out-btn">Pagtupad</button>
-                </div>
-            </li>
-        </ul>
-    </div>
-    
-    <footer>
-        <img src="tsv_logo.png" alt="TSV Footer Logo" />
-        <p><i>Version <u>2025.06.19</u></i></p>
-        <p>&copy; 2025 KuysDrew Dev. All rights reserved.</p>
-    </footer>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAwzp3h8tt_tcDF1um--LoroAu1rErMmBc",
-            authDomain: "virac-tsv.firebaseapp.com",
-            projectId: "virac-tsv",
-            storageBucket: "virac-tsv.appspot.com",
-            messagingSenderId: "455316064834",
-            appId: "1:455316064834:web:1dc1033265b58a6c82bbdb"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        const studentPasswords = {
-            "ALLAN HARLEM KRYSLER CADABA" : "1234",
-            "ANDREA ESTRELLADO":"0124",
-            "ANJENETTE MANALO":"0214",
-            "AVEENA MARIE BAUSIN":"0901",
-            "EDGAR PANTI II":"0507",
-            "FIONA MAGDARAOG" : "0903",
-            "FRANCIS MAGDAONG" : "0211",
-            "JHESTER OGALESCO" : "1113" ,
-            "GENEVA VARGAS" : "0304" ,
-            "KATHLYN TATING" : "1234",
-            "KEITH MANUEL ESPARAS" : "0607",
-            "MARK ANDREW ERISARE" : "0328",
-            "MICAH FERNANDEZ" : "1234",
-            "MIKEE GIANAN" : "0416",
-            "NHADYIE ROSE OLINO" : "0704",
-            "RENZO MANUEL ESPARAS" : "0712",
-            "ROI VINCENT TUGAY" : "0714",
-            "RONNIE BERINO" : "0719",
-            "ROGER TUGAY" : "0323",
-            "SHIRRA MAE FERNANDEZ" : "0903",
-            "VENDRED EVANGELISTA" : "1234",
-            "EFREN EVANGELISTA" : "1234",
-            "ANGEL MAE VALENZUELA":"0422",
-            "CRISTINE ANGELA ICARO":"3333",
-            "SHAELLA OGALESCO":"1030",
-
-            "ALLAN HARLEM KRYSLER CADABA1" : "1234",
-            "ANDREA ESTRELLADO1":"0124",
-            "ANJENETTE MANALO1":"0214",
-            "AVEENA MARIE BAUSIN1":"0901",
-            "GENEVA VARGAS":"0304",
-            "EDGAR PANTI II1":"0507",
-            "FIONA MAGDARAOG1" : "0903",
-            "FRANCIS MAGDAONG1" : "0211",
-            "JHESTER OGALESCO1" : "1113" ,
-            "KATHLYN TATING1" : "1234",
-            "KEITH MANUEL ESPARAS1" : "0607",
-            "MARK ANDREW ERISARE1" : "0328",
-            "MICAH FERNANDEZ1" : "1234",
-            "MIKEE GIANAN1" : "0416",
-            "NHADYIE ROSE OLINO1" : "0704",
-            "RENZO MANUEL ESPARAS1" : "0712",
-            "ROI VINCENT TUGAY1" : "0714",
-            "RONNIE BERINO1" : "0719",
-            "ROGER TUGAY1" : "0323",
-            "SHIRRA MAE FERNANDEZ1" : "0903",
-            "VENDRED EVANGELISTA1" : "1234",
-            "CRISTINE ANGELA ICARO1":"3333",
-        };
-
-        async function loadAttendanceStatus() {
-            const snapshot = await getDocs(collection(db, 'wk33'));
-            snapshot.forEach(docSnap => {
-                const name = docSnap.id;
-                const data = docSnap.data();
-                const li = document.querySelector(`[data-name="${name}"]`);
-                if (li) {
-                    if (data.timeIn) {
-                        const btn = li.querySelector('.time-in-btn');
-                        btn.classList.add('highlight-in');
-                        btn.innerText = '✔️';
-                        btn.disabled = true;
-                    }
-                    if (data.timeOut) {
-                        const btn = li.querySelector('.time-out-btn');
-                        btn.classList.add('highlight-out');
-                        btn.innerText = '✔️';
-                        btn.disabled = true;
-                    }
-                }
-            });
-        }
-
-        await loadAttendanceStatus();
-
-        document.querySelectorAll("ul.student-session li").forEach((li) => {
-            const name = li.dataset.name;
-
-            li.querySelector('.time-in-btn').addEventListener('click', async () => {
-                const password = await showPasswordPopup(name, studentPasswords[name]);
-                if (password === null) return;
-                
-                const btn = li.querySelector('.time-in-btn');
-                btn.classList.add('highlight-in');
-                btn.innerText = '✔️';
-                btn.disabled = true;
-
-                await setDoc(doc(db, 'wk33', name), { timeIn: true }, { merge: true });
-                document.getElementById('loading-spinner').style.display = 'none';
-            });
-
-            li.querySelector('.time-out-btn').addEventListener('click', async () => {
-                const password = await showPasswordPopup(name, studentPasswords[name]);
-                if (password === null) return;
-
-                const btn = li.querySelector('.time-out-btn');
-                btn.classList.add('highlight-out');
-                btn.innerText = '✔️';
-                btn.disabled = true;
-
-                await setDoc(doc(db, 'wk33', name), { timeOut: true }, { merge: true });
-                document.getElementById('loading-spinner').style.display = 'none';
-            });
-        });
-
-        //For Allowed Time
-        function isAllowedTime() {
-            const now = new Date();
-            const day = now.getDay();
-            const hour = now.getHours();
-            const minute = now.getMinutes();
-            const timeInMinutes = hour * 60 + minute;
-
-            const ranges = {
-                0: [
-                    [4 * 60, 8 * 60],
-                    [7 * 60, 11 * 30]
-                ],
-                1: [
-                    [13 * 60, 14 * 60]
-                ],
-                2: [
-                    [18 * 60, 21 * 60]
-                ],
-                3: [
-                    [4 * 60, 8 * 60]
-                ],
-                4: [
-                    [4 * 60, 8 * 60],
-                    [18 * 60, 21 * 60]
-                ],
-                5: [
-                    [18 * 60, 21 * 30]
-                ],
-                6: [
-                    [4 * 60, 8 * 60]
-                ]
-            };
-
-            const todayRanges = ranges[day] || [];
-            if (!Array.isArray(todayRanges[0])) {
-                return timeInMinutes >= todayRanges[0] && timeInMinutes <= todayRanges[1];
-            }
-            return todayRanges.some(([start, end]) => timeInMinutes >= start && timeInMinutes <= end);
-        }
-
-        function checkAvailability() {
-            const allowed = isAllowedTime();
-            document.querySelectorAll('.time-in-btn, .time-out-btn').forEach(btn => {
-                if (!btn.disabled) {
-                    if (allowed) {
-                        btn.classList.remove('disabled-btn');
-                        btn.removeAttribute('title');
-                    } else {
-                        btn.classList.add('disabled-btn');
-                        btn.title = "Button disabled outside of allowed schedule";
-                    }
-                }
-            });
-        }
-        
-        checkAvailability();
-        setInterval(checkAvailability, 60000);
-
-        function showPasswordPopup(name, correctPass) {
-            return new Promise((resolve) => {
-                const popup = document.getElementById('password-popup');
-                const input = document.getElementById('input-password');
-                const warning = document.getElementById('warning-message');
-                const confirmBtn = document.getElementById('confirm-password');
-                const cancelBtn = document.getElementById('cancel-password');
-
-                input.value = '';
-                warning.style.display = 'none';
-                popup.style.display = 'flex';
-
-                const audio = document.getElementById('popup-sound');
-                if (audio) {
-                    audio.currentTime = 0;
-                    audio.play().catch(e => console.warn('Audio play failed:', e));
-                }
-
-                function handleConfirm() {
-                    const entered = input.value.trim();
-                    if (entered === correctPass) {
-                        document.getElementById('loading-spinner').style.display = 'flex';
-                        popup.style.display = 'none';
-                        cleanup();
-                        setTimeout(() => resolve(entered), 300);
-                    } else {
-                        warning.textContent = 'Incorrect PIN. Please try again.';
-                        warning.style.display = 'block';
-                    }
-                }
-
-                function handleCancel() {
-                    popup.style.display = 'none';
-                    cleanup();
-                    resolve(null);
-                }
-
-                function handleKeyDown(e) {
-                    if (e.key === 'Enter') handleConfirm();
-                }
-
-                function cleanup() {
-                    confirmBtn.removeEventListener('click', handleConfirm);
-                    cancelBtn.removeEventListener('click', handleCancel);
-                    input.removeEventListener('keydown', handleKeyDown);
-                }
-
-                confirmBtn.addEventListener('click', handleConfirm);
-                cancelBtn.addEventListener('click', handleCancel);
-                input.addEventListener('keydown', handleKeyDown);
-            });
-        }
-        
-        document.querySelectorAll('ul.student-session').forEach(session => {
-            const sessionTimeStr = session.getAttribute('data-time');
-            if (!sessionTimeStr) return;
-
-            const sessionTime = new Date(sessionTimeStr);
-            const now = new Date();
-            const gracePeriodEnd = new Date(sessionTime.getTime() + 2 * 60 * 60 * 1000);
-
-            if (now > gracePeriodEnd) {
-                session.querySelectorAll('.time-out-btn').forEach(btn => {
-                    btn.classList.add('disabled-btn');
-                    btn.title = "Pagtupad disabled: grace period ended";
-                });
-            }
-        });
-
-        function updateClock() {
-            const now = new Date();
-            const time = now.toLocaleTimeString();
-            const date = now.toLocaleDateString(undefined, {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            document.getElementById('time').textContent = time;
-            document.getElementById('date').textContent = date;
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        const menuToggle = document.getElementById("menu-toggle");
-        const mainNav = document.getElementById("main-nav");
-
-        menuToggle.addEventListener("click", () => {
-            mainNav.classList.toggle("show");
-        });
-
-        setTimeout(function() {
-            location.reload();
-        }, 100000);
-    </script>
+  <!-- Footer -->
+  <footer>
+    <img src="tsv_logo.png" alt="TSV Footer Logo">
+    <p><i>Version <u>2025.06.19</u></i></p>
+    <p>&copy; 2025 SecretDev. All rights reserved.</p>
+  </footer>
 </body>
 </html>
